@@ -1,4 +1,4 @@
-﻿namespace CXChange.Modules.UserManagment.Infrustructure;
+﻿namespace CXChange.Modules.UserManagment.Infrastructure;
 public class Class1
 {
 
