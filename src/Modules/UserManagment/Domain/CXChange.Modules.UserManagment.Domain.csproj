@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CoreElements\Domain\CXChange.CoreElements.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
