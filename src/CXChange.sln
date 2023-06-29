@@ -17,13 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CXChange.Modules.UserManagm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CXChange.Modules.UserManagment.Infrastructure", "Modules\UserManagment\Infrastructure\CXChange.Modules.UserManagment.Infrastructure.csproj", "{906FD54A-E393-4FA9-8D44-DE4026B1637D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CXChange.CoreElements.Infrastructure", "CoreElements\Infrastructure\CXChange.CoreElements.Infrastructure.csproj", "{1CAF038D-CD72-473A-AEC7-848BB74651F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CXChange.CoreElements.Infrastructure", "CoreElements\Infrastructure\CXChange.CoreElements.Infrastructure.csproj", "{1CAF038D-CD72-473A-AEC7-848BB74651F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CXChange.CoreElements.Domain", "CoreElements\Domain\CXChange.CoreElements.Domain.csproj", "{F3886E80-1D78-4778-9596-9C147DFF508C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CXChange.CoreElements.Domain", "CoreElements\Domain\CXChange.CoreElements.Domain.csproj", "{F3886E80-1D78-4778-9596-9C147DFF508C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CXChange.CoreElements.Application", "CoreElements\Application\CXChange.CoreElements.Application.csproj", "{03867BDE-76FE-4051-8CFD-81A6377AF717}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CXChange.CoreElements.Application", "CoreElements\Application\CXChange.CoreElements.Application.csproj", "{03867BDE-76FE-4051-8CFD-81A6377AF717}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CXChange.API", "API\CXChange.API\CXChange.API.csproj", "{2164B129-459C-4A3A-B339-B7E8ED0C28B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CXChange.API", "API\CXChange.API\CXChange.API.csproj", "{2164B129-459C-4A3A-B339-B7E8ED0C28B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
