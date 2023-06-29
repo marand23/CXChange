@@ -14,7 +14,7 @@ namespace CXChange.Modules.UserManagment.Infrastructure
 {
     public static class DependencyResolver
     {
-        public static IServiceCollection Register(this IServiceCollection services)
+        public static void Register(this IServiceCollection services)
         {
            
        //    string connectionString =services.c Configuration["ConnectionStrings:DefaultConnection"];
@@ -45,25 +45,25 @@ namespace CXChange.Modules.UserManagment.Infrastructure
 
             });
            
-            services.AddAuthentication(CustomAuthOptions.SchemeName)
+            //services.AddAuthentication(CustomAuthOptions.SchemeName)
 
-              .AddScheme<CustomAuthOptions, CustomAuthenticationHandler>(
-              CustomAuthOptions.SchemeName, opts =>
-              {
-                  opts.ExpireTimeSpan = TimeSpan.FromDays(4);
-                  opts.SessionStore = new CustomTicketStore(services);
-                  // opts.UserTokenGenerator = ExtensionMethods.GenerateRandomToken(64);
-
-
+            //  .AddScheme<CustomAuthOptions, CustomAuthenticationHandler>(
+            //  CustomAuthOptions.SchemeName, opts =>
+            //  {
+            //      opts.ExpireTimeSpan = TimeSpan.FromDays(4);
+            //      opts.SessionStore = new CustomTicketStore(services);
+            //      // opts.UserTokenGenerator = ExtensionMethods.GenerateRandomToken(64);
 
 
 
-              }
-              )
+
+
+            //  }
+            //  )
 
 
 
-             ;
+            // ;
             services.AddScoped<IExchangeUserManager, ExchangeUserManager>();
             // services.AddScoped(IExchangeSignInManager,ExchangeSignInManager);
             services.AddScoped<IUserRepository, UserRepository>();
@@ -71,7 +71,7 @@ namespace CXChange.Modules.UserManagment.Infrastructure
 
 
 
-            return services;
+           
 
 
 
