@@ -9,12 +9,12 @@ namespace CXChange.Modules.UserManagment.Domain.User
 {
     public class User : Entity<Guid>, IAggregateRoot
     {
-        public User(string FirstName, string LastName, string Email, string Password, bool PhoneNumberConfirmed, bool TwoFactorEnabled, string DefaultTwoFactor, string PhoneNumber)
+        public User(string FirstName=null, string LastName=null, string Email=null,bool PhoneNumberConfirmed=false, bool TwoFactorEnabled = false, string DefaultTwoFactor="SMS", string PhoneNumber=null)
         {
             this.FirstName = FirstName;
             this.LastName = LastName;
             this.Email = Email;
-            this.Password = Password;
+            
             this.PhoneNumberConfirmed = PhoneNumberConfirmed;
             this.TwoFactorEnabled = TwoFactorEnabled;
             this.DefaultTwoFactor = DefaultTwoFactor;
@@ -49,6 +49,7 @@ namespace CXChange.Modules.UserManagment.Domain.User
             };
 
         }
+        
 
     }
 }

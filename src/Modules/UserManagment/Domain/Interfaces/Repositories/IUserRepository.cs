@@ -10,5 +10,6 @@ namespace CXChange.Modules.UserManagment.Domain.Interfaces.Repositories
     {
         Task CreateUser(User.User user);
         Task UpdateUser(User.User user);
+        Task<User.User> GetUserById(string id);
     }
 }

@@ -1,4 +1,5 @@
 using CXChange.Modules.UserManagment.Infrastructure;
+using CXChange.Modules.UserManagment.Application;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterUserManagmentInfrastructure(builder.Configuration);
+builder.Services.RegisterUserManagmentApplication();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

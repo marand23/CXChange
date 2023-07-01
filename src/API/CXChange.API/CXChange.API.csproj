@@ -12,10 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\UserManagment\Application\CXChange.Modules.UserManagment.Application.csproj" />
     <ProjectReference Include="..\..\Modules\UserManagment\Infrastructure\CXChange.Modules.UserManagment.Infrastructure.csproj" />
   </ItemGroup>
 

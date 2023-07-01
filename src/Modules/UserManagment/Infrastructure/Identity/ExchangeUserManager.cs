@@ -119,6 +119,12 @@ namespace CXChange.Modules.UserManagment.Infrastructure.Identity
         {
             return await userManager.ResetPasswordAsync(user, token, newPassword);
         }
+        public async Task<AppUser> GetUserById(string id)
+        {
+           return await userManager.FindByIdAsync(id);
+         
+
+        }
 
 
     }

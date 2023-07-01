@@ -27,5 +27,6 @@ namespace CXChange.Modules.UserManagment.Infrastructure.Identity
         Task<IdentityResult> ResetPasswordAsync(AppUser user, string token, string newPassword);
         //Task<IdentityUser> GetUserByToken(string token);
         //Task<IdentityUser> GetUserByPassToken(string token);
+        Task<AppUser> GetUserById(string id);
     }
 }

@@ -47,5 +47,13 @@ namespace CXChange.Modules.UserManagment.Infrastructure.Repositories
             appuser.Email = snapShot.Email;
             appuser.UserName = snapShot.UserName;
         }
+
+        public async Task<User> GetUserById(string id)
+        {
+            AppUser user=await _exchangeUserManager.GetUserById(id);
+           
+            return new User(user.FirstName, user.LastName, user.Email,  user.PhoneNumberConfirmed, user.TwoFactorEnabled, user.DefaultTwoFactor, user.PhoneNumber);
+            
+        }
     }
 }
