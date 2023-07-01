@@ -12,16 +12,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CXChange.Modules.UserManagment.Infrastructure
 {
-    public static class DependencyResolver
+    public static class DependencyInjection
     {
-        public static void Register(this IServiceCollection services)
+        public static void RegisterUserManagmentInfrastructure(this IServiceCollection services,IConfiguration configuration)
         {
            
-       //    string connectionString =services.c Configuration["ConnectionStrings:DefaultConnection"];
+           string connectionString =configuration["ConnectionStrings:DefaultConnection"];
             services.AddDbContext<UserManagementDbContext>(options =>
             {
                 options.UseSqlServer(
-                //   connectionString
+                   connectionString
                     );
             });
 
