@@ -1,4 +1,4 @@
-﻿using CXChange.CoreElements.Application.Totp;
+﻿using CXChange.BuildingBlocks.Application.Totp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

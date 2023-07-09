@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CXChange.CoreElements.Application.Query
+namespace CXChange.BuildingBlocks.Domain
 {
-    public interface IFilteredQuery
+    public abstract class Entity<TId>
     {
-        List<string> Filters { get; }
+        public TId Id { get; protected set; }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿using CXChange.CoreElements.Domain;
+﻿
 using CXChange.Modules.UserAccess.Domain.User.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
-
+using CXChange.BuildingBlocks.Domain;
 namespace CXChange.Modules.UserAccess.Domain.User
 {
     public class User : Entity<Guid>, IAggregateRoot

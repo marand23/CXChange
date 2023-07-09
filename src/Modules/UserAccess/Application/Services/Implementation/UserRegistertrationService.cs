@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using CXChange.Modules.UserAccess.Application.RequestModels.UserRegistration;
 using CXChange.Modules.UserAccess.Domain.User.Exceptions;
-using CXChange.CoreElements.Application.Totp;
+using CXChange.BuildingBlocks.Application.Totp;
 using MassTransit;
-using CXChange.Modules.UserAccess.IntegrationEvents;
 using System.Threading;
 using Microsoft.AspNetCore.Components.Forms;
+using CXChange.Modules.UserAccess.Integration.IntegrationEvents;
 
 namespace CXChange.Modules.UserAccess.Application.Services.Implementation
 {
@@ -22,21 +22,20 @@ namespace CXChange.Modules.UserAccess.Application.Services.Implementation
         private readonly IUserRepository _userRepository;
         private readonly ITotp _totp;
         private readonly IPublishEndpoint _publishEndpoint;
-        IRequestClient<CheckOrderStatus> _client;
+       
 
-        public UserRegistertrationService(IUserRepository userRepository,ITotp totp,IPublishEndpoint publishEndpoint, IRequestClient<CheckOrderStatus> client)
+        public UserRegistertrationService(IUserRepository userRepository,ITotp totp,IPublishEndpoint publishEndpoint)
         {
            
             _userRepository = userRepository;
             _totp = totp; 
             _publishEndpoint = publishEndpoint;
-            _client = client;
+        
         }
         public async Task<string> RegisterUser(Register credentials)
         {
             try
             {
-                var response = await _client.GetResponse<OrderStatusResult>(new { orderId="123" });
 
                 //return response.Message.OrderId + response.Message.Timestamp.ToString();
                

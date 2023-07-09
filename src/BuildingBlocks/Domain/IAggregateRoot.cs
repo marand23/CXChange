@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CXChange.CoreElements.Domain
+namespace CXChange.BuildingBlocks.Domain
 {
-    public abstract class Entity<TId>
+    public  interface IAggregateRoot
     {
-        public TId Id { get; protected set; }
-
     }
 }

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CoreElements\Domain\CXChange.CoreElements.Domain.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Domain\CXChange.BuildingBlocks.Domain.csproj" />
   </ItemGroup>
 
 </Project>

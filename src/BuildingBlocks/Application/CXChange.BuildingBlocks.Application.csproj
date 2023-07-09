@@ -6,11 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Application\CXChange.CoreElements.Application.csproj" />
+    <Folder Include="Query\" />
+    <Folder Include="Sms\" />
   </ItemGroup>
-
+	
 </Project>

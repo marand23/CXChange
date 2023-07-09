@@ -13,9 +13,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\CoreElements\Application\CXChange.CoreElements.Application.csproj" />
+	  <ProjectReference Include="..\..\..\BuildingBlocks\Application\CXChange.BuildingBlocks.Application.csproj" />
 	  <ProjectReference Include="..\Domain\CXChange.Modules.UserAccess.Domain.csproj" />
-	  <ProjectReference Include="..\IntegrationEvents\CXChange.Modules.UserAccess.Integration.csproj" />
+	  <ProjectReference Include="..\Integration\CXChange.Modules.UserAccess.Integration.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

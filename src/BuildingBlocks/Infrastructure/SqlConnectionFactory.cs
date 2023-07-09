@@ -1,4 +1,4 @@
-﻿using CXChange.CoreElements.Application.Data;
+﻿using CXChange.BuildingBlocks.Application.Data;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;

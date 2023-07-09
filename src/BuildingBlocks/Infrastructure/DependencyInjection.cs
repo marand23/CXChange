@@ -1,5 +1,5 @@
-﻿using CXChange.CoreElements.Application.Totp;
-using CXChange.CoreElements.Infrastructure.Totp;
+﻿using CXChange.BuildingBlocks.Application.Totp;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
