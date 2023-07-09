@@ -1,5 +1,11 @@
-using CXChange.Modules.UserManagment.Infrastructure;
-using CXChange.Modules.UserManagment.Application;
+using CXChange.Modules.UserAccess.Infrastructure;
+using CXChange.Modules.UserAccess.Application;
+using CXChange.CoreElements.Infrastructure;
+
+using System;
+using Microsoft.IdentityModel.Tokens;
+using MassTransit;
+using CXChange.API;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,7 +16,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterUserManagmentInfrastructure(builder.Configuration);
-builder.Services.RegisterUserManagmentApplication();
+builder.Services.RegisterUserManagmentApplication(builder.Environment);
+builder.Services.RegisterCoreElementstInfrastructure();
+builder.Services.RegisterAPI(builder.Environment);
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

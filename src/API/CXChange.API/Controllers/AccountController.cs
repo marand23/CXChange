@@ -1,6 +1,7 @@
-﻿using CXChange.Modules.UserManagment.Application;
-using CXChange.Modules.UserManagment.Application.Services.Interfaces;
-using CXChange.Modules.UserManagment.Application.User;
+﻿using CXChange.Modules.UserAccess.Application;
+using CXChange.Modules.UserAccess.Application.RequestModels.UserRegistration;
+using CXChange.Modules.UserAccess.Application.Services.Interfaces;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +12,9 @@ namespace CXChange.API.Controllers
     public class AccountController : ControllerBase
 
     { 
-        private IUserService _userService;
-        public AccountController(IUserService user) {
-             _userService = user;
+        private IUserRegistrationService _userRegistrationService;
+        public AccountController(IUserRegistrationService userRegistrationService) {
+             _userRegistrationService = userRegistrationService;
         }
         /// <summary>
         /// registering user for the first time 
@@ -22,8 +23,15 @@ namespace CXChange.API.Controllers
         /// <param name="Password"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult CreateUser(string PhoneNumber, string Password) {
-           _userService.CreateUser(PhoneNumber, Password);  
+        public async Task<IActionResult> RegisterUser(Register register) {
+         var a= await _userRegistrationService.RegisterUser(register);
+            
+            return Ok(a);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ConfirmUser(RegisterConfirmation confirmation)
+        {
+              await  _userRegistrationService.ConfirmRegistration(confirmation);
             return Ok();
         }
     }
