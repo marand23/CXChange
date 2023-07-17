@@ -1,6 +1,12 @@
 ﻿using CXChange.Modules.UserAccess.Infrastructure.DataAccess;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
+using CXChange.Modules.UserAccess.Application.DomainEventHandlers;
+using CXChange.Modules.UserAccess.Domain.User.DomainEvents;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using CXChange.Modules.UserAccess.Application;
+
 namespace CXChange.API
 {
     public static class DependencyInjection
@@ -15,19 +21,18 @@ namespace CXChange.API
         }
         private static void AddMAssTransit(IServiceCollection services, IWebHostEnvironment environment)
         {
+            services.AddMediator(cfg =>
+            {
+                cfg.AddUserManagmentApplicationMediator();
+
+
+
+            });
             services.AddMassTransit(x =>
             {
+                x.AddConsumer<sendemailcosumer> ();
 
-                x.AddEntityFrameworkOutbox<UserManagementDbContext>(o =>
-                {
-                    // configure which database lock provider to use (Postgres, SqlServer, or MySql)
-                    o.UseSqlServer();
 
-                    // enable the bus outbox
-                    o.UseBusOutbox();
-                    o.QueryDelay = TimeSpan.FromHours(1);
-
-                });
              
                 //  x.UsingInMemory();
                 // configure bus
@@ -44,20 +49,20 @@ namespace CXChange.API
                         h.Username("guest");
                         h.Password("guest");
                     });
-                    cfg.ReceiveEndpoint("user-registered",c =>
-                    {
+                    //cfg.ReceiveEndpoint("user-registered",c =>
+                    //{
                        
-                        c.UseMessageRetry(r =>
-                        {
-                            r.Immediate(2);
+                    //    c.UseMessageRetry(r =>
+                    //    {
+                    //        r.Immediate(2);
 
-                            r.Handle<DbUpdateException>();
-                            r.Ignore<NotImplementedException>();
-                        });
+                    //        r.Handle<DbUpdateException>();
+                    //        r.Ignore<NotImplementedException>();
+                    //    });
                        
                       
 
-                    });
+                    //});
                     cfg.ConfigureEndpoints(context);
 
 

@@ -5,10 +5,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+	<ItemGroup>
+		<PackageReference Include="MassTransit" />
+	
+	</ItemGroup>
   <ItemGroup>
     <Folder Include="Query\" />
     <Folder Include="Sms\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\CXChange.BuildingBlocks.Domain.csproj" />
   </ItemGroup>
 	
 </Project>

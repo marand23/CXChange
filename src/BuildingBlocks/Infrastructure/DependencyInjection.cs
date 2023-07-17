@@ -1,5 +1,5 @@
 ﻿using CXChange.BuildingBlocks.Application.Totp;
-
+using CXChange.BuildingBlocks.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +16,7 @@ namespace CXChange.CoreElements.Infrastructure
         public static void RegisterCoreElementstInfrastructure(this IServiceCollection servicesn)
         {
             servicesn.AddScoped<ITotp, Totp.Totp>();
+            
         }
     }
 }

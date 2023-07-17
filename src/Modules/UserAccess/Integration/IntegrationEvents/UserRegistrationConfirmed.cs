@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CXChange.Modules.UserAccess.Integration.IntegrationEvents
 {
-    public class UserRegistrationConfirmed
+    public class UserRegistrationConfirmedIntegrationEvent
     {
         public string Id { get; set; }
         public string PhoneNumber { get; set; }

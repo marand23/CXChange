@@ -7,22 +7,45 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using CXChange.BuildingBlocks.Domain;
+using System.Runtime.CompilerServices;
+using CXChange.Modules.UserAccess.Domain.User.DomainEvents;
+
 namespace CXChange.Modules.UserAccess.Domain.User
 {
-    public class User : Entity<Guid>, IAggregateRoot
+    public class User : Entity, IAggregateRoot
     {
-        public User(string PhoneNumber,string Password,bool TwoFactorEnabled,string DefaultTwoFactor)
+        private object value;
+
+
+        //public User(IEntityDomainEventTracker eventTracker):base(eventTracker) 
+        //{
+        //   this.PhoneNumber = PhoneNumber;
+        //   this.Password = Password;
+        //    this.TwoFactorEnabled = TwoFactorEnabled;
+        //    this.DefaultTwoFactor= DefaultTwoFactor;
+        //    GetSnapShot();
+
+
+
+
+        //}
+        public User(string phoneNumber, string password, bool phoneNumberConfirmed,string DefaultTwoFactor)
         {
-           this.PhoneNumber = PhoneNumber;
-           this.Password = Password;
-            this.TwoFactorEnabled = TwoFactorEnabled;
-            this.DefaultTwoFactor= DefaultTwoFactor;
-
-
-
-
+           
+            PhoneNumber = phoneNumber;
+            Password = password;
+            PhoneNumberConfirmed = phoneNumberConfirmed;
+           
         }
-      
+
+        public User(string phoneNumber, object value, bool twoFactorEnabled, string defaultTwoFactor )
+        {
+            PhoneNumber = phoneNumber;
+            this.value = value;
+            TwoFactorEnabled = twoFactorEnabled;
+            DefaultTwoFactor = defaultTwoFactor;
+        }
+
         private string Email { get; set; }
         private string SecurityStamp { get; set; }
         private string PhoneNumber { get; set; }
@@ -32,26 +55,31 @@ namespace CXChange.Modules.UserAccess.Domain.User
         private string DefaultTwoFactor { get; set; }
         private string UserName { get; set; }
         private bool IsRestricted { get; set; }
-        public SnapShot GetSnapShot()
+      
+        public void GetSnapShot()
         {
-            return new SnapShot
-            {
 
-                Email = this.Email,
-                SecurityStamp = this.SecurityStamp,
-                PhoneNumber = this.PhoneNumber,
-                Password = this.Password,
-                PhoneNumberConfirmed = this.PhoneNumberConfirmed,
-                TwoFactorEnabled = this.TwoFactorEnabled,
-                DefaultTwoFactor = this.DefaultTwoFactor,
-                UserName = this.UserName,
+            AddDomainEvent(new UserRegisteredDomainEvent { Email = "", PhoneNumber = "sdfsdfs" });
+            //return new SnapShot
+            //{
+
+            //    Email = this.Email,
+            //    SecurityStamp = this.SecurityStamp,
+            //    PhoneNumber = this.PhoneNumber,
+            //    Password = this.Password,
+            //    PhoneNumberConfirmed = this.PhoneNumberConfirmed,
+            //    TwoFactorEnabled = this.TwoFactorEnabled,
+            //    DefaultTwoFactor = this.DefaultTwoFactor,
+            //    UserName = this.UserName,
+
                 
 
-            };
+            //};
 
         }
         public static User CreateUserFactory(string Email,string PhoneNumber,bool PhoneNumberConfirmed,bool TwoFactorEnabled,string DefaultTwoFactor,string UserName,bool isRestricted)
         {
+          
             return new User(PhoneNumber,null,TwoFactorEnabled,DefaultTwoFactor)
             {
                 Email = Email,

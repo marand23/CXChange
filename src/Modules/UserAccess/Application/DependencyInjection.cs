@@ -1,22 +1,20 @@
 ﻿
+using CXChange.BuildingBlocks.Application;
+using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
+using CXChange.Modules.UserAccess.Application.DomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.Services.Implementation;
 using CXChange.Modules.UserAccess.Application.Services.Interfaces;
 using MassTransit;
+using MassTransit.Mediator;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CXChange.Modules.UserAccess.Application
 {
     public static class DependencyInjection
     {
-        public static void RegisterUserManagmentApplication(this IServiceCollection services,IWebHostEnvironment environment)
+        public static void RegisterUserManagmentApplication(this IServiceCollection services,IWebHostEnvironment environment,MediatRServiceConfiguration cfg)
         {
            
 
@@ -29,13 +27,23 @@ namespace CXChange.Modules.UserAccess.Application
             services.AddScoped<IPasswordService, PasswordService>();
             services.AddScoped<LoginService, LoginService>();
             services.AddScoped<IUserRegistrationService,UserRegistertrationService>();
-            AddMAssTransit(services, environment);
+            cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
+
+
 
         }
-        private static void AddMAssTransit(IServiceCollection services,IWebHostEnvironment environment)
+        public static void AddUserManagmentApplicationMediator(this IMediatorRegistrationConfigurator cfg)
         {
            
 
+         
+
+        }
+        public static void AddUserManagmentApplicationBus(this IBusRegistrationConfigurator cfg)
+        {
+
+           
+            cfg.AddConsumer<sendemailcosumer>();
         }
 
 

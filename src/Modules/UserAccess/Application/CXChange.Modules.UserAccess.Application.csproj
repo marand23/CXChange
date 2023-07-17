@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<PackageReference Include="MassTransit" />
 		<PackageReference Include="MassTransit.RabbitMQ" />
+		<PackageReference Include="MediatR" />
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
@@ -19,6 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="User\" />
+	  <Folder Include="UserRegistration\" />
+	  <Folder Include="Queries\" />
 	</ItemGroup>
 </Project>

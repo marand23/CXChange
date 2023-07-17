@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using MassTransit;
+using CXChange.BuildingBlocks.Domain;
+
 namespace CXChange.Modules.UserAccess.Infrastructure.DataAccess
 {
     public class UserManagementDbContext : IdentityDbContext<AppUser>
@@ -21,6 +23,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.DataAccess
 
         public DbSet<AuthenticationTickets> AuthenticationTickets { get; set; }
 
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

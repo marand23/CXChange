@@ -48,7 +48,7 @@ namespace CXChange.Modules.UserAccess.Application.Services.Implementation
                 //    return "registered";
 
                 //}
-                await _publishEndpoint.Publish(new UserRegistrationConfirmed { Id = "fsdfs", PhoneNumber = credentials.PhoneNumber });
+              //  await _publishEndpoint.Publish(new UserRegistrationConfirmed { Id = "fsdfs", PhoneNumber = credentials.PhoneNumber });
                 await _userRepository.CreateUser(new Domain.User.User(credentials.PhoneNumber,credentials.Password,true,"SMS"),credentials.Password);
                 //  byte[] securityToken =await _userRepository.GetUserSecurityToken(user);
                 //   int code = _totp.GenerateCode(securityToken,TimeSpan.FromMinutes(3),"CreateUser");

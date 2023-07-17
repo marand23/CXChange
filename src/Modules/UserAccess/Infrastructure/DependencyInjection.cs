@@ -1,14 +1,16 @@
-﻿using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
+﻿using CXChange.BuildingBlocks.Domain;
+using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using CXChange.Modules.UserAccess.Infrastructure.DataAccess;
 using CXChange.Modules.UserAccess.Infrastructure.DataModel;
+using CXChange.Modules.UserAccess.Infrastructure.Decorators;
 using CXChange.Modules.UserAccess.Infrastructure.Identity;
 using CXChange.Modules.UserAccess.Infrastructure.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-
+using System.Reflection;
 
 namespace CXChange.Modules.UserAccess.Infrastructure
 {
@@ -24,8 +26,10 @@ namespace CXChange.Modules.UserAccess.Infrastructure
                    connectionString
                     );
             });
+          
+        //    services.AddDbContext(typeof(DbContext), typeof(UserManagementDbContext), options =>
+        //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            
             services.AddIdentity<AppUser,IdentityRole>()
              .AddDefaultTokenProviders()
                   
@@ -44,7 +48,8 @@ namespace CXChange.Modules.UserAccess.Infrastructure
 
 
             });
-           
+            var a = Assembly.GetExecutingAssembly();
+          
             //services.AddAuthentication(CustomAuthOptions.SchemeName)
 
             //  .AddScheme<CustomAuthOptions, CustomAuthenticationHandler>(
@@ -64,9 +69,13 @@ namespace CXChange.Modules.UserAccess.Infrastructure
 
 
             // ;
+
             services.AddScoped<IExchangeUserManager, ExchangeUserManager>();
-            // services.AddScoped(IExchangeSignInManager,ExchangeSignInManager);
+             services.AddScoped<IExchangeSignInManager,ExchangeSignInManager>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUnitOfWork,UnitOfWork>();
+            services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>(); 
+            
 
 
 

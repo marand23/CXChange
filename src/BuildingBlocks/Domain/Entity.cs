@@ -6,9 +6,21 @@ using System.Threading.Tasks;
 
 namespace CXChange.BuildingBlocks.Domain
 {
-    public abstract class Entity<TId>
+    public abstract class Entity
     {
-        public TId Id { get; protected set; }
+        private List<IDomainEvent> _domainEvents;
+        public List<IDomainEvent> DomainEvents => _domainEvents;
+
+        public void AddDomainEvent(IDomainEvent eventItem)
+        {
+            _domainEvents = _domainEvents ?? new List<IDomainEvent>();
+            _domainEvents.Add(eventItem);
+        }
+
+        public void RemoveDomainEvent(IDomainEvent eventItem)
+        {
+            _domainEvents?.Remove(eventItem);
+        }
 
     }
 }

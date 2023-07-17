@@ -3,10 +3,12 @@ using CXChange.Modules.UserAccess.Domain.User;
 using CXChange.Modules.UserAccess.Infrastructure.DataAccess;
 using CXChange.Modules.UserAccess.Infrastructure.DataModel;
 using CXChange.Modules.UserAccess.Infrastructure.Identity;
+using MassTransit.Mediator;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,33 +17,40 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
     internal class UserRepository: IUserRepository
     {
         private IExchangeUserManager _exchangeUserManager;
-        private UserManagementDbContext _userManagementDbContext;
-        public UserRepository(IExchangeUserManager exchangeUserManager/*IExchangeSignInManager exchangeSignInManager*/,UserManagementDbContext userManagementDbContext)
+        private IExchangeSignInManager _exchangeSignInManager;
+       
+        private IMediator _mediator;
+        public UserRepository(IExchangeUserManager exchangeUserManager,IExchangeSignInManager exchangeSignInManager,IMediator mediator)
         {
-            // _exchangeSignInManager= exchangeSignInManager;
+            _exchangeSignInManager = exchangeSignInManager;
             _exchangeUserManager = exchangeUserManager;
-            _userManagementDbContext = userManagementDbContext;
+            _mediator = mediator;
         }
 
         public async Task CreateUser(User user, string Password)
         {
 
-            SnapShot snapShot = user.GetSnapShot();
-            AppUser appUser = new AppUser { UserName = snapShot.PhoneNumber, PhoneNumber = snapShot.PhoneNumber, DefaultTwoFactor =snapShot.DefaultTwoFactor, TwoFactorEnabled = snapShot.TwoFactorEnabled };
-          //  IdentityResult result = await _exchangeUserManager.CreateAsync(appUser,Password);
-            _userManagementDbContext.SaveChanges();
+           // snapshot snapshot = user.getsnapshot();
+           // foreach(var e in user.domainevents)
+           // {
+           //    await _mediator.publish(e);
+           // }
+           // appuser appuser = new appuser { username = snapshot.phonenumber, phonenumber = snapshot.phonenumber, defaulttwofactor =snapshot.defaulttwofactor, twofactorenabled = snapshot.twofactorenabled };
+           
+           //identityresult result = await _exchangeusermanager.createasync(appuser,password);
+            
            // if (!result.Succeeded) { throw new Exception(result.Errors.FirstOrDefault().Description); }
         }
         public async Task UpdateUser(User user)
         {
-            AppUser appUser = new AppUser();
-            Map(appUser, user.GetSnapShot());
+            //AppUser appUser = new AppUser();
+            //Map(appUser, user.GetSnapShot());
 
-            var result = await _exchangeUserManager.UpdateAsync(appUser);
-            if (!result.Succeeded)
-            {
-                throw new Exception(result.Errors.FirstOrDefault().Description);
-            }
+            //var result = await _exchangeUserManager.UpdateAsync(appUser);
+            //if (!result.Succeeded)
+            //{
+            //    throw new Exception(result.Errors.FirstOrDefault().Description);
+            //}
         }
 
         public void Map(AppUser appuser, SnapShot snapShot)
@@ -73,8 +82,10 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
 
         public async Task<byte[]> GetUserSecurityToken(User user)
         {
-            AppUser appUser =await _exchangeUserManager.GetUserById(user.Id.ToString());
-            return await _exchangeUserManager.GetUserSecurityToken(appUser);
+            return null;
+        //    AppUser appUser =await _exchangeUserManager.GetUserById(user.Id.ToString());
+        //    return await _exchangeUserManager.GetUserSecurityToken(appUser);
         }
+      
     }
 }
