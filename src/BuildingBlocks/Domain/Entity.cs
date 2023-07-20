@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CXChange.BuildingBlocks.Domain.Specifications;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,13 @@ namespace CXChange.BuildingBlocks.Domain
         public void RemoveDomainEvent(IDomainEvent eventItem)
         {
             _domainEvents?.Remove(eventItem);
+        }
+        public void CheckRule(IBussinessRuleSpecification rule)
+        {
+            if (!rule.isSatisfiedBy())
+            {
+                throw new BusinessRuleException(rule);
+            }
         }
 
     }

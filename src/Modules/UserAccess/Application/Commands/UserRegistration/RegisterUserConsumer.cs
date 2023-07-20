@@ -52,6 +52,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserRegistration
             //  byte[] securityToken =await _userRepository.GetUserSecurityToken(user);
             //   int code = _totp.GenerateCode(securityToken,TimeSpan.FromMinutes(3),"CreateUser");
            await _dispatcher.Dispatch(user.DomainEvents);
+
             return new UserRegistered { PhoneNumber = request.PhoneNumber };
         }
 

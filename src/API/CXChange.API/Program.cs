@@ -14,62 +14,69 @@ using System.Reflection;
 using CXChange.Modules.UserAccess.Infrastructure.Decorators;
 using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.RegisterUserManagmentInfrastructure(builder.Configuration);
-
-
-builder.Services.RegisterCoreElementstInfrastructure();
-builder.Services.RegisterAPI(builder.Environment);
-
-builder.Services.AddMediatR(cfg =>
-{
-    builder.Services.RegisterUserManagmentApplication(builder.Environment,cfg);
-});
-builder.Services.Decorate(typeof(IRequestHandler<,>), typeof(UnitOfWorkCommandHandlerDecorator<,>));
-builder.Services.Decorate(typeof(IRequestHandler<,>), typeof(LoggingCommandHandlerDecorator<,>));
-builder.Services.AddSingleton<Serilog.ILogger>(Log.Logger);
 Log.Logger = new LoggerConfiguration()
-           .WriteTo.Console()
-           .WriteTo.File("log.txt", rollingInterval: RollingInterval.Hour)
-           
-           .CreateLogger();
+              .WriteTo.Console()
+             // .WriteTo.Telegram("1136419874:AAEx8Vxxn_9j07zz_MoaeP3k1IotWQ9S2_U", "387581401", period: TimeSpan.FromSeconds(10), includeStackTrace: true, applicationName: "oooop")
+              .CreateLogger();
 
-
-
-
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    Log.Information("Starting web application");
+   
+    var builder = WebApplication.CreateBuilder(args);
+    builder.Host.UseSerilog();
+    builder.Services.AddSingleton(Log.Logger);
 
-app.UseHttpsRedirection();
+    builder.Services.AddProblemDetails();
 
-app.UseAuthorization();
 
-app.MapControllers();
 
-app.Run();
-public static class ServiceCollectionExtensions
-{
-    public static IServiceCollection AddDecorator<TService, TDecorator>(this IServiceCollection services)
-        where TService : class
-        where TDecorator : class, TService
+    // Add services to the container.
+
+    builder.Services.AddControllers();
+    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+
+    builder.Services.RegisterUserManagmentInfrastructure(builder.Configuration);
+
+
+    builder.Services.RegisterCoreElementstInfrastructure();
+    builder.Services.RegisterAPI(builder.Environment);
+
+    builder.Services.AddMediatR(cfg =>
     {
-        services.AddTransient<TDecorator>();
-        services.AddTransient<TService>(sp => sp.GetRequiredService<TDecorator>());
-        return services;
+        builder.Services.RegisterUserManagmentApplication(builder.Environment, cfg);
+    });
+    builder.Services.Decorate(typeof(IRequestHandler<,>), typeof(UnitOfWorkCommandHandlerDecorator<,>));
+    builder.Services.Decorate(typeof(IRequestHandler<,>), typeof(LoggingCommandHandlerDecorator<,>));
+   
+
+
+
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
     }
+
+    app.UseHttpsRedirection();
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();
+
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
 }

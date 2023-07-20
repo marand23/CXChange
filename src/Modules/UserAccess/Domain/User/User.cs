@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CXChange.BuildingBlocks.Domain;
 using System.Runtime.CompilerServices;
 using CXChange.Modules.UserAccess.Domain.User.DomainEvents;
+using CXChange.Modules.UserAccess.Domain.User.Specifications;
 
 namespace CXChange.Modules.UserAccess.Domain.User
 {
@@ -58,7 +59,7 @@ namespace CXChange.Modules.UserAccess.Domain.User
       
         public void GetSnapShot()
         {
-
+            this.CheckRule(new UserShoulNotConfirmedInRegistration(PhoneNumberConfirmed));
             AddDomainEvent(new UserRegisteredDomainEvent { Email = "", PhoneNumber = "sdfsdfs" });
             //return new SnapShot
             //{

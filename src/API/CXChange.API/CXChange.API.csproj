@@ -10,9 +10,12 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Scrutor" />
     <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.AspNetCore" />
+  
     <PackageReference Include="Serilog.Extensions.Logging" />
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="Serilog.Sinks.Telegram.Alternative" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
