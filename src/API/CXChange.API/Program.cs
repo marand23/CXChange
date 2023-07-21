@@ -13,6 +13,8 @@ using MediatR;
 using System.Reflection;
 using CXChange.Modules.UserAccess.Infrastructure.Decorators;
 using Serilog;
+using Microsoft.AspNetCore.Identity;
+using FluentValidation;
 
 Log.Logger = new LoggerConfiguration()
               .WriteTo.Console()
@@ -26,8 +28,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
     builder.Host.UseSerilog();
     builder.Services.AddSingleton(Log.Logger);
-
-    builder.Services.AddProblemDetails();
+    builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 
 

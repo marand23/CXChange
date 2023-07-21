@@ -32,14 +32,14 @@ namespace CXChange.API.Modules.UserManagment
         /// <param name="Password"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<UserRegistered>> RegisterUser(string PhoneNumber, string Password)
+        public async Task<ActionResult<UserRegistered>> RegisterUser(RegisterRequest request)
         {
             try
             {
                
                 //  await _publishEndpoint.Publish(new UserRegistrationConfirmedIntegrationEvent { PhoneNumber=PhoneNumber, Id = "ujuh" });
                 //    await _publishEndpoint.Publish(new UserRegisteredDomainEvent { PhoneNumber = "fsf", Email = "fsfd" });
-                var b= await _mediator.Send(new RegisterUser { Password = Password ,PhoneNumber=PhoneNumber});
+                var b= await _mediator.Send(new RegisterUser { Password = request.PhoneNumber ,PhoneNumber=request.PhoneNumber});
 
                 // await _mediator.Publish(new UserRegisteredDomainEvent {  Email="",PhoneNumber="fsdf"});
                 return this.ReturnSuccess(b);  

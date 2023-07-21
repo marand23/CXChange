@@ -1,5 +1,6 @@
 ﻿using CXChange.BuildingBlocks.Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -25,15 +26,24 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Decorators
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
         {
-            Console.WriteLine("Decorator A - Before handling the command");
+            try
+            {
+                Console.WriteLine("Decorator A - Before handling the command");
 
-            var response = await _handler.Handle(request, cancellationToken);
-            Console.WriteLine("Decorator A - After handling the command");
-            _logger.Error("executed");
-            //await _unitOfWork.CommitChangesAsync();
-            //await _domainEventDispatcher.Dispatch(domainEvents);
-            return response;
+                var response = await _handler.Handle(request, cancellationToken);
+                Console.WriteLine("Decorator A - After handling the command");
+                _logger.Error("executed");
+                //await _unitOfWork.CommitChangesAsync();
+                //await _domainEventDispatcher.Dispatch(domainEvents);
+                return response;
+            }
+            catch (BusinessRuleException ex) {
+                throw ex;
+            }
+            
+           
 
         }
+        
     }
 }

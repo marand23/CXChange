@@ -8,16 +8,17 @@ namespace CXChange.API.Extensions
     {
         public static ActionResult<T> ReturnSuccess<T>(this ControllerBase controller, T data) where T : class
         {
-            return controller.Ok(new SuccessApiModel<T> { data = data, success = true, Message = "successfull message" });
+            return controller.Ok(new ApiSuccessModel<T> { data = data, success = true, message = "successfull message" });
         }
         public static ActionResult ReturnFailure(this ControllerBase controller,Exception exp) 
         {
-           
+
             if (exp is BusinessRuleException)
             {
-                return controller.BadRequest(new ApiErrorMode { Message = ((BusinessRuleException)exp).Message, success = false });
+                return controller.BadRequest(new ApiErrorModel { message = ((BusinessRuleException)exp).Message, success = false });
             }
-            return controller.NotFound(exp.Message);
+            return controller.ValidationProblem();
+           
            
         }
 
@@ -28,14 +29,15 @@ namespace CXChange.API.Extensions
         success,
         fail,
     }
-    public class ApiErrorMode
+    public class ApiErrorModel
     {
-        public string Message { get; set; }
+        public string message { get; set; }
+        
         public bool success { get; set; }
     }
-    public class SuccessApiModel<T>
+    public class ApiSuccessModel<T>
     {
-        public string Message { get; set; }
+        public string message { get; set; }
         public bool success { get; set; }
         public T data { get; set; }
     }

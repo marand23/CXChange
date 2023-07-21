@@ -4,6 +4,7 @@ using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.Services.Implementation;
 using CXChange.Modules.UserAccess.Application.Services.Interfaces;
+using FluentValidation;
 using MassTransit;
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Hosting;
@@ -28,7 +29,7 @@ namespace CXChange.Modules.UserAccess.Application
             services.AddScoped<LoginService, LoginService>();
             services.AddScoped<IUserRegistrationService,UserRegistertrationService>();
             cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
-
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());    
 
 
         }

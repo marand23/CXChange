@@ -17,7 +17,7 @@ namespace CXChange.Modules.UserAccess.Domain.User.Specifications
 
         public bool isSatisfiedBy()
         {
-            return false;
+            return true;
         }
     }
 }
