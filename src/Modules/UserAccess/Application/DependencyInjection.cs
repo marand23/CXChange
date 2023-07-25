@@ -2,12 +2,12 @@
 using CXChange.BuildingBlocks.Application;
 using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers;
-using CXChange.Modules.UserAccess.Application.Services.Implementation;
-using CXChange.Modules.UserAccess.Application.Services.Interfaces;
+
 using FluentValidation;
 using MassTransit;
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -15,7 +15,7 @@ namespace CXChange.Modules.UserAccess.Application
 {
     public static class DependencyInjection
     {
-        public static void RegisterUserManagmentApplication(this IServiceCollection services,IWebHostEnvironment environment,MediatRServiceConfiguration cfg)
+        public static void RegisterUserManagmentApplication(this IServiceCollection services,IWebHostEnvironment environment)
         {
            
 
@@ -23,13 +23,12 @@ namespace CXChange.Modules.UserAccess.Application
             // Register the command and its corresponding handler
            // services.AddScoped<IRequestHandler<CreateUserCommand>, CreateUserCommandHandler>();
           
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IPasswordService, PasswordService>();
-            services.AddScoped<LoginService, LoginService>();
-            services.AddScoped<IUserRegistrationService,UserRegistertrationService>();
-            cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());    
+   
+         
+          
+             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+          
 
 
         }
@@ -44,7 +43,7 @@ namespace CXChange.Modules.UserAccess.Application
         {
 
            
-            cfg.AddConsumer<sendemailcosumer>();
+            cfg.AddConsumer<UserRegisteredDomainEventHandler>();
         }
 
 

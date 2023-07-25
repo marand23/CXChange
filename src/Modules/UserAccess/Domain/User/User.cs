@@ -1,5 +1,5 @@
 ﻿
-using CXChange.Modules.UserAccess.Domain.User.Exceptions;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,45 +10,33 @@ using CXChange.BuildingBlocks.Domain;
 using System.Runtime.CompilerServices;
 using CXChange.Modules.UserAccess.Domain.User.DomainEvents;
 using CXChange.Modules.UserAccess.Domain.User.Specifications;
+using System.Buffers.Text;
+using System.Security.Cryptography;
 
 namespace CXChange.Modules.UserAccess.Domain.User
 {
     public class User : Entity, IAggregateRoot
     {
-        private object value;
-
-
-        //public User(IEntityDomainEventTracker eventTracker):base(eventTracker) 
-        //{
-        //   this.PhoneNumber = PhoneNumber;
-        //   this.Password = Password;
-        //    this.TwoFactorEnabled = TwoFactorEnabled;
-        //    this.DefaultTwoFactor= DefaultTwoFactor;
-        //    GetSnapShot();
-
-
-
-
-        //}
-        public User(string phoneNumber, string password, bool phoneNumberConfirmed,string DefaultTwoFactor)
+        public User(string phoneNumber, string password, string defaultTwoFactor, bool twoFactorEnabled)
         {
-           
+
             PhoneNumber = phoneNumber;
             Password = password;
-            PhoneNumberConfirmed = phoneNumberConfirmed;
-           
-        }
+            this.DefaultTwoFactor = defaultTwoFactor;
+            TwoFactorEnabled = twoFactorEnabled;
 
-        public User(string phoneNumber, object value, bool twoFactorEnabled, string defaultTwoFactor )
+        }
+        public User() { }
+        private User(string phoneNumber, bool twoFactorEnabled, string defaultTwoFactor, string DefaultTwoFactor, string password)
         {
             PhoneNumber = phoneNumber;
-            this.value = value;
+
             TwoFactorEnabled = twoFactorEnabled;
             DefaultTwoFactor = defaultTwoFactor;
         }
 
         private string Email { get; set; }
-        private string SecurityStamp { get; set; }
+        public string SecurityStamp { get; set; }=Guid.NewGuid().ToString();
         private string PhoneNumber { get; set; }
         private string Password { get; set; }
         private bool PhoneNumberConfirmed { get; set; }
@@ -56,52 +44,47 @@ namespace CXChange.Modules.UserAccess.Domain.User
         private string DefaultTwoFactor { get; set; }
         private string UserName { get; set; }
         private bool IsRestricted { get; set; }
-      
-        public void GetSnapShot()
+        
+       
+        public    void CheckRegisterPossiblity()
         {
-            this.CheckRule(new UserShoulNotConfirmedInRegistration(PhoneNumberConfirmed));
-            AddDomainEvent(new UserRegisteredDomainEvent { Email = "", PhoneNumber = "sdfsdfs" });
-            //return new SnapShot
-            //{
-
-            //    Email = this.Email,
-            //    SecurityStamp = this.SecurityStamp,
-            //    PhoneNumber = this.PhoneNumber,
-            //    Password = this.Password,
-            //    PhoneNumberConfirmed = this.PhoneNumberConfirmed,
-            //    TwoFactorEnabled = this.TwoFactorEnabled,
-            //    DefaultTwoFactor = this.DefaultTwoFactor,
-            //    UserName = this.UserName,
-
-                
-
-            //};
-
+           this.CheckRule(new UsersPhoneNumberShouldNotBeConfirmedOnRegistration(PhoneNumberConfirmed));
+           this.CheckRule(new UserShoudNotBeRestrictedOnRegistration(IsRestricted));
+           
+            
+            
         }
-        public static User CreateUserFactory(string Email,string PhoneNumber,bool PhoneNumberConfirmed,bool TwoFactorEnabled,string DefaultTwoFactor,string UserName,bool isRestricted)
+       public  User RegisterNewUser(string phoneNumber,string password)
         {
-          
-            return new User(PhoneNumber,null,TwoFactorEnabled,DefaultTwoFactor)
+            ArgumentException.ThrowIfNullOrEmpty(nameof(PhoneNumberConfirmed));
+            ArgumentException.ThrowIfNullOrEmpty(nameof(Password));
+            
+            
+           var user= new User(phoneNumber, password, "SMS", true);
+            this.AddDomainEvent(new UserRegisteredDomainEvent(user));
+            return user;
+        }
+        public SnapShot GetSnapShot()
+        {
+           
+            return new SnapShot
             {
-                Email = Email,
-                UserName = UserName,
-                PhoneNumberConfirmed = PhoneNumberConfirmed,
-                IsRestricted = isRestricted,
-
+                TwoFactorEnabled = TwoFactorEnabled,
+                DefaultTwoFactor = DefaultTwoFactor,
+                PhoneNumber = PhoneNumber,
+                Password = Password,
+                SecurityStamp = SecurityStamp,
 
             };
         }
-     
-        public void CheckRegisterPossiblity()
-        {
-            if (PhoneNumberConfirmed) { throw new UserRegistrationException($"User {PhoneNumber} Already Exist",phoneNumber:PhoneNumber); }
-            if(IsRestricted) { throw new UserRegistrationException($"User {PhoneNumber} Is Restricted"); }
 
-        }
-        public void ConfirmPhoneNumber()
+      
+        private void ConfirmPhoneNumber()
         {
             PhoneNumberConfirmed = true;
         }
+      
+       
         
 
     }

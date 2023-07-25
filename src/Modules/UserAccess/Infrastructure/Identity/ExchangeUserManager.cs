@@ -48,7 +48,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         }
         public async Task<IdentityResult> CreateAsync(AppUser user, string password)
         {
-
+            
             return await userManager.CreateAsync(user, password);
 
         }
@@ -75,6 +75,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         //    }
 
         //}
+       
         public async Task<bool> VerifyUserTokenAsync(AppUser user, string tokenProvider, string purpose, string token)
         {
             return await userManager.VerifyUserTokenAsync(user, tokenProvider, purpose, token);

@@ -15,7 +15,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.DataModel
         public string DefaultTwoFactor { get; set; }
         public bool IsRestricted { get; set; }
         public ICollection<AuthenticationTickets> UserTickets { get; set; }
-
+        
 
     }
 }

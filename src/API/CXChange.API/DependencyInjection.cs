@@ -21,16 +21,10 @@ namespace CXChange.API
         }
         private static void AddMAssTransit(IServiceCollection services, IWebHostEnvironment environment)
         {
-            services.AddMediator(cfg =>
-            {
-                cfg.AddUserManagmentApplicationMediator();
 
-
-
-            });
             services.AddMassTransit(x =>
             {
-                x.AddConsumer<sendemailcosumer> ();
+               // x.AddConsumer<sendemailcosumer> ();
 
 
              

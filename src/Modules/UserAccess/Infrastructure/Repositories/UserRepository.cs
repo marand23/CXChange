@@ -1,4 +1,5 @@
-﻿using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
+﻿using CXChange.BuildingBlocks.Domain;
+using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using CXChange.Modules.UserAccess.Domain.User;
 using CXChange.Modules.UserAccess.Infrastructure.DataAccess;
 using CXChange.Modules.UserAccess.Infrastructure.DataModel;
@@ -18,29 +19,31 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
     {
         private IExchangeUserManager _exchangeUserManager;
         private IExchangeSignInManager _exchangeSignInManager;
-       
-        private IMediator _mediator;
-        public UserRepository(IExchangeUserManager exchangeUserManager,IExchangeSignInManager exchangeSignInManager,IMediator mediator)
+        private IDomainEventDispatcher _domainEventDispatcher;
+        
+      
+        public UserRepository(IExchangeUserManager exchangeUserManager, IExchangeSignInManager exchangeSignInManager, IDomainEventDispatcher domainEventDispatcher, IMediator mediator)
         {
             _exchangeSignInManager = exchangeSignInManager;
             _exchangeUserManager = exchangeUserManager;
-            _mediator = mediator;
-        }
-
-        public async Task CreateUser(User user, string Password)
-        {
-
-           // snapshot snapshot = user.getsnapshot();
-           // foreach(var e in user.domainevents)
-           // {
-           //    await _mediator.publish(e);
-           // }
-           // appuser appuser = new appuser { username = snapshot.phonenumber, phonenumber = snapshot.phonenumber, defaulttwofactor =snapshot.defaulttwofactor, twofactorenabled = snapshot.twofactorenabled };
-           
-           //identityresult result = await _exchangeusermanager.createasync(appuser,password);
+            _domainEventDispatcher = domainEventDispatcher;
             
-           // if (!result.Succeeded) { throw new Exception(result.Errors.FirstOrDefault().Description); }
         }
+
+        public async Task CreateUser(User user)
+
+        {
+            var snapShot = user.GetSnapShot();
+            var appUser = new AppUser { UserName =snapShot.PhoneNumber, PhoneNumber = snapShot.PhoneNumber, DefaultTwoFactor = "SMS"
+                ,TwoFactorEnabled=snapShot.TwoFactorEnabled,SecurityStamp=snapShot.SecurityStamp };
+          
+         var a=  await _exchangeUserManager.CreateAsync(appUser,snapShot.Password);
+            appUser.SecurityStamp = user.SecurityStamp;
+            if (!a.Succeeded) { throw new InvalidOperationException(a.Errors.FirstOrDefault().Description); }
+            
+            
+        }
+        
         public async Task UpdateUser(User user)
         {
             //AppUser appUser = new AppUser();
@@ -67,11 +70,11 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
             return null;
             
         }
-        public async Task<User> GetUserByPhoneNumber(string phoneNumber)
+        public async Task GetUserByPhoneNumber(string phoneNumber)
         {
             AppUser user=await _exchangeUserManager.GetUserByPhoneNumber(phoneNumber);
-            if(user==null) { return null; }
-            return User.CreateUserFactory(user.Email, user.PhoneNumber, user.PhoneNumberConfirmed, user.TwoFactorEnabled, user.DefaultTwoFactor, user.UserName, user.IsRestricted);
+            
+          //  return User.CreateUserFactory(user.Email, user.PhoneNumber, user.PhoneNumberConfirmed, user.TwoFactorEnabled, user.DefaultTwoFactor, user.UserName, user.IsRestricted);
            
         }
 

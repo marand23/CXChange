@@ -22,8 +22,8 @@ namespace CXChange.Modules.UserAccess.Infrastructure.DataAccess
         { }
 
         public DbSet<AuthenticationTickets> AuthenticationTickets { get; set; }
+        
 
-       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

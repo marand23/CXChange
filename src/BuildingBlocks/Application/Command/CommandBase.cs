@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CXChange.Modules.UserAccess.Application.Services.Interfaces
+namespace CXChange.BuildingBlocks.Application.Command
 {
-    public interface ILoginService
+    public record CommandBase
     {
     }
 }

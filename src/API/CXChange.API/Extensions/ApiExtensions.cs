@@ -1,26 +1,27 @@
-﻿using CXChange.BuildingBlocks.Domain;
+﻿using CXChange.BuildingBlocks.Application;
+using CXChange.BuildingBlocks.Domain;
 using MassTransit.SagaStateMachine;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace CXChange.API.Extensions
 {
     public static class ApiExtensions
     {
-        public static ActionResult<T> ReturnSuccess<T>(this ControllerBase controller, T data) where T : class
+        public static ActionResult<T> TranslateToHttp<T>(this ControllerBase controller, Result<T> result) where T : class
         {
-            return controller.Ok(new ApiSuccessModel<T> { data = data, success = true, message = "successfull message" });
-        }
-        public static ActionResult ReturnFailure(this ControllerBase controller,Exception exp) 
-        {
-
-            if (exp is BusinessRuleException)
+            switch (result.Status)
             {
-                return controller.BadRequest(new ApiErrorModel { message = ((BusinessRuleException)exp).Message, success = false });
+                case ResultStatus.Success: return controller.Ok(new ApiSuccessModel<T> { data=result.Data,success=true, message="succeded"});
+                case ResultStatus.CommandNotValid:return controller.StatusCode(422,
+                    new ApiValidationErrorModel { errors = result.Errors, message = "validation-problem", success = false });
+                case ResultStatus.DomainRuleNotValid:return controller.BadRequest(new ApiErrorModel { success = false ,message=result.Message});
+
+                default: throw new NotImplementedException();
             }
-            return controller.ValidationProblem();
-           
-           
+
         }
+      
 
 
     }
@@ -29,7 +30,7 @@ namespace CXChange.API.Extensions
         success,
         fail,
     }
-    public class ApiErrorModel
+    public class ApiErrorModel:IApiError
     {
         public string message { get; set; }
         
@@ -41,4 +42,11 @@ namespace CXChange.API.Extensions
         public bool success { get; set; }
         public T data { get; set; }
     }
+    public class ApiValidationErrorModel:IApiError
+    {
+        public string message { get; set; }
+        public bool success { get; set; }
+        public string[] errors { get; set; }
+    }
+    public interface IApiError { }
 }

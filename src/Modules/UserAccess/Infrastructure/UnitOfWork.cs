@@ -26,7 +26,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure
         }
         public async Task<int> CommitChangesAsync(CancellationToken cancellationToken = default)
         {
-           await DispatchDomainEventsAsync(_userManagementDbContext);
+         
             return await _userManagementDbContext.SaveChangesAsync();
         }
 
@@ -34,16 +34,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure
         {
             _userManagementDbContext.Dispose();
         }
-        private async Task DispatchDomainEventsAsync(UserManagementDbContext context)
-        {
-
-
-            
-
-
-
-           
-        }
+        
       
     }
 }

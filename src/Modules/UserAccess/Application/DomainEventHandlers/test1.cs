@@ -7,8 +7,5 @@ using System.Threading.Tasks;
 
 namespace CXChange.Modules.UserAccess.Application.DomainEventHandlers
 {
-    public record test1:UserRegisteredDomainEvent
-    {
-
-    }
+   
 }

@@ -18,8 +18,9 @@ namespace CXChange.Modules.UserAccess.Infrastructure
     {
         public static void RegisterUserManagmentInfrastructure(this IServiceCollection services,IConfiguration configuration)
         {
-           
-           string connectionString =configuration["ConnectionStrings:DefaultConnection"];
+            services.AddScoped<IUserStore<AppUser>, CustomUSerStore>();
+
+            string connectionString =configuration["ConnectionStrings:DefaultConnection"];
             services.AddDbContext<UserManagementDbContext>(options =>
             {
                 options.UseSqlServer(

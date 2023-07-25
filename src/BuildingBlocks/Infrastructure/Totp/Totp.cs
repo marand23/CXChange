@@ -1,4 +1,5 @@
 ﻿using CXChange.BuildingBlocks.Application.Totp;
+using CXChange.Modules.UserAccess.Domain.User;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -74,16 +75,16 @@ namespace CXChange.CoreElements.Infrastructure.Totp
             var delta = DateTime.UtcNow - _unixEpoch;
             return (ulong)(delta.Ticks / _timestep.Ticks);
         }
-        public int GenerateCode(byte[] securityToken, TimeSpan _timestep, string modifier = null, int numberOfDigits = 6)
+        public int GenerateCode(string securityStamp, TimeSpan _timestep, string modifier = null, int numberOfDigits = 6)
         {
-            if (securityToken == null)
+            if (securityStamp == null)
             {
-                throw new ArgumentNullException(nameof(securityToken));
+                throw new ArgumentNullException(nameof(securityStamp));
             }
 
             // Allow a variance of no greater than 9 minutes in either direction
             var currentTimeStep = GetCurrentTimeStepNumber(_timestep);
-            using (var hashAlgorithm = new HMACSHA1(securityToken))
+            using (var hashAlgorithm = new HMACSHA1(GenerateSecurityToken(securityStamp)))
             {
                 return ComputeTotp(hashAlgorithm, currentTimeStep, modifier, numberOfDigits);
             }
@@ -114,6 +115,10 @@ namespace CXChange.CoreElements.Infrastructure.Totp
 
             // No match
             return false;
+        }
+        private byte[] GenerateSecurityToken(string securityStamp)
+        {
+            return Encoding.Unicode.GetBytes(securityStamp);
         }
     }
 }

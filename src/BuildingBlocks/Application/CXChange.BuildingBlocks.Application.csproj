@@ -10,7 +10,6 @@
 	
 	</ItemGroup>
   <ItemGroup>
-    <Folder Include="Query\" />
     <Folder Include="Sms\" />
   </ItemGroup>
   <ItemGroup>

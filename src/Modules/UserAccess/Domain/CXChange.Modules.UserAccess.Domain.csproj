@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\..\BuildingBlocks\Domain\CXChange.BuildingBlocks.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="User\Exceptions\" />
+  </ItemGroup>
+
 </Project>

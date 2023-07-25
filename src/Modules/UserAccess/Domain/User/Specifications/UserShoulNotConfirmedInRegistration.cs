@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace CXChange.Modules.UserAccess.Domain.User.Specifications
 {
-    internal class UserShoulNotConfirmedInRegistration : IBussinessRuleSpecification
+    internal class UsersPhoneNumberShouldNotBeConfirmedOnRegistration : IBussinessRuleSpecification
     {
         private bool PhoneNumberConfirmed;
-        public UserShoulNotConfirmedInRegistration(bool PhoneNumberConfirmed) { 
+        public UsersPhoneNumberShouldNotBeConfirmedOnRegistration(bool PhoneNumberConfirmed) { 
             this.PhoneNumberConfirmed = PhoneNumberConfirmed;
         }
-        public string Message => "User Already Confirmed";
+        public string Message => "User Already exists";
 
         public bool isSatisfiedBy()
         {
-            return true;
+            return !PhoneNumberConfirmed;
         }
     }
 }

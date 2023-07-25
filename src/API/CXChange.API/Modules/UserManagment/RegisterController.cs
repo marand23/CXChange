@@ -2,7 +2,7 @@
 using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.RequestModels.UserRegistration;
-using CXChange.Modules.UserAccess.Application.Services.Interfaces;
+
 using CXChange.Modules.UserAccess.Domain.User.DomainEvents;
 using CXChange.Modules.UserAccess.Integration.IntegrationEvents;
 using MediatR;
@@ -11,15 +11,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Serilog;
 using CXChange.API.Extensions;
+using MassTransit.Mediator;
+using CXChange.BuildingBlocks.Application;
+
 namespace CXChange.API.Modules.UserManagment
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
     public class RegisterController : ControllerBase
     {
-       private MediatR.IMediator _mediator;
+       private MassTransit.Mediator.IMediator _mediator;
        private Serilog.ILogger _logger;
-        public RegisterController(IMediator mediator,Serilog.ILogger logger)
+        public RegisterController(MassTransit.Mediator.IMediator mediator,Serilog.ILogger logger)
         {
             _mediator = mediator;
             _logger = logger;
@@ -32,26 +35,16 @@ namespace CXChange.API.Modules.UserManagment
         /// <param name="Password"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<UserRegistered>> RegisterUser(RegisterRequest request)
+        public async Task<ActionResult<UserRegistered>> RegisterUser([FromBody]RegisterRequest request)
         {
-            try
-            {
-               
-                //  await _publishEndpoint.Publish(new UserRegistrationConfirmedIntegrationEvent { PhoneNumber=PhoneNumber, Id = "ujuh" });
-                //    await _publishEndpoint.Publish(new UserRegisteredDomainEvent { PhoneNumber = "fsf", Email = "fsfd" });
-                var b= await _mediator.Send(new RegisterUser { Password = request.PhoneNumber ,PhoneNumber=request.PhoneNumber});
+            await _mediator.Publish(new RegisterUser { Password = request.Password ,PhoneNumber=request.PhoneNumber});
 
-                // await _mediator.Publish(new UserRegisteredDomainEvent {  Email="",PhoneNumber="fsdf"});
-                return this.ReturnSuccess(b);  
-            }
-            catch (Exception ex)
-            {
-               return  this.ReturnFailure(ex);
-            }
-           
-           
+            //var client = _mediator.CreateRequestClient<RegisterUser>();
 
-            return Ok("");
+            //var response = await client.GetResponse<UserRegistered>(new RegisterUser { Password=request.Password, PhoneNumber = request.PhoneNumber });
+
+            return Ok();
+           // return this.TranslateToHttp(response.Message);
         }
         [HttpPost]
         public async Task<IActionResult> ConfirmUser(RegisterConfirmation confirmation)
