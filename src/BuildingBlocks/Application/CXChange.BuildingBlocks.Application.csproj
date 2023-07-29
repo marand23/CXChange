@@ -6,8 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="Dapper" />
+		<PackageReference Include="Dapper.SqlBuilder" />
 		<PackageReference Include="MassTransit" />
-	
+
 	</ItemGroup>
   <ItemGroup>
     <Folder Include="Sms\" />
@@ -15,5 +17,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\CXChange.BuildingBlocks.Domain.csproj" />
   </ItemGroup>
-	
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
 </Project>

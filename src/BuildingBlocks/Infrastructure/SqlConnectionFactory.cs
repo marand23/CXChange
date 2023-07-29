@@ -1,27 +1,36 @@
 ﻿using CXChange.BuildingBlocks.Application.Data;
-using Microsoft.Extensions.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace CXChange.CoreElements.Infrastructure
 {
     internal class SqlConnectionFactory : ISqlConnectionFactory, IDisposable
     {
-        private readonly IConfiguration configuration;
+        private string _connectionString = "Server=.;Database=XChangeTest;Trusted_Connection=True;Encrypt=False";
         private IDbConnection _connection;
-        public SqlConnectionFactory(IConfiguration configuration)
+        public SqlConnectionFactory()
         {
-            this.configuration = configuration;
+
         }
 
 
         public IDbConnection CreateNewConnection()
         {
-            throw new NotImplementedException();
+            var connection = new SqlConnection(_connectionString);
+            connection.Open();
+
+            return connection;
         }
 
         public IDbConnection GetOpenConnection()
         {
-            throw new NotImplementedException();
+            if (this._connection == null || this._connection.State != ConnectionState.Open)
+            {
+                this._connection = new SqlConnection(_connectionString);
+                this._connection.Open();
+            }
+
+            return this._connection;
         }
         public void Dispose()
         {

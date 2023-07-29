@@ -2,7 +2,7 @@
 using CXChange.Modules.UserAccess.Application.CommandFilters;
 using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers;
-
+using CXChange.Modules.UserAccess.Application.Queries.Users;
 using FluentValidation;
 using MassTransit;
 using MassTransit.Internals;
@@ -35,7 +35,7 @@ namespace CXChange.Modules.UserAccess.Application
 
             cfg.AddConsumer<RegisterUserHandler>();
             cfg.AddConsumer<UserRegisteredDomainEventHandler>();
-
+            cfg.AddConsumer<GetUsersQueryHandler>();
 
             cfg.ConfigureMediator((context, mcfg) =>
             {

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Dapper" />
 		<PackageReference Include="FluentValidation" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
 		<PackageReference Include="MassTransit" />
@@ -26,6 +27,5 @@
 	  <Folder Include="RequestModels\" />
 	  <Folder Include="Services\Implementation\" />
 	  <Folder Include="Services\Interfaces\" />
-	  <Folder Include="Queries\" />
 	</ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
-﻿using CXChange.BuildingBlocks.Application.Totp;
+﻿using CXChange.BuildingBlocks.Application.Data;
+using CXChange.BuildingBlocks.Application.Totp;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CXChange.CoreElements.Infrastructure
@@ -8,6 +9,7 @@ namespace CXChange.CoreElements.Infrastructure
         public static void RegisterCoreElementstInfrastructure(this IServiceCollection servicesn)
         {
             servicesn.AddScoped<ITotp, Totp.Totp>();
+            servicesn.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
 
         }
     }

@@ -1,4 +1,5 @@
 ﻿using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
+using CXChange.Modules.UserAccess.Application.Queries.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CXChange.API.Modules.UserManagment
@@ -34,10 +35,14 @@ namespace CXChange.API.Modules.UserManagment
             // return this.TranslateToHttp(response.Message);
         }
         [HttpGet]
-        public async Task<IActionResult> ConfirmUser(string PhoneNumber, string Password)
+        public async Task<IActionResult> GetUsers()
         {
 
-            return Ok();
+            var client = _mediator.CreateRequestClient<GetUsers>();
+
+            var response = await client.GetResponse<UserList>(new GetUsers(1, 10));
+            return Ok(response);
+
         }
     }
     public class cred
