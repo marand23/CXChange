@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore
 {
-    internal class CustomDatabaseTicketStore:ICustomTicketStore
+    internal class CustomDatabaseTicketStore : ICustomTicketStore
     {
         private readonly IServiceCollection _services;
         public CustomDatabaseTicketStore(IServiceCollection services)
@@ -98,7 +98,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore
                 token = ExtensioinMethods.GenerateRandomToken(64);
                 var authenticationTicket = new AuthenticationTickets()
                 {
-                    Id =token.ComputeSha256Hash(),
+                    Id = token.ComputeSha256Hash(),
                     UserId = userId,
                     LastActivity = DateTimeOffset.UtcNow,
                     Value = SerializeToBytes(ticket),

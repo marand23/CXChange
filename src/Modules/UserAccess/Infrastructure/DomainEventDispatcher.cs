@@ -1,11 +1,4 @@
 ﻿using CXChange.BuildingBlocks.Domain;
-using MassTransit.Mediator;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CXChange.Modules.UserAccess.Infrastructure
 {
@@ -15,15 +8,15 @@ namespace CXChange.Modules.UserAccess.Infrastructure
         public DomainEventDispatcher(MassTransit.Mediator.IMediator mediator)
         {
             this.mediator = mediator;
-           
+
         }
 
         private readonly List<IDomainEventProvider> providers;
-        
+
 
         public Task Dispatch(List<IDomainEvent> domainEvents)
         {
-            if(domainEvents!=null)
+            if (domainEvents != null)
             {
                 foreach (var domainEvent in domainEvents)
                 {
@@ -31,8 +24,8 @@ namespace CXChange.Modules.UserAccess.Infrastructure
 
                 }
             }
-         
-           return Task.CompletedTask;
+
+            return Task.CompletedTask;
         }
     }
 }

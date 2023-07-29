@@ -1,11 +1,6 @@
 ﻿using CXChange.Modules.UserAccess.Infrastructure.DataModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CXChange.Modules.UserAccess.Infrastructure.Identity
 {
@@ -48,7 +43,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         }
         public async Task<IdentityResult> CreateAsync(AppUser user, string password)
         {
-            
+
             return await userManager.CreateAsync(user, password);
 
         }
@@ -75,7 +70,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         //    }
 
         //}
-       
+
         public async Task<bool> VerifyUserTokenAsync(AppUser user, string tokenProvider, string purpose, string token)
         {
             return await userManager.VerifyUserTokenAsync(user, tokenProvider, purpose, token);
@@ -124,15 +119,15 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         }
         public async Task<AppUser> GetUserById(string id)
         {
-           return await userManager.FindByIdAsync(id);
-         
+            return await userManager.FindByIdAsync(id);
+
 
         }
         public async Task<AppUser> GetUserByPhoneNumber(string PhoneNumber)
         {
-            return await userManager.Users.FirstOrDefaultAsync(u=>u.PhoneNumber == PhoneNumber);
+            return await userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == PhoneNumber);
         }
-       public async Task<byte[]> GetUserSecurityToken(AppUser user)
+        public async Task<byte[]> GetUserSecurityToken(AppUser user)
         {
             return await userManager.CreateSecurityTokenAsync(user);
         }

@@ -3,13 +3,8 @@ using CXChange.Modules.UserManagment.Infrastructure.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.AuthenticationHandlers
 {
@@ -24,7 +19,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.Authenticati
         /// </summary>
         public ICustomTicketStore SessionStore { get; set; }
         public bool isExtendable { get; set; }
-       // public RandomTokenProvider UserTokenGenerator { get; set; }
+        // public RandomTokenProvider UserTokenGenerator { get; set; }
 
     }
     internal class CustomAuthenticationHandler : SignInAuthenticationHandler<CustomAuthOptions>

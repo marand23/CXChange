@@ -1,15 +1,10 @@
 ﻿using CXChange.BuildingBlocks.Application.Data;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CXChange.CoreElements.Infrastructure
 {
-    internal class SqlConnectionFactory:ISqlConnectionFactory,IDisposable
+    internal class SqlConnectionFactory : ISqlConnectionFactory, IDisposable
     {
         private readonly IConfiguration configuration;
         private IDbConnection _connection;
@@ -17,7 +12,7 @@ namespace CXChange.CoreElements.Infrastructure
         {
             this.configuration = configuration;
         }
-        
+
 
         public IDbConnection CreateNewConnection()
         {

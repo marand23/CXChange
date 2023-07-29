@@ -2,10 +2,8 @@
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using CXChange.Modules.UserAccess.Infrastructure.DataAccess;
 using CXChange.Modules.UserAccess.Infrastructure.DataModel;
-using CXChange.Modules.UserAccess.Infrastructure.Decorators;
 using CXChange.Modules.UserAccess.Infrastructure.Identity;
 using CXChange.Modules.UserAccess.Infrastructure.Repositories;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,24 +14,24 @@ namespace CXChange.Modules.UserAccess.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static void RegisterUserManagmentInfrastructure(this IServiceCollection services,IConfiguration configuration)
+        public static void RegisterUserAccessInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IUserStore<AppUser>, CustomUSerStore>();
 
-            string connectionString =configuration["ConnectionStrings:DefaultConnection"];
+            string connectionString = configuration["ConnectionStrings:DefaultConnection"];
             services.AddDbContext<UserManagementDbContext>(options =>
             {
                 options.UseSqlServer(
                    connectionString
                     );
             });
-          
-        //    services.AddDbContext(typeof(DbContext), typeof(UserManagementDbContext), options =>
-        //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<AppUser,IdentityRole>()
+            //    services.AddDbContext(typeof(DbContext), typeof(UserManagementDbContext), options =>
+            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<AppUser, IdentityRole>()
              .AddDefaultTokenProviders()
-                  
+
 
                    .AddEntityFrameworkStores<UserManagementDbContext>();
             services.Configure<IdentityOptions>(options =>
@@ -50,7 +48,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure
 
             });
             var a = Assembly.GetExecutingAssembly();
-          
+
             //services.AddAuthentication(CustomAuthOptions.SchemeName)
 
             //  .AddScheme<CustomAuthOptions, CustomAuthenticationHandler>(
@@ -72,16 +70,16 @@ namespace CXChange.Modules.UserAccess.Infrastructure
             // ;
 
             services.AddScoped<IExchangeUserManager, ExchangeUserManager>();
-             services.AddScoped<IExchangeSignInManager,ExchangeSignInManager>();
+            services.AddScoped<IExchangeSignInManager, ExchangeSignInManager>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUnitOfWork,UnitOfWork>();
-            services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>(); 
-            
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
 
 
 
 
-           
+
+
 
 
 

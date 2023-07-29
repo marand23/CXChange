@@ -1,11 +1,7 @@
-﻿using CXChange.Modules.UserAccess.Infrastructure.DataAccess;
-using MassTransit;
-using Microsoft.EntityFrameworkCore;
-using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
-using CXChange.Modules.UserAccess.Application.DomainEventHandlers;
-using CXChange.Modules.UserAccess.Domain.User.DomainEvents;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using CXChange.API.Extensions;
 using CXChange.Modules.UserAccess.Application;
+using MassTransit;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CXChange.API
 {
@@ -16,18 +12,27 @@ namespace CXChange.API
 
 
 
-            AddMAssTransit(services, environment);
+            services.Configure<ApiBehaviorOptions>(o =>
+            {
+
+
+                o.InvalidModelStateResponseFactory = actionContext =>
+                    new UnprocessableEntityObjectResult(new ApiValidationErrorModel { message = "the request is not valid", errors = actionContext.ModelState.Values.SelectMany(v => v.Errors).Select(v => v.ErrorMessage).ToArray(), success = false }); ;
+            });
+
+
 
         }
-        private static void AddMAssTransit(IServiceCollection services, IWebHostEnvironment environment)
+
+        public static void RegisterMAssTransit(this IServiceCollection services, IWebHostEnvironment environment)
         {
 
             services.AddMassTransit(x =>
             {
-               // x.AddConsumer<sendemailcosumer> ();
+                // x.AddConsumer<sendemailcosumer> ();
 
 
-             
+
                 //  x.UsingInMemory();
                 // configure bus
                 //x.UsingInMemory((context, cfg) =>
@@ -45,7 +50,7 @@ namespace CXChange.API
                     });
                     //cfg.ReceiveEndpoint("user-registered",c =>
                     //{
-                       
+
                     //    c.UseMessageRetry(r =>
                     //    {
                     //        r.Immediate(2);
@@ -53,8 +58,8 @@ namespace CXChange.API
                     //        r.Handle<DbUpdateException>();
                     //        r.Ignore<NotImplementedException>();
                     //    });
-                       
-                      
+
+
 
                     //});
                     cfg.ConfigureEndpoints(context);
@@ -68,7 +73,13 @@ namespace CXChange.API
 
 
         }
-
+        public static void RegisterMediator(this IServiceCollection services, IWebHostEnvironment environment)
+        {
+            services.AddMediator(cfg =>
+            {
+                cfg.AddUserAccessApplicationMediator();
+            });
+        }
 
     }
 }

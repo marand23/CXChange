@@ -1,17 +1,6 @@
-﻿
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using CXChange.BuildingBlocks.Domain;
-using System.Runtime.CompilerServices;
+﻿using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.UserAccess.Domain.User.DomainEvents;
 using CXChange.Modules.UserAccess.Domain.User.Specifications;
-using System.Buffers.Text;
-using System.Security.Cryptography;
 
 namespace CXChange.Modules.UserAccess.Domain.User
 {
@@ -36,7 +25,7 @@ namespace CXChange.Modules.UserAccess.Domain.User
         }
 
         private string Email { get; set; }
-        public string SecurityStamp { get; set; }=Guid.NewGuid().ToString();
+        public string SecurityStamp { get; set; } = Guid.NewGuid().ToString();
         private string PhoneNumber { get; set; }
         private string Password { get; set; }
         private bool PhoneNumberConfirmed { get; set; }
@@ -44,29 +33,29 @@ namespace CXChange.Modules.UserAccess.Domain.User
         private string DefaultTwoFactor { get; set; }
         private string UserName { get; set; }
         private bool IsRestricted { get; set; }
-        
-       
-        public    void CheckRegisterPossiblity()
+
+
+        public void CheckRegisterPossiblity()
         {
-           this.CheckRule(new UsersPhoneNumberShouldNotBeConfirmedOnRegistration(PhoneNumberConfirmed));
-           this.CheckRule(new UserShoudNotBeRestrictedOnRegistration(IsRestricted));
-           
-            
-            
+            this.CheckRule(new UsersPhoneNumberShouldNotBeConfirmedOnRegistration(PhoneNumberConfirmed));
+            this.CheckRule(new UserShoudNotBeRestrictedOnRegistration(IsRestricted));
+
+
+
         }
-       public  User RegisterNewUser(string phoneNumber,string password)
+        public User RegisterNewUser(string phoneNumber, string password)
         {
             ArgumentException.ThrowIfNullOrEmpty(nameof(PhoneNumberConfirmed));
             ArgumentException.ThrowIfNullOrEmpty(nameof(Password));
-            
-            
-           var user= new User(phoneNumber, password, "SMS", true);
+
+
+            var user = new User(phoneNumber, password, "SMS", true);
             this.AddDomainEvent(new UserRegisteredDomainEvent(user));
             return user;
         }
         public SnapShot GetSnapShot()
         {
-           
+
             return new SnapShot
             {
                 TwoFactorEnabled = TwoFactorEnabled,
@@ -78,14 +67,14 @@ namespace CXChange.Modules.UserAccess.Domain.User
             };
         }
 
-      
+
         private void ConfirmPhoneNumber()
         {
             PhoneNumberConfirmed = true;
         }
-      
-       
-        
+
+
+
 
     }
 }

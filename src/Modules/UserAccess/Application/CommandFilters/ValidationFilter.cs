@@ -1,27 +1,14 @@
-﻿using CXChange.BuildingBlocks.Application;
-using CXChange.BuildingBlocks.Application.Command;
-using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
+﻿using CXChange.BuildingBlocks.Application.Exceptions;
+using CXChange.BuildingBlocks.Application.MessageInterfaces;
 using FluentValidation;
 using MassTransit;
-using MassTransit.Internals.GraphValidation;
-using MediatR;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 
 
 namespace CXChange.Modules.UserAccess.Application.CommandFilters
 {
 
-    public class ValidationFilter<T> : IFilter<ConsumeContext<T>> where T : class
+    public class ValidationFilter<T> : IFilter<ConsumeContext<T>> where T : class, IValidatable
     {
         private IValidator<T> _validator;
 
@@ -45,7 +32,7 @@ namespace CXChange.Modules.UserAccess.Application.CommandFilters
             {
                 Console.WriteLine("validation stopped");
                 throw new InvalidCommandException(errors.Select(e => e.ErrorMessage).ToArray());
-             
+
 
             }
             await next.Send(context);

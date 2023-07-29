@@ -1,12 +1,5 @@
-﻿using CXChange.Modules.UserAccess.Domain.AuthenticatoinTickets;
-using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
-using CXChange.Modules.UserAccess.Infrastructure.DataAccess;
+﻿using CXChange.Modules.UserAccess.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
 {
@@ -23,7 +16,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
             if (ticket != null)
             {
                 _context.AuthenticationTickets.Remove(ticket);
-               
+
             }
         }
 
@@ -36,20 +29,20 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
                 //  authenticationTicket.Value = SerializeToBytes(ticket);
                 authenticationTicket.LastActivity = DateTimeOffset.UtcNow;
                 //authenticationTicket.Expires = ticket.Properties.ExpiresUtc;
-              
+
             }
 
         }
     }
 
-        //public Task<AuthenticationTicket> RetrieveAsync(string key)
-        //{
-        //    throw new NotImplementedException();
-        //}
+    //public Task<AuthenticationTicket> RetrieveAsync(string key)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-        //public Task<string> StoreAsync(AuthenticationTicket ticket)
-        //{
-        //    throw new NotImplementedException();
-        //}
-    }
+    //public Task<string> StoreAsync(AuthenticationTicket ticket)
+    //{
+    //    throw new NotImplementedException();
+    //}
+}
 

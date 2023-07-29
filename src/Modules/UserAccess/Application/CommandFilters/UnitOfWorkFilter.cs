@@ -1,15 +1,10 @@
-﻿using CXChange.BuildingBlocks.Application.Command;
+﻿using CXChange.BuildingBlocks.Application.MessageInterfaces;
 using CXChange.BuildingBlocks.Domain;
 using MassTransit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CXChange.Modules.UserAccess.Application.CommandFilters
 {
-    public class UnitOfWorkFilter<T> : IFilter<ConsumeContext<T>> where T : class
+    public class UnitOfWorkFilter<T> : IFilter<ConsumeContext<T>> where T : class, IPersistable
     {
         private IUnitOfWork _unitOfWork;
         public UnitOfWorkFilter(IUnitOfWork unitOfWork)
@@ -19,13 +14,17 @@ namespace CXChange.Modules.UserAccess.Application.CommandFilters
 
         public void Probe(ProbeContext context)
         {
-           
+
         }
+
+
+
+
 
         public async Task Send(ConsumeContext<T> context, IPipe<ConsumeContext<T>> next)
         {
             await next.Send(context);
-           await _unitOfWork.CommitChangesAsync();
+            await _unitOfWork.CommitChangesAsync();
         }
     }
 }

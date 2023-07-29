@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CXChange.BuildingBlocks.Application.Query
+﻿namespace CXChange.BuildingBlocks.Application.Query
 {
+    //querybase class
     public interface IQueryBase
     {
     }

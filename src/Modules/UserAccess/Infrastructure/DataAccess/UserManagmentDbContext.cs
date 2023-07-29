@@ -1,14 +1,8 @@
 ﻿using CXChange.Modules.UserAccess.Infrastructure.DataModel;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using MassTransit;
-using CXChange.BuildingBlocks.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace CXChange.Modules.UserAccess.Infrastructure.DataAccess
 {
@@ -22,7 +16,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.DataAccess
         { }
 
         public DbSet<AuthenticationTickets> AuthenticationTickets { get; set; }
-        
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

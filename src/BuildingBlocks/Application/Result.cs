@@ -1,20 +1,13 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CXChange.BuildingBlocks.Application
+﻿namespace CXChange.BuildingBlocks.Application
 {
-    public class Result<T> 
+    public class Result<T>
     {
-        public bool Success { get;  set; }
+        public bool Success { get; set; }
         public string Message { get; set; }
-        public ResultStatus Status { get;  set; }
+        public ResultStatus Status { get; set; }
         public T Data { get; set; }
 
-        public string[] Errors { get;  set; }
+        public string[] Errors { get; set; }
         public Result()
         {
             // Initialize properties
@@ -33,7 +26,7 @@ namespace CXChange.BuildingBlocks.Application
 
         }
 
-       
+
     }
     public enum ResultStatus
     {

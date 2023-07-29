@@ -1,8 +1,5 @@
 ﻿using CXChange.BuildingBlocks.Application;
-using CXChange.BuildingBlocks.Domain;
-using MassTransit.SagaStateMachine;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace CXChange.API.Extensions
 {
@@ -12,16 +9,17 @@ namespace CXChange.API.Extensions
         {
             switch (result.Status)
             {
-                case ResultStatus.Success: return controller.Ok(new ApiSuccessModel<T> { data=result.Data,success=true, message="succeded"});
-                case ResultStatus.CommandNotValid:return controller.StatusCode(422,
+                case ResultStatus.Success: return controller.Ok(new ApiSuccessModel<T> { data = result.Data, success = true, message = "succeded" });
+                case ResultStatus.CommandNotValid:
+                    return controller.StatusCode(422,
                     new ApiValidationErrorModel { errors = result.Errors, message = "validation-problem", success = false });
-                case ResultStatus.DomainRuleNotValid:return controller.BadRequest(new ApiErrorModel { success = false ,message=result.Message});
+                case ResultStatus.DomainRuleNotValid: return controller.BadRequest(new ApiErrorModel { success = false, message = result.Message });
 
                 default: throw new NotImplementedException();
             }
 
         }
-      
+
 
 
     }
@@ -30,10 +28,10 @@ namespace CXChange.API.Extensions
         success,
         fail,
     }
-    public class ApiErrorModel:IApiError
+    public class ApiErrorModel : IApiError
     {
         public string message { get; set; }
-        
+
         public bool success { get; set; }
     }
     public class ApiSuccessModel<T>
@@ -42,7 +40,7 @@ namespace CXChange.API.Extensions
         public bool success { get; set; }
         public T data { get; set; }
     }
-    public class ApiValidationErrorModel:IApiError
+    public class ApiValidationErrorModel : IApiError
     {
         public string message { get; set; }
         public bool success { get; set; }

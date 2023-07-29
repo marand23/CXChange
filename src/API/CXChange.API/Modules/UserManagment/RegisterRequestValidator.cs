@@ -2,11 +2,12 @@
 
 namespace CXChange.API.Modules.UserManagment
 {
-    public class RegisterRequestValidator:AbstractValidator<RegisterRequest>
+    public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
     {
         public RegisterRequestValidator()
         {
-            RuleFor(x => x.PhoneNumber).MinimumLength(10);
+            RuleFor(x => x.PhoneNumber).Length(11);
+
         }
     }
 }

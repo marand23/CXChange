@@ -1,22 +1,13 @@
 ﻿using CXChange.BuildingBlocks.Application.Command;
-using CXChange.BuildingBlocks.Application;
-using FluentValidation;
 using MassTransit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using CXChange.BuildingBlocks.Domain;
 
 namespace CXChange.Modules.UserAccess.Application.CommandFilters
 {
-  
-    public class LoggingFilter<T> : IFilter<ConsumeContext<T>> where T :class
+
+    public class LoggingFilter<T> : IFilter<ConsumeContext<T>> where T : class, ICommandBase
     {
         private Serilog.ILogger _logger;
-        
+
         public LoggingFilter(Serilog.ILogger logger)
         {
             _logger = logger;
@@ -26,9 +17,11 @@ namespace CXChange.Modules.UserAccess.Application.CommandFilters
         }
 
 
+
+
+
         public async Task Send(ConsumeContext<T> context, IPipe<ConsumeContext<T>> next)
         {
-
             try
             {
                 Console.WriteLine("logging filter started");
@@ -43,4 +36,4 @@ namespace CXChange.Modules.UserAccess.Application.CommandFilters
         }
     }
 }
-   
+

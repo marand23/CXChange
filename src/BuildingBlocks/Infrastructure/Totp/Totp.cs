@@ -1,17 +1,12 @@
 ﻿using CXChange.BuildingBlocks.Application.Totp;
-using CXChange.Modules.UserAccess.Domain.User;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CXChange.CoreElements.Infrastructure.Totp
 {
-    internal class Totp:ITotp
+    internal class Totp : ITotp
     {
 
         private static readonly DateTime _unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);

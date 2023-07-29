@@ -11,7 +11,7 @@
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
 		<PackageReference Include="MassTransit" />
 		<PackageReference Include="MassTransit.RabbitMQ" />
-		<PackageReference Include="MediatR" />
+	
 		<PackageReference Include="Serilog" />
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
@@ -23,9 +23,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="RequestModels\" />
 	  <Folder Include="Services\Implementation\" />
 	  <Folder Include="Services\Interfaces\" />
-	  <Folder Include="UserRegistration\" />
 	  <Folder Include="Queries\" />
 	</ItemGroup>
 </Project>
