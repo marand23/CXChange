@@ -1,5 +1,4 @@
-﻿using CXChange.API.Extensions;
-using CXChange.BuildingBlocks.Application.Exceptions;
+﻿using CXChange.BuildingBlocks.Application.Exceptions;
 using CXChange.BuildingBlocks.Domain;
 using Newtonsoft.Json;
 using System.Net;

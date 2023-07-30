@@ -1,4 +1,4 @@
-﻿namespace CXChange.BuildingBlocks.Application.Query
+﻿namespace CXChange.BuildingBlocks.Application.Query.QueryInterfaces
 {
     public interface IPagedQuery
     {

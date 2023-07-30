@@ -1,5 +1,6 @@
 using CXChange.API;
 using CXChange.API.Middlewares;
+using CXChange.BuildingBlocks.Application;
 using CXChange.CoreElements.Infrastructure;
 using CXChange.Modules.UserAccess.Application;
 using CXChange.Modules.UserAccess.Infrastructure;
@@ -24,7 +25,7 @@ try
     builder.Services.RegisterAPI(builder.Environment);
     builder.Services.RegisterUserAccessApplication(builder.Environment);
     builder.Services.RegisterMediator(builder.Environment);
-
+    builder.Services.RegisterCoreElementstApplication();
     builder.Services.RegisterMAssTransit(builder.Environment);
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();

@@ -34,20 +34,21 @@ namespace CXChange.API.Modules.UserManagment
             return Ok();
             // return this.TranslateToHttp(response.Message);
         }
-        [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        [HttpPost]
+        public async Task<IActionResult> GetUsers(cred cred)
         {
 
             var client = _mediator.CreateRequestClient<GetUsers>();
 
-            var response = await client.GetResponse<UserList>(new GetUsers(1, 10));
+            var response = await client.GetResponse<UserList>(new GetUsers(cred.Page, cred.pageSize, cred.Filters));
             return Ok(response);
 
         }
     }
     public class cred
     {
-        public string PhoneNumber { get; set; }
-        public string Password { get; set; }
+        public int Page { get; set; }
+        public int pageSize { get; set; }
+        public Dictionary<string, string> Filters { get; set; }
     }
 }

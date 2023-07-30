@@ -2,6 +2,6 @@
 {
     public class UserList
     {
-        public List<UserDto> users { get; set; }
+        public IEnumerable<UserDto> users { get; set; }
     }
 }
