@@ -1,5 +1,8 @@
 ﻿using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
+using CXChange.Modules.UserAccess.Infrastructure.Authentication.AuthenticationHandlers;
+using CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore;
+using CXChange.Modules.UserAccess.Infrastructure.CustomUserDataProtectionProviders;
 using CXChange.Modules.UserAccess.Infrastructure.DataAccess;
 using CXChange.Modules.UserAccess.Infrastructure.DataModel;
 using CXChange.Modules.UserAccess.Infrastructure.Identity;
@@ -31,6 +34,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure
 
             services.AddIdentity<AppUser, IdentityRole>()
              .AddDefaultTokenProviders()
+             .AddLoginTokenProvider()
 
 
                    .AddEntityFrameworkStores<UserManagementDbContext>();
@@ -48,7 +52,21 @@ namespace CXChange.Modules.UserAccess.Infrastructure
 
             });
             var a = Assembly.GetExecutingAssembly();
+            services.AddAuthentication(CustomAuthOptions.SchemeName)
+                .AddScheme<CustomAuthOptions, CustomAuthenticationHandler>(
+                CustomAuthOptions.SchemeName, opts =>
+                {
+                    opts.ExpireTimeSpan = TimeSpan.FromDays(4);
+                    opts.SessionStore = new CustomDatabaseTicketStore(services);
 
+
+
+
+
+
+                }
+                )
+               ;
             //services.AddAuthentication(CustomAuthOptions.SchemeName)
 
             //  .AddScheme<CustomAuthOptions, CustomAuthenticationHandler>(
@@ -84,5 +102,12 @@ namespace CXChange.Modules.UserAccess.Infrastructure
 
 
         }
+        public static IdentityBuilder AddLoginTokenProvider(this IdentityBuilder builder)
+        {
+            var userType = builder.UserType;
+            var provider = typeof(LoginTokenProvider<>).MakeGenericType(userType);
+            return builder.AddTokenProvider("LoginTokenProvider", provider);
+        }
     }
+
 }

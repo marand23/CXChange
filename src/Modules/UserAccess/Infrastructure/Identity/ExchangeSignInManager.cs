@@ -20,7 +20,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
 
         }
 
-        public async Task<SignInResult> ExchangeSignIn(AppUser user, string password, bool lockoutOnFailure)
+        public async Task<SignInResult> CheckSignIn(AppUser user, string password, bool lockoutOnFailure)
         {
             var error = await PreSignInCheck(user);
             if (error != null)
@@ -41,12 +41,6 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
                     }
                 }
 
-                if (await _userManager.GetTwoFactorEnabledAsync(user))
-                {
-                    return SignInResult.TwoFactorRequired;
-                }
-                var principal = await _signInManager.CreateUserPrincipalAsync(user);
-                await _signInManager.Context.SignInAsync("CustomScheme", principal);
 
                 return SignInResult.Success;
 

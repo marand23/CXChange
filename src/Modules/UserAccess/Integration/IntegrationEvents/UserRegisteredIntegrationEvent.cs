@@ -1,6 +1,6 @@
 ﻿namespace CXChange.Modules.UserAccess.Integration.IntegrationEvents
 {
-    public class UserRegistrationConfirmedIntegrationEvent
+    public class UserRegisteredIntegrationEvent
     {
         public string Id { get; set; }
         public string PhoneNumber { get; set; }

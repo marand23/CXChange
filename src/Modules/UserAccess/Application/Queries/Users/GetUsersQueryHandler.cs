@@ -14,7 +14,7 @@ namespace CXChange.Modules.UserAccess.Application.Queries.Users
 
         public async Task Consume(ConsumeContext<GetUsers> context)
         {
-            var result = await _queryHandler.ExecuteAsync(context.Message, " select * from UserManagement.AspNetUsers order by id");
+            var result = await _queryHandler.ExecuteAsync(context.Message, " select * from UserManagement.AspNetUsers ");
             if (result == null) { throw new ArgumentNullException("query did not return any results"); }
             await context.RespondAsync(new UserList { users = result });
         }

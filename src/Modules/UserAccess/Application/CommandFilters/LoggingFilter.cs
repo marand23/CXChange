@@ -1,10 +1,9 @@
-﻿using CXChange.BuildingBlocks.Application.Command;
-using MassTransit;
+﻿using MassTransit;
 
 namespace CXChange.Modules.UserAccess.Application.CommandFilters
 {
 
-    public class LoggingFilter<T> : IFilter<ConsumeContext<T>> where T : class, ICommandBase
+    public class LoggingFilter<T> : IFilter<ConsumeContext<T>> where T : class
     {
         private Serilog.ILogger _logger;
 
@@ -25,12 +24,15 @@ namespace CXChange.Modules.UserAccess.Application.CommandFilters
             try
             {
                 Console.WriteLine("logging filter started");
-
                 await next.Send(context);
                 Console.WriteLine("logging filter stopped");
             }
             catch (Exception ex)
             {
+                var a = context.GetType();
+                _logger.Error($"Exception occured in{context.SourceAddress}");
+                _logger.Error(ex.Message);
+                _logger.Error(ex.StackTrace);
                 throw;
             }
         }

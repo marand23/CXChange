@@ -1,5 +1,4 @@
-﻿using CXChange.API.Extensions;
-using CXChange.Modules.UserAccess.Application;
+﻿using CXChange.Modules.UserAccess.Application;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 

@@ -12,7 +12,7 @@ namespace CXChange.BuildingBlocks.Application.Query
         {
             _connection = connection;
         }
-        private async Task<SqlBuilder.Template> GeneratePagedSql(T query, string sqlQuery)
+        private async Task<SqlBuilder.Template> GeneratePagedSql(T query, SqlBuilder.Template sqlQuery)
         {
             if (query == null) throw new ArgumentNullException("query");
 
@@ -21,7 +21,7 @@ namespace CXChange.BuildingBlocks.Application.Query
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@offset", offSet);
             parameters.Add("@pagesize", pagedQuery.pageSize);
-            var q = $"{sqlQuery}  OFFSET @offset rows FETCH NEXT @pagesize ROWS ONLY";
+            var q = $"{sqlQuery.RawSql}  OFFSET @offset rows FETCH NEXT @pagesize ROWS ONLY";
             var finalQuery = sql.AddTemplate(q, parameters);
 
             return finalQuery;
@@ -34,12 +34,14 @@ namespace CXChange.BuildingBlocks.Application.Query
             SqlBuilder.Template temp = null;
             if (query is IPagedQuery pagedQuery)
             {
-                temp = await GeneratePagedSql(query, sqlQuery);
+                var order = sql.AddTemplate(sqlQuery + "order by id");
+
+                temp = await GeneratePagedSql(query, order);
 
             }
             else
             {
-                sql.OrderBy("id");
+
             }
             var result = await _connection.GetOpenConnection().QueryAsync<TResponse>(temp.RawSql, temp.Parameters);
             return result;

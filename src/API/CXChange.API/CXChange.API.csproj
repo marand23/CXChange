@@ -26,4 +26,8 @@
     <ProjectReference Include="..\..\Modules\UserAccess\Infrastructure\CXChange.Modules.UserAccess.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EXtensions\" />
+  </ItemGroup>
+
 </Project>

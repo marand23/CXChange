@@ -1,5 +1,9 @@
 ﻿using CXChange.BuildingBlocks.Application.MessageInterfaces;
 using CXChange.Modules.UserAccess.Application.CommandFilters;
+using CXChange.Modules.UserAccess.Application.Commands.ConfirmLogin;
+using CXChange.Modules.UserAccess.Application.Commands.UserDeletion;
+using CXChange.Modules.UserAccess.Application.Commands.UserLogin;
+using CXChange.Modules.UserAccess.Application.Commands.UserRegisterConfirmation;
 using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.Queries.Users;
@@ -36,9 +40,13 @@ namespace CXChange.Modules.UserAccess.Application
             cfg.AddConsumer<RegisterUserHandler>();
             cfg.AddConsumer<UserRegisteredDomainEventHandler>();
             cfg.AddConsumer<GetUsersQueryHandler>();
-
+            cfg.AddConsumer<DeleteUserHandler>();
+            cfg.AddConsumer<ConfirmUserRegistrationHandler>();
+            cfg.AddConsumer<UserLoginCheckHandler>();
+            cfg.AddConsumer<UserLoginConfirmHandler>();
             cfg.ConfigureMediator((context, mcfg) =>
             {
+                //mcfg.UseConsumeFilter(typeof(LoggingFilter<>), context);
 
                 mcfg.UseConsumeFilter(typeof(ValidationFilter<>), context, x =>
                 {
@@ -46,10 +54,10 @@ namespace CXChange.Modules.UserAccess.Application
 
                 });
 
-                mcfg.UseConsumeFilter(typeof(UnitOfWorkFilter<>), context, x =>
-                {
-                    x.Include(type => type.HasInterface<IPersistable>());
-                });
+                //mcfg.UseConsumeFilter(typeof(UnitOfWorkFilter<>), context, x =>
+                //{
+                //    x.Include(type => type.HasInterface<IPersistable>());
+                //});
 
 
 

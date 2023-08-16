@@ -28,15 +28,20 @@ namespace CXChange.Modules.UserAccess.Application.CommandFilters
             var errors = result.Errors
               .Where(error => error != null)
               .ToList();
-            if (!result.IsValid)
+            if (false/*!result.IsValid*/)
             {
                 Console.WriteLine("validation stopped");
                 throw new InvalidCommandException(errors.Select(e => e.ErrorMessage).ToArray());
 
 
+
             }
-            await next.Send(context);
-            Console.WriteLine("validation stoped");
+            else
+            {
+                await next.Send(context);
+                Console.WriteLine("validation stoped");
+            }
+
         }
     }
 }

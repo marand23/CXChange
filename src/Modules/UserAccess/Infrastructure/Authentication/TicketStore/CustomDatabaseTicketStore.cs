@@ -124,6 +124,8 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore
                     authenticationTicket.OS = clientInfo.OS.ToString();
                     authenticationTicket.UserAgentFamily = clientInfo.UserAgent.Family;
                     authenticationTicket.UserAgenetVersion = $"{clientInfo.UserAgent.Major}.{clientInfo.UserAgent.Minor}.{clientInfo.UserAgent.Patch}";
+                    authenticationTicket.DeviceId = "device";
+
                 }
                 //send email to client about login with new device
                 await context.AuthenticationTickets.AddAsync(authenticationTicket);

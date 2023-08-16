@@ -84,17 +84,18 @@ namespace CXChange.CoreElements.Infrastructure.Totp
                 return ComputeTotp(hashAlgorithm, currentTimeStep, modifier, numberOfDigits);
             }
         }
-        public bool ValidateCode(byte[] securityToken, int code, TimeSpan _timestep, string modifier = null, int numberOfDigits = 6)
+        public bool ValidateCode(string securityStamp, int code, TimeSpan _timestep, string modifier = null, int numberOfDigits = 6)
         {
-            if (securityToken == null)
+            if (securityStamp == null)
             {
-                throw new ArgumentNullException(nameof(securityToken));
+                throw new ArgumentNullException(nameof(securityStamp));
             }
             //if (code.ToString().Length != numberOfDigits)
             //{
             //    throw new NotImplementedException(nameof(numberOfDigits));
             //}
             // Allow a variance of no greater than 9 minutes in either direction
+            byte[] securityToken = GenerateSecurityToken(securityStamp);
             var currentTimeStep = GetCurrentTimeStepNumber(_timestep);
             using (var hashAlgorithm = new HMACSHA1(securityToken))
             {

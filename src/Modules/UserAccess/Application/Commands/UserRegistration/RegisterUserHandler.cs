@@ -1,7 +1,9 @@
 ﻿using CXChange.BuildingBlocks.Domain;
+using CXChange.Modules.UserAccess.Application.Commands.UserDeletion;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using CXChange.Modules.UserAccess.Domain.User;
 using MassTransit;
+using MassTransit.Mediator;
 
 namespace CXChange.Modules.UserAccess.Application.Commands.UserRegistration
 {
@@ -9,23 +11,36 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserRegistration
     {
         IUserRepository _userRepository;
         IDomainEventDispatcher _dispatcher;
-
-        public RegisterUserHandler(IUserRepository userRepository, IDomainEventDispatcher dispatcher)
+        IUnitOfWork _unitOfWork;
+        IMediator _mediator;
+        public RegisterUserHandler(IUserRepository userRepository, IDomainEventDispatcher dispatcher, IUnitOfWork unitOfWork, IMediator mediator)
         {
             _userRepository = userRepository;
             _dispatcher = dispatcher;
-
-
+            _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
         public async Task Consume(ConsumeContext<RegisterUser> context)
         {
 
 
+            var user = await _userRepository.GetUserByPhoneNumber(context.Message.PhoneNumber);
+            if (user != null)
+            {
+                user.CheckRegisterPossiblity();
 
-            var user = new User();
-            var a = user.RegisterNewUser(context.Message.PhoneNumber, context.Message.Password);
-            await _userRepository.CreateUser(a);
+                var client = _mediator.CreateRequestClient<DeleteUser>();
+
+                var response = await client.GetResponse<UserDeleted>(new DeleteUser { PhoneNumber = context.Message.PhoneNumber });
+
+
+
+            }
+            user = new User(context.Message.PhoneNumber, context.Message.Password, "SMS", true);
+            user.RegisterNewUser();
+
+            await _userRepository.CreateUser(user);
 
             await _dispatcher.Dispatch(user.DomainEvents);
 

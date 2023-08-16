@@ -1,54 +1,37 @@
-﻿using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
-using CXChange.Modules.UserAccess.Application.Queries.Users;
+﻿using CXChange.API.Modules.UserManagment.Requests;
+using CXChange.Modules.UserAccess.Application.Commands.UserRegisterConfirmation;
+using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CXChange.API.Modules.UserManagment
 {
-    [Route("api/[controller]/[Action]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class RegisterController : ControllerBase
+    public class RegisterController : ExchangeControllerBase
     {
-        private MassTransit.Mediator.IMediator _mediator;
-        private Serilog.ILogger _logger;
-        public RegisterController(MassTransit.Mediator.IMediator mediator, Serilog.ILogger logger)
-        {
-            _mediator = mediator;
-            _logger = logger;
-
-        }
-        /// <summary>
-        /// registering user for the first time 
-        /// </summary>
-        /// <param name="PhoneNumber"></param>
-        /// <param name="Password"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<ActionResult<UserRegistered>> RegisterUser([FromBody] RegisterRequest request)
-        {
-            await _mediator.Publish(new RegisterUser { Password = request.Password, PhoneNumber = request.PhoneNumber });
-
-            //var client = _mediator.CreateRequestClient<RegisterUser>();
-
-            //var response = await client.GetResponse<UserRegistered>(new RegisterUser { Password=request.Password, PhoneNumber = request.PhoneNumber });
-
-            return Ok();
-            // return this.TranslateToHttp(response.Message);
-        }
-        [HttpPost]
-        public async Task<IActionResult> GetUsers(cred cred)
+        public RegisterController(MassTransit.Mediator.IMediator mediator, Serilog.ILogger logger) : base(mediator)
         {
 
-            var client = _mediator.CreateRequestClient<GetUsers>();
+        }
 
-            var response = await client.GetResponse<UserList>(new GetUsers(cred.Page, cred.pageSize, cred.Filters));
-            return Ok(response);
+        [HttpPost("")]
+        public async Task<ActionResult<UserRegistered>> RegisterUser(RegisterRequest request)
+        {
+
+
+
+            return await ReturnResponse<RegisterUser, UserRegistered>(new RegisterUser { Password = request.Password, PhoneNumber = request.PhoneNumber });
 
         }
+        [HttpPost("confirm")]
+        public async Task<ActionResult<UserConfirmed>> Confirmuser(UserConfirmationRequest request)
+        {
+            return await ReturnResponse<ConfirmUser, UserConfirmed>(new ConfirmUser { PhoneNumber = request.PhoneNumber, VerificationCode = request.VerificationCode });
+        }
+
+
+
     }
-    public class cred
-    {
-        public int Page { get; set; }
-        public int pageSize { get; set; }
-        public Dictionary<string, string> Filters { get; set; }
-    }
+
+
 }

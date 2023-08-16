@@ -1,4 +1,4 @@
-﻿namespace CXChange.API.Modules.UserManagment
+﻿namespace CXChange.API.Modules.UserManagment.Requests
 {
     public class RegisterRequest
     {

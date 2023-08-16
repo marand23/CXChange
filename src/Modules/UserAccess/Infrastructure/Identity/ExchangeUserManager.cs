@@ -47,6 +47,10 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
             return await userManager.CreateAsync(user, password);
 
         }
+        public async Task<IdentityResult> DeleteAsync(AppUser user)
+        {
+            return await userManager.DeleteAsync(user);
+        }
         //public async Task<string> GenerateTotpCode(AppUser user, TimeSpan timeSpan, string modefier, int numberOfDigits)
         //{
         //    var token = await userManager.CreateSecurityTokenAsync(user);
@@ -78,6 +82,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         public async Task<string> GenerateUserTokenAsync(AppUser user, string tokenProvider, string purpose)
         {
             return await userManager.GenerateUserTokenAsync(user, tokenProvider, purpose);
+
 
         }
         public async Task<bool> CheckPasswordAsync(AppUser user, string password)
@@ -130,6 +135,11 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         public async Task<byte[]> GetUserSecurityToken(AppUser user)
         {
             return await userManager.CreateSecurityTokenAsync(user);
+        }
+        public async Task ConfirmUserPhoneNumber(string PhoneNumber)
+        {
+            var user = await userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == PhoneNumber);
+            user.PhoneNumberConfirmed = true;
         }
 
 

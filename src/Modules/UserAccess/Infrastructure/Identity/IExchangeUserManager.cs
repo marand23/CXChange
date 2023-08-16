@@ -25,5 +25,8 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         Task<AppUser> GetUserById(string id);
         Task<AppUser> GetUserByPhoneNumber(string PhoneNumber);
         Task<byte[]> GetUserSecurityToken(AppUser user);
+        Task<IdentityResult> DeleteAsync(AppUser user);
+        Task ConfirmUserPhoneNumber(string PhoneNumber);
+
     }
 }

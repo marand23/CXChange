@@ -8,6 +8,7 @@
         public T Data { get; set; }
 
         public string[] Errors { get; set; }
+        public string Error { get; set; }
         public Result()
         {
             // Initialize properties
@@ -16,7 +17,7 @@
 
         public static Result<T> CreateSuccess(T data, string successMessage)
         {
-            return new Result<T> { Data = data, Status = ResultStatus.Success };
+            return new Result<T> { Data = data, Status = ResultStatus.Success, Message = successMessage };
         }
         public static Result<T> CreateFailure(string message, ResultStatus status, string[] errors = null)
         {
@@ -32,7 +33,8 @@
     {
         Success,
         CommandNotValid,
-        DomainRuleNotValid
+        DomainRuleNotValid,
+        CommandError,
 
 
     }
