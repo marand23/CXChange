@@ -7,8 +7,10 @@ namespace CXChange.API.Modules.UserManagment
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [Authorize(AuthenticationSchemes = "CustomScheme")]
     public class RegisterController : ExchangeControllerBase
     {
+
         public RegisterController(MassTransit.Mediator.IMediator mediator, Serilog.ILogger logger) : base(mediator)
         {
 

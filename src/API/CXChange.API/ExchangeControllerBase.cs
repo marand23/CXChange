@@ -32,7 +32,7 @@ namespace CXChange.API
         private ActionResult<T> TranslateToHttp<T>(T result) where T : class
         {
 
-            return Ok(new ApiSuccessModel<T> { data = result, success = true, message = RegisterMessages.GetMessage(result) });
+            return Ok(new ApiSuccessResponse<T> { data = result, success = true, message = RegisterMessages.GetMessage(result) });
 
         }
 

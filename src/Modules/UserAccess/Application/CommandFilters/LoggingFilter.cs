@@ -32,7 +32,7 @@ namespace CXChange.Modules.UserAccess.Application.CommandFilters
                 var a = context.GetType();
                 _logger.Error($"Exception occured in{context.SourceAddress}");
                 _logger.Error(ex.Message);
-                _logger.Error(ex.StackTrace);
+                // _logger.Error(ex.StackTrace);
                 throw;
             }
         }

@@ -12,6 +12,8 @@ namespace CXChange.Modules.UserAccess.Domain.User.Specifications
 
         public string Message => "user restricted";
 
+        public int Code => throw new NotImplementedException();
+
         public bool isSatisfiedBy()
         {
             return !isRestricted;

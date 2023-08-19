@@ -1,5 +1,4 @@
-﻿using CXChange.BuildingBlocks.Application.Exceptions;
-using CXChange.BuildingBlocks.Application.MessageInterfaces;
+﻿using CXChange.BuildingBlocks.Application.MessageInterfaces;
 using FluentValidation;
 using MassTransit;
 
@@ -28,10 +27,10 @@ namespace CXChange.Modules.UserAccess.Application.CommandFilters
             var errors = result.Errors
               .Where(error => error != null)
               .ToList();
-            if (false/*!result.IsValid*/)
+            if (!result.IsValid)
             {
-                Console.WriteLine("validation stopped");
-                throw new InvalidCommandException(errors.Select(e => e.ErrorMessage).ToArray());
+                throw new BuildingBlocks.Application.Exceptions.ValidationException(errors.GroupBy(x => x.PropertyName).Select(x => x.FirstOrDefault()).ToList());
+
 
 
 

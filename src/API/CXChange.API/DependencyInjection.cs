@@ -1,4 +1,5 @@
-﻿using CXChange.Modules.UserAccess.Application;
+﻿using CXChange.API.Modules.UserManagment.ErrorMessages;
+using CXChange.Modules.UserAccess.Application;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,12 +16,12 @@ namespace CXChange.API
             {
 
 
-                o.InvalidModelStateResponseFactory = actionContext =>
-                    new UnprocessableEntityObjectResult(new ApiValidationErrorModel { message = "the request is not valid", errors = actionContext.ModelState.Values.SelectMany(v => v.Errors).Select(v => v.ErrorMessage).ToArray(), success = false }); ;
+                //o.InvalidModelStateResponseFactory = actionContext =>
+                //    new UnprocessableEntityObjectResult(new ApiValidationErrorModel { message = "ValidationError", errors = actionContext.ModelState.ToDictionary(x => x.Key, x => x.Value.Errors.FirstOrDefault().ErrorMessage), success = false }); ;
             });
 
 
-
+            services.AddSingleton<IError, UserAccessError>();
         }
 
         public static void RegisterMAssTransit(this IServiceCollection services, IWebHostEnvironment environment)

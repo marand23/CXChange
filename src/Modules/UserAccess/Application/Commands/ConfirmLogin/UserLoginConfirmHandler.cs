@@ -1,5 +1,4 @@
-﻿using CXChange.BuildingBlocks.Application.Exceptions;
-using CXChange.BuildingBlocks.Application.Totp;
+﻿using CXChange.BuildingBlocks.Application.Totp;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
@@ -24,13 +23,13 @@ namespace CXChange.Modules.UserAccess.Application.Commands.ConfirmLogin
             var tokenResult = await _userRepository.ValidateUserToken(user, context.Message.Token);
             if (!tokenResult)
             {
-                throw new InvalidCommandException(new string[] { "please login first" });
+                throw new CommandException("plase login first");
 
             }
             var codeResult = _totp.ValidateCode(user.GetSnapShot().SecurityStamp, int.Parse(context.Message.VerificationCode), TimeSpan.FromMinutes(3), "login");
             if (!codeResult)
             {
-                throw new InvalidCommandException(new string[] { "code is not currect" });
+                throw new CommandException("code is not currect");
 
             }
             user.ConfirmUserLogin();

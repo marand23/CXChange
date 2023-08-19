@@ -4,14 +4,17 @@ namespace CXChange.BuildingBlocks.Domain
 {
     public class BusinessRuleException : Exception
     {
-        public IBussinessRuleSpecification _specification;
+
 
         public string Message { get; }
 
+        public int Code { get; }
         public BusinessRuleException(IBussinessRuleSpecification specification)
 
         {
             this.Message = specification.Message;
+            this.Code = specification.Code;
+
         }
 
         //public override string ToString()

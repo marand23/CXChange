@@ -9,11 +9,11 @@ namespace CXChange.API.Modules.UserManagment.SuccessMessages.Login
         {
             if (obj.GetType() == typeof(UserLoginChecked))
             {
-                return "ثبت نام موفق";
+                return "Successfull login ";
             }
             if (obj.GetType() == typeof(UserLoginConfirmed))
             {
-                return "ورود موفق";
+                return "login confirmed";
             }
             throw new NotImplementedException();
         }

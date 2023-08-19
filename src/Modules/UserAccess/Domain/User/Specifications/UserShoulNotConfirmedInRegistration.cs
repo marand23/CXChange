@@ -9,7 +9,9 @@ namespace CXChange.Modules.UserAccess.Domain.User.Specifications
         {
             this.PhoneNumberConfirmed = PhoneNumberConfirmed;
         }
-        public string Message => "User Already exists";
+        public string Message => "User already exist";
+
+        public int Code => (int)BusinessRuleErrorEnum.UserAlreadyExist;
 
         public bool isSatisfiedBy()
         {

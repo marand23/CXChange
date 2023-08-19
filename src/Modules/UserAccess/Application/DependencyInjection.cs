@@ -46,7 +46,7 @@ namespace CXChange.Modules.UserAccess.Application
             cfg.AddConsumer<UserLoginConfirmHandler>();
             cfg.ConfigureMediator((context, mcfg) =>
             {
-                //mcfg.UseConsumeFilter(typeof(LoggingFilter<>), context);
+                mcfg.UseConsumeFilter(typeof(LoggingFilter<>), context);
 
                 mcfg.UseConsumeFilter(typeof(ValidationFilter<>), context, x =>
                 {
@@ -54,10 +54,10 @@ namespace CXChange.Modules.UserAccess.Application
 
                 });
 
-                //mcfg.UseConsumeFilter(typeof(UnitOfWorkFilter<>), context, x =>
-                //{
-                //    x.Include(type => type.HasInterface<IPersistable>());
-                //});
+                mcfg.UseConsumeFilter(typeof(UnitOfWorkFilter<>), context, x =>
+                {
+                    x.Include(type => type.HasInterface<IPersistable>());
+                });
 
 
 

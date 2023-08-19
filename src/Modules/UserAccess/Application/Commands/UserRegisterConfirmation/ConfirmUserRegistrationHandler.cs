@@ -1,5 +1,6 @@
-﻿using CXChange.BuildingBlocks.Application;
+﻿using CXChange.BuildingBlocks.Application.Exceptions;
 using CXChange.BuildingBlocks.Application.Totp;
+using CXChange.Modules.UserAccess.Application.Enums;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using CXChange.Modules.UserAccess.Domain.User;
 using MassTransit;
@@ -20,17 +21,19 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserRegisterConfirmat
             User user = await _userRepository.GetUserByPhoneNumber(context.Message.PhoneNumber);
             if (user == null)
             {
-                await context.RespondAsync(Result<UserConfirmed>.CreateFailure("user did not confirm ", ResultStatus.CommandNotValid, new string[] { "code is not currect" }));
+                throw new ExchangeCommandException("user does not exist", (int)CommandExceptionEnum.UserDoesNotExist);
             }
             user.ConfirmPhoneNumber();
-            var verificationResult = _totp.ValidateCode(user.GetSnapShot().SecurityStamp, int.Parse(context.Message.VerificationCode), TimeSpan.FromMinutes(3), "user-registered");
+            var verificationResult = _totp.ValidateCode(user.GetSnapShot().SecurityStamp, int.Parse(context.Message.VerificationCode), TimeSpan.FromMinutes(3), KeyWords.ConfirmRegisterTotpModifier(context.Message.PhoneNumber));
             if (!verificationResult)
             {
-                await context.RespondAsync(Result<UserConfirmed>.CreateFailure("user did not confirm ", ResultStatus.CommandNotValid, new string[] { "code is not currect" }));
+                throw new ExchangeCommandException("verification code is invalid", (int)CommandExceptionEnum.VerificationCodeInvalid);
+
 
             }
 
             await _userRepository.ConfirmPhoneNumber(context.Message.PhoneNumber);
+
             await context.RespondAsync(new UserConfirmed
             {
                 Token = "this is the token"

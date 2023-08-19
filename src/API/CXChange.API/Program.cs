@@ -1,9 +1,11 @@
 using CXChange.API;
 using CXChange.API.Middlewares;
 using CXChange.BuildingBlocks.Application;
+using CXChange.BuildingBlocks.Application.Validator;
 using CXChange.CoreElements.Infrastructure;
 using CXChange.Modules.UserAccess.Application;
 using CXChange.Modules.UserAccess.Infrastructure;
+using FluentValidation;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -31,6 +33,7 @@ try
     builder.Services.AddSwaggerGen();
 
     builder.Services.RegisterUserAccessInfrastructure(builder.Configuration);
+    ValidatorOptions.Global.LanguageManager = new CustomMessageManager();
 
 
 
@@ -40,6 +43,7 @@ try
 
 
     var app = builder.Build();
+
     app.UseMiddleware<ExceptionHandlingMiddleware>();
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -50,6 +54,7 @@ try
     app.UseHttpsRedirection();
     app.UseAuthorization();
     app.MapControllers();
+
     app.Run();
 
 }

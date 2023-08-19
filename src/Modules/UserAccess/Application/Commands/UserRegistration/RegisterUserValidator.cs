@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿
+using FluentValidation;
 
 namespace CXChange.Modules.UserAccess.Application.Commands.UserRegistration
 {
@@ -6,8 +7,8 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserRegistration
     {
         public RegisterUserValidator()
         {
-            RuleFor(x => x.PhoneNumber).MinimumLength(10).WithMessage("شماره تلفن صحیح نمیباشد ");
-            RuleFor(x => x.Password).MinimumLength(10).WithMessage("رمز صحیح نمیباشذ");
+            RuleFor(x => x.PhoneNumber).PhoneNumber();
+            RuleFor(x => x.Password).Password();
         }
     }
 }
