@@ -1,4 +1,4 @@
-﻿using CXChange.API.Modules.UserManagment.ErrorMessages;
+﻿
 using CXChange.Modules.UserAccess.Application;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,6 @@ namespace CXChange.API
             });
 
 
-            services.AddSingleton<IError, UserAccessError>();
         }
 
         public static void RegisterMAssTransit(this IServiceCollection services, IWebHostEnvironment environment)

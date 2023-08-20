@@ -1,4 +1,7 @@
-﻿namespace CXChange.API
+﻿using CXChange.BuildingBlocks.Application.Exceptions;
+using CXChange.BuildingBlocks.Domain;
+
+namespace CXChange.API
 {
 
     public class ApiErrorResponse : IApiError
@@ -6,11 +9,22 @@
         public string message { get; set; }
         public int code { get; set; }
         public bool success { get; set; }
-        public static implicit operator ApiErrorResponse(ApiErrorModel error)
+        public static implicit operator ApiErrorResponse(Exception ex)
         {
-            return new ApiErrorResponse { code = error.code, message = error.message, success = false };
 
+            if (ex is ExchangeCommandException e)
+            {
+                return new ApiErrorResponse { code = e.ErrorCode, message = e.Message, success = false };
+            }
+            else if (ex is BusinessRuleException be)
+            {
+                return new ApiErrorResponse { code = be.Code, message = be.Message, success = false };
+            }
+            else
+            {
+                return new ApiErrorResponse { code = 500, message = "Unknown Error", success = false };
 
+            }
         }
     }
     public class ApiSuccessResponse<T>
@@ -18,12 +32,20 @@
         public string message { get; set; }
         public bool success { get; set; }
         public T data { get; set; }
+
     }
-    public class ApiValidationErrorModel : IApiError
+    public class ApiValidationResponse : IApiError
     {
         public string message { get; set; }
         public bool success { get; set; }
         public List<ValidationError> errors { get; set; }
+        public static implicit operator ApiValidationResponse(ValidationException ex)
+        {
+            ValidationErrorCodes errorCodes;
+            List<ValidationError> error = ex.Errors
+            .Select(e => new ValidationError { Code = (ValidationErrorCodes)Enum.Parse(typeof(ValidationErrorCodes), e.ErrorCode), Message = e.ErrorMessage, Name = e.PropertyName }).ToList();
+            return new ApiValidationResponse { errors = error, message = "Validation Failed", success = false };
+        }
 
 
     }
@@ -72,16 +94,9 @@
         InclusiveBetween_Simple
 
     }
-    public interface IError
-    {
-        ApiErrorModel GetError(string innerMessage);
 
-    }
-    public class ApiErrorModel
-    {
-        public string message { get; set; }
-        public int code { get; set; }
-    }
+
+
 
 }
 
