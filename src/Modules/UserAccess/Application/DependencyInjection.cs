@@ -5,7 +5,8 @@ using CXChange.Modules.UserAccess.Application.Commands.UserDeletion;
 using CXChange.Modules.UserAccess.Application.Commands.UserLogin;
 using CXChange.Modules.UserAccess.Application.Commands.UserRegisterConfirmation;
 using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
-using CXChange.Modules.UserAccess.Application.DomainEventHandlers;
+using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegisteredDomainEventHandlers;
+using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegistrationConfirmedDomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.Queries.Users;
 using FluentValidation;
 using MassTransit;
@@ -37,8 +38,19 @@ namespace CXChange.Modules.UserAccess.Application
         public static void AddUserAccessApplicationMediator(this IMediatorRegistrationConfigurator cfg)
         {
 
-            cfg.AddConsumer<RegisterUserHandler>();
-            cfg.AddConsumer<UserRegisteredDomainEventHandler>();
+
+            cfg.AddConsumer<RegisterUserHandler>(c =>
+            {
+                c.UseMessageRetry(c =>
+                {
+                    c.Immediate(2);
+                    c.Ignore(typeof(NotImplementedException));
+                });
+
+
+            });
+            cfg.AddConsumer<SendVerificationSmsHandler>();
+            cfg.AddConsumer<SendUserRegistrationConfirmedNotificationHandler>();
             cfg.AddConsumer<GetUsersQueryHandler>();
             cfg.AddConsumer<DeleteUserHandler>();
             cfg.AddConsumer<ConfirmUserRegistrationHandler>();
@@ -69,7 +81,7 @@ namespace CXChange.Modules.UserAccess.Application
         {
 
 
-            cfg.AddConsumer<UserRegisteredDomainEventHandler>();
+
         }
 
 

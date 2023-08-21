@@ -59,8 +59,7 @@ namespace CXChange.API.Middlewares
                     response.StatusCode = 400;
                     break;
                 default:
-                    _logger.Error(exception.Message);
-                    _logger.Error(exception.StackTrace);
+
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
             }

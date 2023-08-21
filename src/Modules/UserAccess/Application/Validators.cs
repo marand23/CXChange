@@ -14,5 +14,13 @@ namespace CXChange.Modules.UserAccess.Application
         {
             return ruleBuilder.NotNull().NotEmpty();
         }
+        public static IRuleBuilderOptions<T, string> VerificationCode<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder.NotNull().NotEmpty().Length(6).Matches("^ [0-9] {6}$");
+        }
+        public static IRuleBuilderOptions<T, string> UserToken<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder.NotNull().NotEmpty();
+        }
     }
 }

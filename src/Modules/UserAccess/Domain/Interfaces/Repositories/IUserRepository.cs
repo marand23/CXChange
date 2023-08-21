@@ -13,7 +13,9 @@
         Task CheckUserPassword(string PhoneNumber, string Password);
         Task<User.User> CheckSignIn(string PhoneNumber, string Password);
         Task SignIn(User.User user);
-        Task<string> GenerateUserToken(User.User user);
-        Task<bool> ValidateUserToken(User.User user, string token);
+        Task<string> GenerateUserToken(User.User user, string tokenProvider, string purpose);
+        Task<bool> ValidateUserToken(User.User user, string token, string tokenProvider, string purpose);
+        Task<string> GeneratePasswordResetToken(User.User user);
+        Task ResetPassword(User.User user, string token, string newPassword)
     }
 }

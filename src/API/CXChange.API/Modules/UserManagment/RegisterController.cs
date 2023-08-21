@@ -26,9 +26,9 @@ namespace CXChange.API.Modules.UserManagment
 
         }
         [HttpPost("confirm")]
-        public async Task<ActionResult<UserConfirmed>> Confirmuser(UserConfirmationRequest request)
+        public async Task<ActionResult<UserConfirmed>> ConfirmRegistration(UserConfirmationRequest request)
         {
-            return await ReturnResponse<ConfirmUser, UserConfirmed>(new ConfirmUser { PhoneNumber = request.PhoneNumber, VerificationCode = request.VerificationCode });
+            return await ReturnResponse<ConfirmUser, UserConfirmed>(new ConfirmUser { PhoneNumber = request.PhoneNumber, VerificationCode = request.VerificationCode, Token = request.Token });
         }
 
 

@@ -22,6 +22,7 @@ namespace CXChange.Modules.UserAccess.Application.CommandFilters
 
         public async Task Send(ConsumeContext<T> context, IPipe<ConsumeContext<T>> next)
         {
+
             Console.WriteLine("validation started");
             var result = await _validator.ValidateAsync(context.Message);
             var errors = result.Errors

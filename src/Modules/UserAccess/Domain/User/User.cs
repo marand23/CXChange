@@ -14,21 +14,23 @@ namespace CXChange.Modules.UserAccess.Domain.User
             this.DefaultTwoFactor = defaultTwoFactor;
             TwoFactorEnabled = twoFactorEnabled;
             SecurityStamp = Guid.NewGuid().ToString();
+            Id = Guid.NewGuid().ToString();
         }
 
-        private User(string phoneNumber, bool twoFactorEnabled, string defaultTwoFactor, string password)
-        {
-            ArgumentNullException.ThrowIfNullOrEmpty(phoneNumber, nameof(phoneNumber));
-            ArgumentNullException.ThrowIfNullOrEmpty(password, nameof(password));
-            ArgumentNullException.ThrowIfNullOrEmpty(defaultTwoFactor, nameof(defaultTwoFactor));
+        //private User(string phoneNumber, bool twoFactorEnabled, string defaultTwoFactor, string password)
+        //{
+        //    ArgumentException.ThrowIfNullOrEmpty(phoneNumber, nameof(phoneNumber));
+        //    ArgumentException.ThrowIfNullOrEmpty(password, nameof(password));
+        //    ArgumentException.ThrowIfNullOrEmpty(defaultTwoFactor, nameof(defaultTwoFactor));
 
-            PhoneNumber = phoneNumber;
+        //    PhoneNumber = phoneNumber;
 
-            TwoFactorEnabled = twoFactorEnabled;
-            DefaultTwoFactor = defaultTwoFactor;
-            SecurityStamp = Guid.NewGuid().ToString();
-            UserName = phoneNumber;
-        }
+        //    TwoFactorEnabled = twoFactorEnabled;
+        //    DefaultTwoFactor = defaultTwoFactor;
+        //    SecurityStamp = Guid.NewGuid().ToString();
+        //    UserName = phoneNumber;
+        //    Id = Guid.NewGuid().ToString();
+        //}
         private User(SnapShot snapShot)
         {
             Email = snapShot.Email;
@@ -111,7 +113,12 @@ namespace CXChange.Modules.UserAccess.Domain.User
         public void ConfirmUserLogin()
         {
             this.CheckRule(new UserShoudNotBeRestrictedOnRegistration(IsRestricted));
-
+            AddDomainEvent(new UserLoginCheckedDomainEvent(this));
+        }
+        public void CheckUserPasswordReset()
+        {
+            // this.CheckRule(new UsersPhoneNumberShouldNotBeConfirmedOnRegistration(PhoneNumberConfirmed));
+            AddDomainEvent(new UserPasswordResetCheckedDomainEvent(this));
         }
 
 

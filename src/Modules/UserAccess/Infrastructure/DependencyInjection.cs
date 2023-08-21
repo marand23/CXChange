@@ -105,8 +105,9 @@ namespace CXChange.Modules.UserAccess.Infrastructure
         public static IdentityBuilder AddLoginTokenProvider(this IdentityBuilder builder)
         {
             var userType = builder.UserType;
-            var provider = typeof(LoginTokenProvider<>).MakeGenericType(userType);
-            return builder.AddTokenProvider("LoginTokenProvider", provider);
+            var loginProvider = typeof(LoginTokenProvider<>).MakeGenericType(userType);
+            var registerProvider = typeof(RegisterTokenProvider<>).MakeGenericType(userType);
+            return builder.AddTokenProvider("LoginTokenProvider", loginProvider).AddTokenProvider("RegisterTokenProvider", registerProvider);
         }
     }
 

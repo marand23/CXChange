@@ -11,13 +11,12 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserRegistration
     {
         IUserRepository _userRepository;
         IDomainEventDispatcher _dispatcher;
-        IUnitOfWork _unitOfWork;
+
         IMediator _mediator;
-        public RegisterUserHandler(IUserRepository userRepository, IDomainEventDispatcher dispatcher, IUnitOfWork unitOfWork, IMediator mediator)
+        public RegisterUserHandler(IUserRepository userRepository, IDomainEventDispatcher dispatcher, IMediator mediator)
         {
             _userRepository = userRepository;
             _dispatcher = dispatcher;
-            _unitOfWork = unitOfWork;
             _mediator = mediator;
         }
 
@@ -41,7 +40,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserRegistration
             user.RegisterNewUser();
 
             await _userRepository.CreateUser(user);
-
+            string token = await _userRepository.GenerateUserToken(user, KeyWords.RegisterTokenProvider(), KeyWords.RegisterTokenProviderPurpose(context.Message.PhoneNumber));
             await _dispatcher.Dispatch(user.DomainEvents);
 
 
@@ -49,7 +48,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserRegistration
 
 
 
-            await context.RespondAsync(new UserRegistered { PhoneNumber = context.Message.PhoneNumber, TwoFactorType = TwoFactorType.SMS });
+            await context.RespondAsync(new UserRegistered { PhoneNumber = context.Message.PhoneNumber, TwoFactorType = TwoFactorType.SMS, Token = token });
             {
 
 

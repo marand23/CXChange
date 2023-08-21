@@ -15,7 +15,7 @@ namespace CXChange.API.Modules.UserManagment.SuccessMessages.Register
             {
                 return "ثبت نام موفق";
             }
-            throw new NotImplementedException();
+            return "successfull operation";
         }
     }
 }

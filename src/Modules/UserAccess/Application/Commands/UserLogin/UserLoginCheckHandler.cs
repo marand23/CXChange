@@ -16,7 +16,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserLogin
             var user = await _userRepository.GetUserByPhoneNumber(context.Message.PhoneNumber);
 
             await _userRepository.CheckSignIn(context.Message.PhoneNumber, context.Message.Password);
-            string token = await _userRepository.GenerateUserToken(user);
+            string token = await _userRepository.GenerateUserToken(user, KeyWords.LoginTokenProvider(), KeyWords.LoginTokenProviderPurpose(context.Message.PhoneNumber));
             await context.RespondAsync(new UserLoginChecked { Token = token, PhoneNumber = context.Message.PhoneNumber });
 
 

@@ -31,7 +31,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
                 UserName = snapShot.PhoneNumber,
                 PhoneNumber = snapShot.PhoneNumber,
                 DefaultTwoFactor = "SMS",
-
+                Id = snapShot.Id,
                 TwoFactorEnabled = snapShot.TwoFactorEnabled,
                 SecurityStamp = snapShot.SecurityStamp
             };
@@ -87,6 +87,8 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
                 snapShot.DefaultTwoFactor = user.DefaultTwoFactor;
                 snapShot.SecurityStamp = user.SecurityStamp;
                 snapShot.Email = user.Email;
+                snapShot.Id = user.Id;
+
 
                 return User.CreateFrom(snapShot);
             }
@@ -143,29 +145,46 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
 
             });
         }
-        public async Task<string> GenerateUserToken(User user)
+        public async Task<string> GenerateUserToken(User user, string tokenProvider, string purpose)
         {
+
             SnapShot snapShot = user.GetSnapShot();
-            var appUser = await _exchangeUserManager.GetUserByPhoneNumber("09363549929");
-            string token = await _exchangeUserManager.GenerateUserTokenAsync(appUser, "LoginTokenProvider", "login");
+            var appUser = new AppUser { Id = snapShot.Id, SecurityStamp = snapShot.SecurityStamp };
+            string token = await _exchangeUserManager.GenerateUserTokenAsync(appUser, tokenProvider, purpose);
             return token;
 
         }
 
-        public async Task<bool> ValidateUserToken(User user, string token)
+        public async Task<bool> ValidateUserToken(User user, string token, string tokenProvider, string purpose)
         {
             SnapShot snapShot = user.GetSnapShot();
-            var appUser = await _exchangeUserManager.GetUserByPhoneNumber("09363549929");
-            bool result = await _exchangeUserManager.VerifyUserTokenAsync(appUser, "LoginTokenProvider", "login", token);
+            var appUser = await _exchangeUserManager.GetUserByPhoneNumber(snapShot.PhoneNumber);
+            bool result = await _exchangeUserManager.VerifyUserTokenAsync(appUser, tokenProvider, purpose, token);
             return result;
         }
 
         public async Task SignIn(User user)
         {
             SnapShot snapShot = user.GetSnapShot();
-            var appUser = await _exchangeUserManager.GetUserByPhoneNumber("09363549929");
+            var appUser = await _exchangeUserManager.GetUserByPhoneNumber(snapShot.PhoneNumber);
             var result = await _exchangeSignInManager.ExchangeSignIn(appUser);
 
+
+        }
+
+        public async Task<string> GeneratePasswordResetToken(User user)
+        {
+            var snapshot = user.GetSnapShot();
+            var appUser = new AppUser { Id = snapshot.Id, SecurityStamp = snapshot.SecurityStamp };
+            var token = await _exchangeUserManager.GeneratePasswordResetTokenAsync(appUser);
+            return token;
+        }
+
+        public async Task ResetPassword(User user, string token, string newPassword)
+        {
+            var snapshot = user.GetSnapShot();
+            var appUser = new AppUser { Id = snapshot.Id, SecurityStamp = snapshot.SecurityStamp };
+            var result = await _exchangeUserManager.ResetPasswordAsync(appUser, token, newPassword);
 
         }
     }
