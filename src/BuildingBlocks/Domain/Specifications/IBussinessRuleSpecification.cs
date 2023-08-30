@@ -6,6 +6,6 @@ namespace CXChange.BuildingBlocks.Domain.Specifications
     {
 
         string Message { get; }
-        int Code { get; }
+        Enum Code { get; }
     }
 }

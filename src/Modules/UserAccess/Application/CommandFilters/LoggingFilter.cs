@@ -1,4 +1,6 @@
-﻿using MassTransit;
+﻿using CXChange.BuildingBlocks.Application.Exceptions;
+using CXChange.BuildingBlocks.Domain;
+using MassTransit;
 
 namespace CXChange.Modules.UserAccess.Application.CommandFilters
 {
@@ -27,12 +29,21 @@ namespace CXChange.Modules.UserAccess.Application.CommandFilters
                 await next.Send(context);
                 Console.WriteLine("logging filter stopped");
             }
-            catch (Exception ex)
+            catch (BusinessRuleException ex)
             {
                 var a = context.GetType();
                 _logger.Error($"Exception occured in{context.SourceAddress}");
                 _logger.Error(ex.Message);
                 // _logger.Error(ex.StackTrace);
+                throw;
+            }
+            catch (ExchangeCommandException ex)
+            {
+                _logger.Error(ex.Message);
+                throw;
+            }
+            catch (Exception ex)
+            {
                 throw;
             }
         }

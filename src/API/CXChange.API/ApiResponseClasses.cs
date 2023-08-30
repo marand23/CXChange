@@ -7,7 +7,7 @@ namespace CXChange.API
     public class ApiErrorResponse : IApiError
     {
         public string message { get; set; }
-        public int code { get; set; }
+        public Enum code { get; set; }
         public bool success { get; set; }
         public static implicit operator ApiErrorResponse(Exception ex)
         {
@@ -22,7 +22,7 @@ namespace CXChange.API
             }
             else
             {
-                return new ApiErrorResponse { code = 500, message = "Unknown Error", success = false };
+                return new ApiErrorResponse { code = status.ServerError, message = "Unknown Error", success = false };
 
             }
         }
@@ -93,6 +93,10 @@ namespace CXChange.API
         ExactLength_Simple,
         InclusiveBetween_Simple
 
+    }
+    public enum status
+    {
+        ServerError
     }
 
 

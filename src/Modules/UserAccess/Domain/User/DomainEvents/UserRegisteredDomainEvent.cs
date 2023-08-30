@@ -6,14 +6,11 @@ namespace CXChange.Modules.UserAccess.Domain.User.DomainEvents
     {
         public UserRegisteredDomainEvent(User user)
         {
-            var snapShot = user.GetSnapShot();
-            PhoneNumber = snapShot.PhoneNumber;
-            SecurityToken = snapShot.SecurityStamp;
+            this.User = user;
 
 
         }
-        public string PhoneNumber { get; private set; }
-        public string SecurityToken { get; private set; }
+        public User User { get; private set; }
 
     }
 }

@@ -8,7 +8,7 @@ namespace CXChange.BuildingBlocks.Domain
 
         public string Message { get; }
 
-        public int Code { get; }
+        public Enum Code { get; }
         public BusinessRuleException(IBussinessRuleSpecification specification)
 
         {

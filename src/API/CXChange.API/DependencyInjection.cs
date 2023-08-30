@@ -5,13 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CXChange.API
 {
+    public class UrlOptions
+    {
+        public string Url { get; set; }
+    }
     public static class DependencyInjection
     {
-        public static void RegisterAPI(this IServiceCollection services, IWebHostEnvironment environment)
+
+        public static void RegisterAPI(this IServiceCollection services, Action<UrlOptions> opt)
         {
 
 
-
+            services.AddOptions<UrlOptions>();
+            services.Configure<UrlOptions>(opt);
             services.Configure<ApiBehaviorOptions>(o =>
             {
 

@@ -7,10 +7,11 @@ namespace CXChange.API
     public class ExchangeControllerBase : ControllerBase
     {
         private IMediator _mediator;
-
+        private string UserId;
         public ExchangeControllerBase(IMediator mediator)
         {
             _mediator = mediator;
+
         }
         private async Task<TResponse> GetMediatorResponse<TRequest, TResponse>(TRequest request) where TRequest : class where TResponse : class
         {

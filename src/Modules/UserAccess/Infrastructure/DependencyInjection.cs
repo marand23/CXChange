@@ -34,7 +34,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure
 
             services.AddIdentity<AppUser, IdentityRole>()
              .AddDefaultTokenProviders()
-             .AddLoginTokenProvider()
+             .AddCustomTokenProvider()
 
 
                    .AddEntityFrameworkStores<UserManagementDbContext>();
@@ -102,12 +102,12 @@ namespace CXChange.Modules.UserAccess.Infrastructure
 
 
         }
-        public static IdentityBuilder AddLoginTokenProvider(this IdentityBuilder builder)
+        public static IdentityBuilder AddCustomTokenProvider(this IdentityBuilder builder)
         {
             var userType = builder.UserType;
-            var loginProvider = typeof(LoginTokenProvider<>).MakeGenericType(userType);
-            var registerProvider = typeof(RegisterTokenProvider<>).MakeGenericType(userType);
-            return builder.AddTokenProvider("LoginTokenProvider", loginProvider).AddTokenProvider("RegisterTokenProvider", registerProvider);
+            var customProvider = typeof(CustomTokenProvider<>).MakeGenericType(userType);
+
+            return builder.AddTokenProvider("CusotmTokenProvider", customProvider);
         }
     }
 

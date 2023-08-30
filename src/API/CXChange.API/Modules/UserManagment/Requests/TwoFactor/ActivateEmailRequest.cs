@@ -1,0 +1,9 @@
+﻿namespace CXChange.API.Modules.UserManagment.Requests.TwoFactor
+{
+    public record ActivateEmailRequest
+    {
+
+        public string Email { get; set; }
+        public string Token { get; set; }
+    }
+}

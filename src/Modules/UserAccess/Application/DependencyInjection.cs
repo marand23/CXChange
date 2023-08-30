@@ -1,13 +1,22 @@
 ﻿using CXChange.BuildingBlocks.Application.MessageInterfaces;
 using CXChange.Modules.UserAccess.Application.CommandFilters;
-using CXChange.Modules.UserAccess.Application.Commands.ConfirmLogin;
+using CXChange.Modules.UserAccess.Application.Commands.Authenticator.AuthenticatorConfirm;
+using CXChange.Modules.UserAccess.Application.Commands.Authenticator.AuthenticatorInitiate;
+using CXChange.Modules.UserAccess.Application.Commands.EmailActivate;
+using CXChange.Modules.UserAccess.Application.Commands.Login.ConfirmLogin;
+using CXChange.Modules.UserAccess.Application.Commands.Login.UserLogin;
+using CXChange.Modules.UserAccess.Application.Commands.PasswordReset.UserResetPasswordCofirm;
+using CXChange.Modules.UserAccess.Application.Commands.Register.UserRegisterConfirmation;
+using CXChange.Modules.UserAccess.Application.Commands.Register.UserRegistration;
 using CXChange.Modules.UserAccess.Application.Commands.UserDeletion;
-using CXChange.Modules.UserAccess.Application.Commands.UserLogin;
-using CXChange.Modules.UserAccess.Application.Commands.UserRegisterConfirmation;
-using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
+using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.CodeSendToAuthenticatedUser;
+using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.CodeSendToUnAuthenticatedUser;
+using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.CodeValidate;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegisteredDomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegistrationConfirmedDomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.Queries.Users;
+using CXChange.Modules.UserAccess.Application.Services.Implementation;
+using CXChange.Modules.UserAccess.Application.Services.Interfaces;
 using FluentValidation;
 using MassTransit;
 using MassTransit.Internals;
@@ -30,7 +39,7 @@ namespace CXChange.Modules.UserAccess.Application
 
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
+            services.AddScoped<IVerificationCodeFunctions, VerificationCodeFunctions>();
 
 
 
@@ -49,6 +58,9 @@ namespace CXChange.Modules.UserAccess.Application
 
 
             });
+            cfg.AddConsumer<SendCodeToAuthenticatedUserHandler>();
+            cfg.AddConsumer<SendCodeToUnAuthenticatedUserHandler>();
+
             cfg.AddConsumer<SendVerificationSmsHandler>();
             cfg.AddConsumer<SendUserRegistrationConfirmedNotificationHandler>();
             cfg.AddConsumer<GetUsersQueryHandler>();
@@ -56,6 +68,12 @@ namespace CXChange.Modules.UserAccess.Application
             cfg.AddConsumer<ConfirmUserRegistrationHandler>();
             cfg.AddConsumer<UserLoginCheckHandler>();
             cfg.AddConsumer<UserLoginConfirmHandler>();
+            cfg.AddConsumer<ActivateEmailHandler>();
+            cfg.AddConsumer<ResetUserPasswordHandler>();
+            cfg.AddConsumer<InitiateAuthenticatorHandler>();
+            cfg.AddConsumer<ValidateCodeHandler>();
+            cfg.AddConsumer<ConfirmAuthenticatorHandler>();
+
             cfg.ConfigureMediator((context, mcfg) =>
             {
                 mcfg.UseConsumeFilter(typeof(LoggingFilter<>), context);

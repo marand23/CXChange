@@ -1,25 +1,22 @@
-﻿using CXChange.BuildingBlocks.Application.Totp;
+﻿using CXChange.Modules.UserAccess.Application.Services.Interfaces;
+using CXChange.Modules.UserAccess.Application.Utils;
 using CXChange.Modules.UserAccess.Domain.User.DomainEvents;
-using CXChange.Modules.UserAccess.Integration.IntegrationEvents;
 using MassTransit;
 
 namespace CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegisteredDomainEventHandlers
 {
-    public class SendVerificationSmsHandler : IConsumer<UserRegisteredDomainEvent>
+    internal class SendVerificationSmsHandler : IConsumer<UserRegisteredDomainEvent>
     {
-        ITotp _totp;
-        IBus _bus;
-        public SendVerificationSmsHandler(ITotp totp, IBus bus)
+        IVerificationCodeFunctions _sender;
+        public SendVerificationSmsHandler(IVerificationCodeFunctions sender)
         {
-            _totp = totp;
-            _bus = bus;
+            _sender = sender;
         }
 
         public async Task Consume(ConsumeContext<UserRegisteredDomainEvent> context)
         {
-            int verificationCode = _totp.GenerateCode(context.Message.SecurityToken, TimeSpan.FromMinutes(3), KeyWords.ConfirmRegisterTotpModifier(context.Message.PhoneNumber));
-            await _bus.Publish(new UserRegisteredIntegrationEvent { PhoneNumber = context.Message.PhoneNumber, VerificationCode = verificationCode.ToString() });
-            Console.WriteLine(verificationCode);
+            await _sender.Send(context.Message.User, string.Concat(KeyWords.ConfirmRegister, context.Message.User.GetSnapShot().Id));
+
         }
     }
 }

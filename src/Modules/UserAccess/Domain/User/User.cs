@@ -6,7 +6,7 @@ namespace CXChange.Modules.UserAccess.Domain.User
 {
     public class User : Entity, IAggregateRoot
     {
-        public User(string phoneNumber, string password, string defaultTwoFactor, bool twoFactorEnabled)
+        private User(string phoneNumber, string password, string defaultTwoFactor, bool twoFactorEnabled)
         {
 
             PhoneNumber = phoneNumber;
@@ -15,22 +15,11 @@ namespace CXChange.Modules.UserAccess.Domain.User
             TwoFactorEnabled = twoFactorEnabled;
             SecurityStamp = Guid.NewGuid().ToString();
             Id = Guid.NewGuid().ToString();
+            AddDomainEvent(new UserRegisteredDomainEvent(this));
+
         }
 
-        //private User(string phoneNumber, bool twoFactorEnabled, string defaultTwoFactor, string password)
-        //{
-        //    ArgumentException.ThrowIfNullOrEmpty(phoneNumber, nameof(phoneNumber));
-        //    ArgumentException.ThrowIfNullOrEmpty(password, nameof(password));
-        //    ArgumentException.ThrowIfNullOrEmpty(defaultTwoFactor, nameof(defaultTwoFactor));
 
-        //    PhoneNumber = phoneNumber;
-
-        //    TwoFactorEnabled = twoFactorEnabled;
-        //    DefaultTwoFactor = defaultTwoFactor;
-        //    SecurityStamp = Guid.NewGuid().ToString();
-        //    UserName = phoneNumber;
-        //    Id = Guid.NewGuid().ToString();
-        //}
         private User(SnapShot snapShot)
         {
             Email = snapShot.Email;
@@ -41,6 +30,9 @@ namespace CXChange.Modules.UserAccess.Domain.User
             DefaultTwoFactor = snapShot.DefaultTwoFactor;
             PhoneNumberConfirmed = snapShot.PhoneNumberConfirmed;
             Id = snapShot.Id;
+            IsRestricted = snapShot.IsRestricted;
+            EmailConfirmed = snapShot.EmailConfirmed;
+
 
         }
         private string Id { get; set; }
@@ -53,24 +45,22 @@ namespace CXChange.Modules.UserAccess.Domain.User
         private string DefaultTwoFactor { get; set; }
         private string UserName { get; set; }
         private bool IsRestricted { get; set; }
-
+        private string ConcurrencyStamp { get; set; }
+        private bool EmailConfirmed { get; set; }
 
         public void CheckRegisterPossiblity()
         {
-            this.CheckRule(new UserShoudNotBeRestrictedOnRegistration(IsRestricted));
-            this.CheckRule(new UsersPhoneNumberShouldNotBeConfirmedOnRegistration(PhoneNumberConfirmed));
-
-
-
-
+            CheckRule(new UserShoudNotBeRestricted(IsRestricted));
+            CheckRule(new UsersPhoneNumberShouldNotBeConfirmed(PhoneNumberConfirmed));
         }
-        public void RegisterNewUser()
+        public static User RegisterNewUser(string phoneNumber, string password, string defaultTwoFactor, bool twoFactorEnabled)
         {
             ArgumentException.ThrowIfNullOrEmpty(nameof(PhoneNumberConfirmed));
             ArgumentException.ThrowIfNullOrEmpty(nameof(Password));
+            return new User(phoneNumber, password, defaultTwoFactor, twoFactorEnabled);
 
 
-            this.AddDomainEvent(new UserRegisteredDomainEvent(this));
+
 
         }
 
@@ -97,29 +87,47 @@ namespace CXChange.Modules.UserAccess.Domain.User
         }
 
 
-        public void ConfirmPhoneNumber()
+        public void ConfirmUser()
         {
-            this.CheckRule(new UserShoudNotBeRestrictedOnRegistration(IsRestricted));
-            this.CheckRule(new UsersPhoneNumberShouldNotBeConfirmedOnRegistration(PhoneNumberConfirmed));
+            this.CheckRule(new UserShoudNotBeRestricted(IsRestricted));
+            this.CheckRule(new UsersPhoneNumberShouldNotBeConfirmed(PhoneNumberConfirmed));
             PhoneNumberConfirmed = true;
             this.AddDomainEvent(new UserRegistrationConfirmedDomainEvent(this));
         }
         public void LoginUser()
         {
-            this.CheckRule(new UserShoudNotBeRestrictedOnRegistration(IsRestricted));
+            this.CheckRule(new UserShoudNotBeRestricted(IsRestricted));
             this.AddDomainEvent(new UserLoginCheckedDomainEvent(this));
 
         }
         public void ConfirmUserLogin()
         {
-            this.CheckRule(new UserShoudNotBeRestrictedOnRegistration(IsRestricted));
+            CheckRule(new UserShoudNotBeRestricted(IsRestricted));
+
             AddDomainEvent(new UserLoginCheckedDomainEvent(this));
         }
         public void CheckUserPasswordReset()
         {
-            // this.CheckRule(new UsersPhoneNumberShouldNotBeConfirmedOnRegistration(PhoneNumberConfirmed));
+            CheckRule(new UserShouldBeConfirmed(PhoneNumberConfirmed));
+            CheckRule(new UserShoudNotBeRestricted(IsRestricted));
             AddDomainEvent(new UserPasswordResetCheckedDomainEvent(this));
         }
+        public void ChangeTwoFactorType(string newTwoFactorType)
+        {
+            CheckRule(new OldTwoFactorTypeAndNewTwoFactorTypeShouldNotBeTheSame(DefaultTwoFactor, newTwoFactorType));
+            DefaultTwoFactor = newTwoFactorType;
+            AddDomainEvent(new UserTwoFactorTypeChangedDomainEvent(this));
+        }
+        public void ActivateEmail(string email)
+        {
+            CheckRule(new EmailShouldNotBeActiveOnEmailActivation(EmailConfirmed));
+            this.Email = email;
+            this.EmailConfirmed = true;
+            AddDomainEvent(new EmailActivatedDomainEvent(this));
+        }
+
+
+
 
 
 

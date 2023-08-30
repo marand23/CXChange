@@ -66,7 +66,8 @@ namespace CXChange.API.Middlewares
             ;
 
 
-
+            _logger.Error(exception.Message);
+            _logger.Error(exception.StackTrace);
             var result = JsonConvert.SerializeObject(errorResponse);
             await response.WriteAsync(result);
         }

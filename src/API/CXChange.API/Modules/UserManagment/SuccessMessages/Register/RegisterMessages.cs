@@ -1,5 +1,5 @@
-﻿using CXChange.Modules.UserAccess.Application.Commands.UserRegisterConfirmation;
-using CXChange.Modules.UserAccess.Application.Commands.UserRegistration;
+﻿using CXChange.Modules.UserAccess.Application.Commands.Register.UserRegisterConfirmation;
+using CXChange.Modules.UserAccess.Application.Commands.Register.UserRegistration;
 
 namespace CXChange.API.Modules.UserManagment.SuccessMessages.Register
 {

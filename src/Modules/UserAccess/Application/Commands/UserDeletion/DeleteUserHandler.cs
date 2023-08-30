@@ -14,8 +14,8 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserDeletion
 
         public async Task Consume(ConsumeContext<DeleteUser> context)
         {
-            await _userRepository.DeleteUser(context.Message.PhoneNumber);
-            await context.RespondAsync(new UserDeleted { PhoneNumber = context.Message.PhoneNumber });
+            await _userRepository.DeleteUser(context.Message.UserId);
+            await context.RespondAsync(new UserDeleted { PhoneNumber = context.Message.UserId });
         }
     }
 }

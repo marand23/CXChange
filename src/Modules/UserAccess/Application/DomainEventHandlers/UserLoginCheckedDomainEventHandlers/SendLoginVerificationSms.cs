@@ -1,29 +1,25 @@
-﻿using CXChange.BuildingBlocks.Application.Totp;
+﻿
+using CXChange.Modules.UserAccess.Application.Services.Interfaces;
+using CXChange.Modules.UserAccess.Application.Utils;
 using CXChange.Modules.UserAccess.Domain.User.DomainEvents;
-using CXChange.Modules.UserAccess.Integration.IntegrationEvents;
 using MassTransit;
 
 namespace CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserLoginCheckedDomainEventHandlers
 {
     internal class SendLoginVerificationSms : IConsumer<UserLoginCheckedDomainEvent>
     {
-        IBus _bus;
-        ITotp _totp;
-        public SendLoginVerificationSms(IBus bus, ITotp totp)
+
+        IVerificationCodeFunctions _sender;
+        public SendLoginVerificationSms(IVerificationCodeFunctions sender)
         {
-            _bus = bus;
-            _totp = totp;
+
+            _sender = sender;
         }
 
         public async Task Consume(ConsumeContext<UserLoginCheckedDomainEvent> context)
         {
-            if (context.Message.DefaultTwoFactor == "SMS")
-            {
+            await _sender.Send(context.Message.User, string.Concat(KeyWords.LoginUser, context.Message.User.GetSnapShot().Id));
 
-                var verificationCode = _totp.GenerateCode(context.Message.SecurityStamp, TimeSpan.FromMinutes(2), KeyWords.LoginTotpModifier(context.Message.PhoneNumber));
-                await _bus.Publish(new UserLoginCheckedIntegrationEvent { Id = context.Message.Id, PhoneNumber = context.Message.PhoneNumber, VerificationCode = verificationCode.ToString() });
-                Console.WriteLine($"login confirmation code sent {verificationCode}");
-            }
 
         }
     }

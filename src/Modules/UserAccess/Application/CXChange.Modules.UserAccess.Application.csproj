@@ -25,7 +25,5 @@
 
 	<ItemGroup>
 	  <Folder Include="RequestModels\" />
-	  <Folder Include="Services\Implementation\" />
-	  <Folder Include="Services\Interfaces\" />
 	</ItemGroup>
 </Project>

@@ -6,16 +6,12 @@ namespace CXChange.Modules.UserAccess.Domain.User.DomainEvents
     {
         public UserLoginCheckedDomainEvent(User user)
         {
-            SnapShot snapShot = user.GetSnapShot();
-            PhoneNumber = snapShot.PhoneNumber;
-            Id = snapShot.Id;
-            SecurityStamp = snapShot.SecurityStamp;
-            DefaultTwoFactor = snapShot.DefaultTwoFactor;
+            this.User = user;
+
         }
 
-        public string PhoneNumber { get; private set; }
-        public string Id { get; private set; }
-        public string SecurityStamp { get; private set; }
-        public string DefaultTwoFactor { get; private set; }
+        public User User { get; private set; }
+
+
     }
 }

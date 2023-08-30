@@ -7,6 +7,10 @@
         UserDoesNotExist,
         UserRegisterTokenNotValid,
         UserLoginTokenNotValid,
+        PasswordInvalid,
+        EnterCodeFirst,
+        ValidateAuthenticatorCode,
+        ValidateVerificationCode
 
     }
 }

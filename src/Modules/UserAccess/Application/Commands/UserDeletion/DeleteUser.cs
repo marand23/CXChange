@@ -5,6 +5,6 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserDeletion
 {
     public record DeleteUser : ICommandBase, IPersistable
     {
-        public string PhoneNumber { get; set; }
+        public string UserId { get; set; }
     }
 }

@@ -22,5 +22,17 @@ namespace CXChange.Modules.UserAccess.Application
         {
             return ruleBuilder.NotNull().NotEmpty();
         }
+        public static IRuleBuilderOptions<T, string> UserId<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder.NotNull().NotEmpty();
+        }
+        public static IRuleBuilderOptions<T, string> TwoFactorType<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder.NotNull().NotEmpty().Must(x =>
+            {
+                return (x == "SMS" || x == "Email");
+            });
+        }
+
     }
 }

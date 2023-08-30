@@ -3,5 +3,6 @@
     public interface IDomainEventDispatcher
     {
         Task Dispatch(List<IDomainEvent> domainEvents);
+
     }
 }

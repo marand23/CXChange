@@ -12,7 +12,6 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
         private IExchangeUserManager _exchangeUserManager;
         private IExchangeSignInManager _exchangeSignInManager;
 
-
         public UserRepository(IExchangeUserManager exchangeUserManager, IExchangeSignInManager exchangeSignInManager, IDomainEventDispatcher domainEventDispatcher, IMediator mediator)
         {
             _exchangeSignInManager = exchangeSignInManager;
@@ -33,7 +32,8 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
                 DefaultTwoFactor = "SMS",
                 Id = snapShot.Id,
                 TwoFactorEnabled = snapShot.TwoFactorEnabled,
-                SecurityStamp = snapShot.SecurityStamp
+                SecurityStamp = snapShot.SecurityStamp,
+
             };
 
 
@@ -48,16 +48,14 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
 
         }
 
-        public async Task UpdateUser(User user)
+        public async Task Update(User user)
         {
-            AppUser appUser = new AppUser();
+            var snapShot = user.GetSnapShot();
+            AppUser appUser = await _exchangeUserManager.FindByIdAsync(snapShot.Id);
             Map(appUser, user.GetSnapShot());
 
-            var result = await _exchangeUserManager.UpdateAsync(appUser);
-            if (!result.Succeeded)
-            {
-                throw new Exception(result.Errors.FirstOrDefault().Description);
-            }
+
+
         }
 
         public void Map(AppUser appuser, SnapShot snapShot)
@@ -65,18 +63,50 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
 
             appuser.Email = snapShot.Email;
             appuser.UserName = snapShot.UserName;
+            appuser.PhoneNumber = snapShot.PhoneNumber;
+            appuser.PhoneNumberConfirmed = snapShot.PhoneNumberConfirmed;
+            appuser.DefaultTwoFactor = snapShot.DefaultTwoFactor;
+            appuser.SecurityStamp = snapShot.SecurityStamp;
+            appuser.EmailConfirmed = snapShot.EmailConfirmed;
+            appuser.TwoFactorEnabled = snapShot.TwoFactorEnabled;
+
+
         }
 
         public async Task<User> GetUserById(string id)
         {
-            AppUser user = await _exchangeUserManager.GetUserById(id);
 
+            AppUser user = await _exchangeUserManager.FindByIdAsync(id);
+
+
+
+
+
+            if (user != null)
+            {
+
+                SnapShot snapShot = new SnapShot();
+                snapShot.PhoneNumber = user.PhoneNumber;
+                snapShot.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
+                snapShot.DefaultTwoFactor = user.DefaultTwoFactor;
+                snapShot.SecurityStamp = user.SecurityStamp;
+                snapShot.Email = user.Email;
+                snapShot.Id = user.Id;
+                snapShot.UserName = user.UserName;
+                snapShot.ConcurrencyStamp = user.ConcurrencyStamp;
+
+                return User.CreateFrom(snapShot);
+            }
             return null;
 
         }
+
+
         public async Task<User> GetUserByPhoneNumber(string phoneNumber)
         {
             AppUser user = await _exchangeUserManager.GetUserByPhoneNumber(phoneNumber);
+
+
 
             if (user != null)
             {
@@ -98,16 +128,17 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
 
 
         }
-        public async Task DeleteUser(string phoneNumber)
+        public async Task DeleteUser(string userId)
         {
-            AppUser user = await _exchangeUserManager.GetUserByPhoneNumber(phoneNumber);
+            AppUser user = await _exchangeUserManager.FindByIdAsync(userId);
 
 
             await _exchangeUserManager.DeleteAsync(user);
         }
-        public async Task CheckUserPassword(string PhoneNumber, string Password)
+        public async Task CheckUserPassword(string id, string Password)
         {
-
+            var user = await _exchangeUserManager.FindByIdAsync(id);
+            await _exchangeUserManager.CheckPasswordAsync(user, Password);
         }
         public Task RemoveTicket(User user)
         {
@@ -121,10 +152,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
             //    return await _exchangeUserManager.GetUserSecurityToken(appUser);
         }
 
-        public async Task ConfirmPhoneNumber(string PhoneNumber)
-        {
-            await _exchangeUserManager.ConfirmUserPhoneNumber(PhoneNumber);
-        }
+
 
         public async Task<User> CheckSignIn(string PhoneNumber, string Password)
         {
@@ -149,7 +177,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
         {
 
             SnapShot snapShot = user.GetSnapShot();
-            var appUser = new AppUser { Id = snapShot.Id, SecurityStamp = snapShot.SecurityStamp };
+            var appUser = await _exchangeUserManager.FindByIdAsync(snapShot.Id);
             string token = await _exchangeUserManager.GenerateUserTokenAsync(appUser, tokenProvider, purpose);
             return token;
 
@@ -158,7 +186,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
         public async Task<bool> ValidateUserToken(User user, string token, string tokenProvider, string purpose)
         {
             SnapShot snapShot = user.GetSnapShot();
-            var appUser = await _exchangeUserManager.GetUserByPhoneNumber(snapShot.PhoneNumber);
+            var appUser = await _exchangeUserManager.FindByIdAsync(snapShot.Id);
             bool result = await _exchangeUserManager.VerifyUserTokenAsync(appUser, tokenProvider, purpose, token);
             return result;
         }
@@ -175,7 +203,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
         public async Task<string> GeneratePasswordResetToken(User user)
         {
             var snapshot = user.GetSnapShot();
-            var appUser = new AppUser { Id = snapshot.Id, SecurityStamp = snapshot.SecurityStamp };
+            var appUser = await _exchangeUserManager.FindByIdAsync(snapshot.Id);
             var token = await _exchangeUserManager.GeneratePasswordResetTokenAsync(appUser);
             return token;
         }
@@ -183,9 +211,33 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
         public async Task ResetPassword(User user, string token, string newPassword)
         {
             var snapshot = user.GetSnapShot();
-            var appUser = new AppUser { Id = snapshot.Id, SecurityStamp = snapshot.SecurityStamp };
+            var appUser = await _exchangeUserManager.FindByIdAsync(snapshot.Id);
             var result = await _exchangeUserManager.ResetPasswordAsync(appUser, token, newPassword);
 
+        }
+
+        public async Task ChangePassword(User user, string oldPassword, string newPassword)
+        {
+            var appUser = await _exchangeUserManager.FindByIdAsync(user.GetSnapShot().Id);
+            await _exchangeUserManager.ChangePassword(appUser, oldPassword, newPassword);
+        }
+
+        public async Task<bool> CheckPassword(User user, string password)
+        {
+            var appUser = await _exchangeUserManager.FindByIdAsync(user.GetSnapShot().Id);
+            return await _exchangeUserManager.CheckPassword(appUser, password);
+        }
+
+        public async Task ResetAuthenticatorKey(User user)
+        {
+            var appUser = await _exchangeUserManager.FindByIdAsync(user.GetSnapShot().Id);
+            await _exchangeUserManager.ResetAuthenticatorKey(appUser);
+        }
+
+        public async Task<string> GetAuthenticatorKey(User user)
+        {
+            var appUser = await _exchangeUserManager.FindByIdAsync(user.GetSnapShot().Id);
+            return await _exchangeUserManager.GetAuthenticatorKey(appUser);
         }
     }
 }

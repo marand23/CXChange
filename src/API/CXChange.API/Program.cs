@@ -9,7 +9,7 @@ using FluentValidation;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
-              .WriteTo.Console().MinimumLevel.Warning()
+              .WriteTo.Console().MinimumLevel.Error()
               // .WriteTo.Telegram("1136419874:AAEx8Vxxn_9j07zz_MoaeP3k1IotWQ9S2_U", "387581401", period: TimeSpan.FromSeconds(10), includeStackTrace: true, applicationName: "oooop")
               .CreateLogger();
 
@@ -24,7 +24,10 @@ try
     {
 
     });
-    builder.Services.RegisterAPI(builder.Environment);
+    builder.Services.RegisterAPI(opt =>
+    {
+        opt.Url = "exchange";
+    });
     builder.Services.RegisterUserAccessApplication(builder.Environment);
     builder.Services.RegisterMediator(builder.Environment);
     builder.Services.RegisterCoreElementstApplication();

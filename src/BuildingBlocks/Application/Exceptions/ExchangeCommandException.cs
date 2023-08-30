@@ -3,8 +3,8 @@
     public class ExchangeCommandException : Exception
     {
         public string Message { get; }
-        public int ErrorCode { get; }
-        public ExchangeCommandException(string message, int errorCode)
+        public Enum ErrorCode { get; }
+        public ExchangeCommandException(string message, Enum errorCode)
         {
             Message = message;
             ErrorCode = errorCode;

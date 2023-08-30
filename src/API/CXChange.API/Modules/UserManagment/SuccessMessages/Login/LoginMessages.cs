@@ -1,5 +1,5 @@
-﻿using CXChange.Modules.UserAccess.Application.Commands.ConfirmLogin;
-using CXChange.Modules.UserAccess.Application.Commands.UserLogin;
+﻿using CXChange.Modules.UserAccess.Application.Commands.Login.ConfirmLogin;
+using CXChange.Modules.UserAccess.Application.Commands.Login.UserLogin;
 
 namespace CXChange.API.Modules.UserManagment.SuccessMessages.Login
 {

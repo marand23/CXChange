@@ -4,34 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CXChange.Modules.UserAccess.Infrastructure.Identity
 {
+
     internal class ExchangeUserManager : IExchangeUserManager
     {
         private readonly UserManager<AppUser> userManager;
-        //private readonly ITOTP _totp;
-        //private readonly IAuthenticator _authenticator;
-        //CustomIDataProtection<T> customIDataProtection;
-        public ExchangeUserManager(UserManager<AppUser> userManager/*, ITOTP totp, IAuthenticator authenticator, CustomIDataProtection<T> customIDataProtection*/)
+        public ExchangeUserManager(UserManager<AppUser> userManager)
         {
             this.userManager = userManager;
-            //this._totp = totp;
-            //this._authenticator = authenticator;
-            //this.customIDataProtection = customIDataProtection;
-
-
         }
-        //public async Task<AppUser> GetUserByToken(string token)
-        //{
-        //    //var id = customIDataProtection.GetUserIdByToken(token);
 
-        //    //return await userManager.FindByIdAsync(id);
-
-        //}
-        //public async Task<AppUser> GetUserByPassToken(string token)
-        //{
-
-        //    var id = customIDataProtection.GetUserIdByPassToken(token);
-        //    return await userManager.FindByIdAsync(id);
-        //}
 
         public bool SupportsUserLockout
         {
@@ -40,6 +21,8 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         public async Task<AppUser> FindByNameAsync(string userName)
         {
             return await userManager.FindByNameAsync(userName);
+
+
         }
         public async Task<IdentityResult> CreateAsync(AppUser user, string password)
         {
@@ -51,29 +34,6 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         {
             return await userManager.DeleteAsync(user);
         }
-        //public async Task<string> GenerateTotpCode(AppUser user, TimeSpan timeSpan, string modefier, int numberOfDigits)
-        //{
-        //    var token = await userManager.CreateSecurityTokenAsync(user);
-
-        //    var code = _totp.GenerateCode(token, timeSpan, modefier.ToString(), numberOfDigits);
-        //    return code.ToString("D" + numberOfDigits.ToString(), CultureInfo.InvariantCulture);
-        //}
-        //public async Task<bool> ValidateTotpCode(AppUser user, TimeSpan timeSpan, int code, string modefier, int numberOfDigits, string type)
-        //{
-        //    if (type == "Sms" || type == "Email")
-        //    {
-        //        var token = await userManager.CreateSecurityTokenAsync(user);
-        //        return _totp.ValidateCode(token, code, timeSpan, modefier.ToString(), numberOfDigits);
-
-        //    }
-        //    else
-        //    {
-
-        //        var secret = await userManager.GetAuthenticatorKeyAsync(user);
-        //        return _authenticator.ValidateAuthenticatorCode(secret, code.ToString(), TimeSpan.FromSeconds(40));
-        //    }
-
-        //}
 
         public async Task<bool> VerifyUserTokenAsync(AppUser user, string tokenProvider, string purpose, string token)
         {
@@ -88,6 +48,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         public async Task<bool> CheckPasswordAsync(AppUser user, string password)
         {
             return await userManager.CheckPasswordAsync(user, password);
+
         }
         public async Task<IdentityResult> AccessFailedAsync(AppUser user)
         {
@@ -122,7 +83,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         {
             return await userManager.ResetPasswordAsync(user, token, newPassword);
         }
-        public async Task<AppUser> GetUserById(string id)
+        public async Task<AppUser> FindByIdAsync(string id)
         {
             return await userManager.FindByIdAsync(id);
 
@@ -131,17 +92,36 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         public async Task<AppUser> GetUserByPhoneNumber(string PhoneNumber)
         {
             return await userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == PhoneNumber);
+
+
         }
         public async Task<byte[]> GetUserSecurityToken(AppUser user)
         {
             return await userManager.CreateSecurityTokenAsync(user);
         }
-        public async Task ConfirmUserPhoneNumber(string PhoneNumber)
+        public async Task ConfirmUserPhoneNumber(string userId)
         {
-            var user = await userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == PhoneNumber);
+            var user = await userManager.FindByIdAsync(userId);
             user.PhoneNumberConfirmed = true;
         }
 
+        public async Task<IdentityResult> ChangePassword(AppUser user, string oldPassword, string newPassword)
+        {
+            var res = await userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            return res;
+        }
 
+        public async Task<bool> CheckPassword(AppUser user, string password)
+        {
+            return await userManager.CheckPasswordAsync(user, password);
+        }
+        public async Task<IdentityResult> ResetAuthenticatorKey(AppUser user)
+        {
+            return await userManager.ResetAuthenticatorKeyAsync(user);
+        }
+        public async Task<string> GetAuthenticatorKey(AppUser user)
+        {
+            return await userManager.GetAuthenticatorKeyAsync(user);
+        }
     }
 }
