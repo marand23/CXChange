@@ -11,6 +11,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.DataAccess.Maps
         {
             builder.HasKey(t => t.Id);
             builder.Property(t => t.Id).HasMaxLength(128);
+            builder.Property(t => t.Version).IsRowVersion();
         }
     }
 

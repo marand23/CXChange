@@ -8,6 +8,6 @@ namespace CXChange.Modules.UserAccess.Domain.User.DomainEvents
         {
             this.User = user;
         }
-        public User User { get; }
+        public User User { get; init; }
     }
 }

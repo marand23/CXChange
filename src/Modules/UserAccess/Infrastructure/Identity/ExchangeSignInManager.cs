@@ -19,37 +19,15 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
 
 
         }
-
-        public async Task<SignInResult> CheckSignIn(AppUser user, string password, bool lockoutOnFailure)
+        public async Task<int> GetAccessFailedCountAsync(AppUser user)
         {
-            var error = await PreSignInCheck(user);
-            if (error != null)
-            {
-                return error;
-            }
-            var passwordCheck = await _userManager.CheckPasswordAsync(user, password);
-            if (passwordCheck)
-            {
-                if (_userManager.SupportsUserLockout && lockoutOnFailure)
-                {
+            return await _userManager.GetAccessFailedCountAsync(user);
+        }
+        public async Task<SignInResult> CheckSignIn(AppUser user, string password, bool lockoutOnFailure)
 
-
-                    await _userManager.AccessFailedAsync(user);
-                    if (await _userManager.IsLockedOutAsync(user))
-                    {
-                        return await LockedOut(user);
-                    }
-                }
-
-
-                return SignInResult.Success;
-
-            }
-
-
-
-            return SignInResult.Failed;
-
+        {
+            var a = await PreSignInCheck(user);
+            return await _signInManager.CheckPasswordSignInAsync(user, password, lockoutOnFailure);
         }
 
         public async Task<SignInResult> ExchangeSignIn(AppUser user)

@@ -1,5 +1,7 @@
-﻿using CXChange.BuildingBlocks.Application.Exceptions;
+﻿using CXChange.API.ResourceFiles;
+using CXChange.BuildingBlocks.Application.Exceptions;
 using CXChange.BuildingBlocks.Domain;
+using CXChange.Modules.UserAccess.Application.Exceptions;
 
 namespace CXChange.API
 {
@@ -9,16 +11,23 @@ namespace CXChange.API
         public string message { get; set; }
         public Enum code { get; set; }
         public bool success { get; set; }
+        public object data { get; set; }
         public static implicit operator ApiErrorResponse(Exception ex)
         {
-
-            if (ex is ExchangeCommandException e)
+            if (ex is FailedAttempException fa)
             {
-                return new ApiErrorResponse { code = e.ErrorCode, message = e.Message, success = false };
+                return new ApiErrorResponse { code = fa.ErrorCode, message = string.Format(CommandErrorMessages.ResourceManager.GetString(fa.ErrorCode.ToString()), fa.Detail.Remainig), success = false, data = fa.Detail };
+            }
+            else if (ex is ExchangeCommandException e)
+            {
+
+
+
+                return new ApiErrorResponse { code = e.ErrorCode, message = CommandErrorMessages.ResourceManager.GetString(e.ErrorCode.ToString()), success = false };
             }
             else if (ex is BusinessRuleException be)
             {
-                return new ApiErrorResponse { code = be.Code, message = be.Message, success = false };
+                return new ApiErrorResponse { code = be.Code, message = DomainErrorMessages.ResourceManager.GetString(be.Code.ToString()), success = false };
             }
             else
             {
@@ -29,9 +38,9 @@ namespace CXChange.API
     }
     public class ApiSuccessResponse<T>
     {
-        public string message { get; set; }
-        public bool success { get; set; }
-        public T data { get; set; }
+        public string message { get; init; }
+        public bool success { get; init; }
+        public T data { get; init; }
 
     }
     public class ApiValidationResponse : IApiError
@@ -41,9 +50,8 @@ namespace CXChange.API
         public List<ValidationError> errors { get; set; }
         public static implicit operator ApiValidationResponse(ValidationException ex)
         {
-            ValidationErrorCodes errorCodes;
             List<ValidationError> error = ex.Errors
-            .Select(e => new ValidationError { Code = (ValidationErrorCodes)Enum.Parse(typeof(ValidationErrorCodes), e.ErrorCode), Message = e.ErrorMessage, Name = e.PropertyName }).ToList();
+            .Select(e => new ValidationError { Code = (ValidationErrorCodes)Enum.Parse(typeof(ValidationErrorCodes), e.ErrorCode), Message = ValidationErrorMessages.ResourceManager.GetString(e.ErrorCode), Name = e.PropertyName }).ToList();
             return new ApiValidationResponse { errors = error, message = "Validation Failed", success = false };
         }
 
@@ -91,7 +99,11 @@ namespace CXChange.API
         MinimumLength_Simple,
         MaximumLength_Simple,
         ExactLength_Simple,
-        InclusiveBetween_Simple
+        InclusiveBetween_Simple,
+        PasswordValidator,
+        PhoneNumberValidator,
+        VerificationCodeValidator,
+        NotEmptyNotNullValidator
 
     }
     public enum status

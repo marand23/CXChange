@@ -1,4 +1,5 @@
 ﻿using CXChange.BuildingBlocks.Application.Data;
+using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -6,11 +7,11 @@ namespace CXChange.CoreElements.Infrastructure
 {
     internal class SqlConnectionFactory : ISqlConnectionFactory, IDisposable
     {
-        private string _connectionString = "Server=.;Database=XChangeTest;Trusted_Connection=True;Encrypt=False";
+        private string _connectionString;
         private IDbConnection _connection;
-        public SqlConnectionFactory()
+        public SqlConnectionFactory(IConfiguration configuration)
         {
-
+            _connectionString = configuration["ConnectionStrings:DefaultConnection"];
         }
 
 

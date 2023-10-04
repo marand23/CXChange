@@ -1,6 +1,6 @@
-﻿using CXChange.BuildingBlocks.Application.Exceptions;
-using CXChange.BuildingBlocks.Domain;
+﻿using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.UserAccess.Application.Enums;
+using CXChange.Modules.UserAccess.Application.Exceptions;
 using CXChange.Modules.UserAccess.Application.Utils;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using MassTransit;
@@ -22,15 +22,17 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserTwoFactorTypeChan
             var user = await _repo.GetUserById(context.Message.UserId);
             if (user == null)
             {
-                throw new ExchangeCommandException("user does not exist", CommandExceptionEnum.UserDoesNotExist);
+                throw new UserAccessCommandException(CommandExceptionEnum.UserNotFound);
             }
-            var tokenResult = await _repo.ValidateUserToken(user, context.Message.Token, KeyWords.CustomTokenProvider, string.Concat(KeyWords.ChangeTwoFactorType, context.Message.UserId));
+            var tokenResult = await _repo.ValidateUserToken(user, context.Message.Token, KeyWords.CustomTokenProvider, CodeType.GeneratePurposeForDefaultTwoFactor(user.GetSnapShot(), KeyWords.ChangeTwoFactorType));
             if (!tokenResult)
             {
-                throw new ExchangeCommandException("enter code first", CommandExceptionEnum.EnterCodeFirst);
+                throw new UserAccessCommandException(CommandExceptionEnum.EnterCodeFirst);
             }
-            user.ChangeTwoFactorType(context.Message.NewTwoFactorType);
+
+            //  user.ChangeTwoFactorType((TwoFactoEnum)context.Message.NewTwoFactorType);
             await _repo.Update(user);
+            /* await */
             await _dispatcher.Dispatch(user.DomainEvents);
             await context.RespondAsync(new UserTwoFactorTypeChanged { });
 

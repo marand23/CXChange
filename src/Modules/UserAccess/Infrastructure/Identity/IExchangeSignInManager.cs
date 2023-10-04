@@ -9,5 +9,6 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         Task<SignInResult> ExchangeTwoFactorSignInAsync(AppUser user, string provider, string code, string purpose);
         Task<SignInResult> ExchangeSignIn(AppUser user);
         Task LogOut();
+        Task<int> GetAccessFailedCountAsync(AppUser user);
     }
 }

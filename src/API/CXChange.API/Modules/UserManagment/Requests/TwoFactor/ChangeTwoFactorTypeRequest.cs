@@ -4,6 +4,6 @@
     {
 
         public string Token { get; set; }
-        public string NewTwoFactorType { get; set; }
+        public int NewTwoFactorType { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace CXChange.Modules.UserAccess.Application.Commands.Register.UserRegisterConfirmation
 {
-    internal class ConfirmUserValidator : AbstractValidator<ConfirmUser>
+    public class ConfirmUserValidator : AbstractValidator<ConfirmUser>
     {
         public ConfirmUserValidator()
         {

@@ -1,58 +1,82 @@
 ﻿using CXChange.BuildingBlocks.Domain;
+using CXChange.Modules.UserAccess.Application.Utils;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using CXChange.Modules.UserAccess.Infrastructure.Authentication.AuthenticationHandlers;
 using CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore;
+using CXChange.Modules.UserAccess.Infrastructure.Authorization.CodeTypeAuthorization;
 using CXChange.Modules.UserAccess.Infrastructure.CustomUserDataProtectionProviders;
 using CXChange.Modules.UserAccess.Infrastructure.DataAccess;
 using CXChange.Modules.UserAccess.Infrastructure.DataModel;
 using CXChange.Modules.UserAccess.Infrastructure.Identity;
 using CXChange.Modules.UserAccess.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace CXChange.Modules.UserAccess.Infrastructure
 {
     public static class DependencyInjection
     {
+
+
         public static void RegisterUserAccessInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IUserStore<AppUser>, CustomUSerStore>();
 
+            var serverVersion = new MySqlServerVersion(new Version(8, 0, 34));
             string connectionString = configuration["ConnectionStrings:DefaultConnection"];
+
             services.AddDbContext<UserManagementDbContext>(options =>
             {
-                options.UseSqlServer(
-                   connectionString
-                    );
+                options.UseMySql(connectionString, serverVersion, b =>
+                {
+                    b.SchemaBehavior(MySqlSchemaBehavior.Translate, (schema, entity) => $"{schema ?? "dbo"}.{entity}");
+                    b.MigrationsHistoryTable("__EFMigrationsHistory", "UserAccess");
+                });
+                options.UseSnakeCaseNamingConvention();
+
+
+
+
+
+
+
+
+
+
             });
 
-            //    services.AddDbContext(typeof(DbContext), typeof(UserManagementDbContext), options =>
-            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
 
             services.AddIdentity<AppUser, IdentityRole>()
              .AddDefaultTokenProviders()
              .AddCustomTokenProvider()
 
-
-                   .AddEntityFrameworkStores<UserManagementDbContext>();
+             .AddUserStore<CustomUSerStore>()
+            .AddEntityFrameworkStores<UserManagementDbContext>();
             services.Configure<IdentityOptions>(options =>
             {
 
                 options.SignIn.RequireConfirmedPhoneNumber = true;
-                options.Lockout.MaxFailedAccessAttempts = 2;
+                options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = false;
-
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(60);
 
 
 
             });
-            var a = Assembly.GetExecutingAssembly();
-            services.AddAuthentication(CustomAuthOptions.SchemeName)
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CustomAuthOptions.SchemeName;
+                options.DefaultChallengeScheme = "CustomScheme";
+
+            })
+
                 .AddScheme<CustomAuthOptions, CustomAuthenticationHandler>(
                 CustomAuthOptions.SchemeName, opts =>
                 {
@@ -67,29 +91,21 @@ namespace CXChange.Modules.UserAccess.Infrastructure
                 }
                 )
                ;
-            //services.AddAuthentication(CustomAuthOptions.SchemeName)
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("codeTypePolicy", policy =>
+                {
+                    policy.AddRequirements(new CodeRequirement(CodeType.GetCodeTypeByName));
+                });
+            });
 
-            //  .AddScheme<CustomAuthOptions, CustomAuthenticationHandler>(
-            //  CustomAuthOptions.SchemeName, opts =>
-            //  {
-            //      opts.ExpireTimeSpan = TimeSpan.FromDays(4);
-            //      opts.SessionStore = new CustomTicketStore(services);
-            //      // opts.UserTokenGenerator = ExtensionMethods.GenerateRandomToken(64);
+            services.AddSingleton<IAuthorizationHandler, CodeTypeAuthorizationHandler>();
 
-
-
-
-
-            //  }
-            //  )
-
-
-
-            // ;
-
+            services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<IExchangeUserManager, ExchangeUserManager>();
             services.AddScoped<IExchangeSignInManager, ExchangeSignInManager>();
             services.AddScoped<IUserRepository, UserRepository>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
 

@@ -6,17 +6,17 @@ namespace CXChange.Modules.UserAccess.Application
     {
         public static IRuleBuilderOptions<T, string> PhoneNumber<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            return ruleBuilder.NotNull().NotEmpty().Length(11).Matches("09(1[0-9]|3[1-9]|2[1-9])-?[0-9]{3}-?[0-9]{4}");
+            return ruleBuilder.NotNull().NotEmpty().Matches("09(1[0-9]|3[1-9]|2[1-9])-?[0-9]{3}-?[0-9]{4}").WithErrorCode("PhoneNumberValidator");
 
 
         }
         public static IRuleBuilderOptions<T, string> Password<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            return ruleBuilder.NotNull().NotEmpty();
+            return ruleBuilder.NotEmptyNotNull().Matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$").WithErrorCode("PasswordValidator");
         }
         public static IRuleBuilderOptions<T, string> VerificationCode<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            return ruleBuilder.NotNull().NotEmpty().Length(6).Matches("^ [0-9] {6}$");
+            return ruleBuilder.NotEmptyNotNull().Matches("^[0-9]{6}$").WithErrorCode("VerificationCodeValidator");
         }
         public static IRuleBuilderOptions<T, string> UserToken<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
@@ -33,6 +33,13 @@ namespace CXChange.Modules.UserAccess.Application
                 return (x == "SMS" || x == "Email");
             });
         }
+        public static IRuleBuilderOptions<T, string> NotEmptyNotNull<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder.NotNull().NotEmpty().WithErrorCode("NotEmptyNotNullValidator");
+
+
+        }
+
 
     }
 }

@@ -37,7 +37,6 @@ namespace CXChange.API
                 // x.AddConsumer<sendemailcosumer> ();
 
 
-
                 //  x.UsingInMemory();
                 // configure bus
                 //x.UsingInMemory((context, cfg) =>

@@ -1,6 +1,6 @@
-﻿using CXChange.BuildingBlocks.Application.Exceptions;
-using CXChange.BuildingBlocks.Domain;
+﻿using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.UserAccess.Application.Enums;
+using CXChange.Modules.UserAccess.Application.Exceptions;
 using CXChange.Modules.UserAccess.Application.Services.Interfaces;
 using CXChange.Modules.UserAccess.Application.Utils;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
@@ -22,26 +22,30 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Register.UserRegister
 
 
             _httpContextAccessor = httpContextAccessor;
+            _dispatcher = dispatcher;
+            _verifier = verifier;
         }
         public async Task Consume(ConsumeContext<ConfirmUser> context)
         {
             User user = await _userRepository.GetUserByPhoneNumber(context.Message.PhoneNumber);
             if (user == null)
             {
-                throw new ExchangeCommandException("user does not exist", CommandExceptionEnum.UserDoesNotExist);
+                throw new UserAccessCommandException(CommandExceptionEnum.UserNotFound);
             }
-
-            var result = _verifier.Verify(user, int.Parse(context.Message.VerificationCode), string.Concat(KeyWords.ConfirmRegister, context.Message.PhoneNumber));
+            var snapshot = user.GetSnapShot();
+            var result = _verifier.Verify(user, int.Parse(context.Message.VerificationCode), CodeType.GeneratePurposeForSpecificTwoFactor(snapshot.Id, KeyWords.ConfirmRegister, snapshot.PhoneNumber));
 
             if (!result)
             {
-                throw new ExchangeCommandException("verification code is invalid", CommandExceptionEnum.VerificationCodeInvalid);
+                throw new UserAccessCommandException(CommandExceptionEnum.VerificationCodeInvalid);
             }
-            user.ConfirmUser();
+            user.ConfirmUserRegister();
+            user.UpdateSecurityStamp();
             await _userRepository.Update(user);
             await _userRepository.SignIn(user);
 
             var token = (string)_httpContextAccessor.HttpContext.Items["token"];
+            /*await*/
             await _dispatcher.Dispatch(user.DomainEvents);
             //update security stamp
             await context.RespondAsync(new UserConfirmed

@@ -2,7 +2,7 @@
 {
     public record EmailActivatedIntegrationEvent
     {
-        public string Email { get; set; }
-        public string Id { get; set; }
+        public string Email { get; init; }
+        public string Id { get; init; }
     }
 }

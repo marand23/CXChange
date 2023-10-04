@@ -28,6 +28,9 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         Task<bool> CheckPassword(AppUser user, string password);
         Task<IdentityResult> ResetAuthenticatorKey(AppUser user);
         Task<string> GetAuthenticatorKey(AppUser user);
+        Task<AppUser> GetUserByEmail(string email);
+        Task<IdentityResult> SetAuthenticationTokenAsync(AppUser user, string loginProvider, string tokenName, string? tokenValue);
+        Task<int> MaxFailedAccessAttemps();
 
 
     }

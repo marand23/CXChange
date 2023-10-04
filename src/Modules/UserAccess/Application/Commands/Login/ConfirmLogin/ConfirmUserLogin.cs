@@ -5,8 +5,8 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Login.ConfirmLogin
 {
     public record ConfirmUserLogin : ICommandBase, IPersistable, IValidatable
     {
-        public string PhoneNumber { get; set; }
-        public string Token { get; set; }
-        public string VerificationCode { get; set; }
+        public string PhoneNumber { get; init; }
+        public string Token { get; init; }
+        public string VerificationCode { get; init; }
     }
 }

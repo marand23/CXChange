@@ -1,8 +1,11 @@
 ﻿using CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore;
 using CXChange.Modules.UserManagment.Infrastructure.Utils;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 
@@ -27,6 +30,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.Authenticati
 
         string token = null;
         string _sessionKey = string.Empty;
+
         private const string SessionIdClaim = "Microsoft.AspNetCore.Authentication.Cookies-SessionId";
         public CustomAuthenticationHandler(IOptionsMonitor<CustomAuthOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
        : base(options, logger, encoder, clock) { }
@@ -94,7 +98,24 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.Authenticati
             Context.Items.Add("token", _sessionKey);
 
         }
+        protected override Task HandleChallengeAsync(AuthenticationProperties properties)
+        {
 
+            Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+
+            Response.Headers.Append(HeaderNames.WWWAuthenticate, "CustomScheme");
+
+
+            Response.ContentType = "application/json";
+            var result = JsonConvert.SerializeObject(new { code = 401, message = "unathorized" });
+            return Response.WriteAsync(result);
+        }
+        protected override Task HandleForbiddenAsync(AuthenticationProperties properties)
+        {
+            var result = JsonConvert.SerializeObject(new { code = 403, message = "forbidden" });
+            return Response.WriteAsync(result);
+        }
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
 

@@ -1,9 +1,13 @@
-﻿namespace CXChange.Modules.UserAccess.Application.Commands.EmailActivate
+﻿using CXChange.BuildingBlocks.Application.Command;
+using CXChange.BuildingBlocks.Application.MessageInterfaces;
+
+namespace CXChange.Modules.UserAccess.Application.Commands.EmailActivate
 {
-    public record ActivateEmail
+    public record ActivateEmail : IPersistable, IValidatable, ICommandBase
     {
-        public string UserId { get; set; }
-        public string Email { get; set; }
-        public string Token { get; set; }
+        public string UserId { get; init; }
+        public string Email { get; init; }
+        public string Token { get; init; }
+        public string Code { get; init; }
     }
 }

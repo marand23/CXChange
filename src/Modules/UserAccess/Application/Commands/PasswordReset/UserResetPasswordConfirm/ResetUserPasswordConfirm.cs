@@ -1,10 +1,12 @@
-﻿namespace CXChange.Modules.UserAccess.Application.Commands.PasswordReset.UserResetPasswordConfirm
+﻿using CXChange.BuildingBlocks.Application.MessageInterfaces;
+
+namespace CXChange.Modules.UserAccess.Application.Commands.PasswordReset.UserResetPasswordConfirm
 {
-    public record ResetUserPasswordConfirm
+    public record ResetUserPasswordConfirm : IPersistable
     {
-        public string PhoneNumber { get; set; }
-        public string NewPassword { get; set; }
-        public string Token { get; set; }
+        public string PhoneNumber { get; init; }
+        public string NewPassword { get; init; }
+        public string Token { get; init; }
 
     }
 }

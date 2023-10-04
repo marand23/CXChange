@@ -10,7 +10,7 @@ namespace CXChange.Modules.UserAccess.Domain.User.DomainEvents
             PhoneNumber = snapshot.PhoneNumber;
             Id = snapshot.Id;
         }
-        public string PhoneNumber { get; set; }
-        public string Id { get; set; }
+        public string PhoneNumber { get; init; }
+        public string Id { get; init; }
     }
 }

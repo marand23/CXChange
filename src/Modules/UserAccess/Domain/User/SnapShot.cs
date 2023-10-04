@@ -11,10 +11,12 @@
         public string Password { get; set; }
         public bool PhoneNumberConfirmed { get; set; }
         public bool TwoFactorEnabled { get; set; }
-        public string DefaultTwoFactor { get; set; }
+
         public string UserName { get; set; }
         public string ConcurrencyStamp { get; set; }
         public bool EmailConfirmed { get; set; }
         public bool IsRestricted { get; set; }
+        public TwoFactorEnum ActiveTwoFactor { get; set; }
+        public bool IsAuthenticatedActive { get; set; }
     }
 }

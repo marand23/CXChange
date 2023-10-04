@@ -4,6 +4,7 @@
     {
         //enum range shoulbe be of format: 2XXX
         UserAlreadyExist = -2999,
-        UserUpdateVersionMismatch
+        EmailNotConfirmed,
+        EmailShouldNotBeConfirmed
     }
 }

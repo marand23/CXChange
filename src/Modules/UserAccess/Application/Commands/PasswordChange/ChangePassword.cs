@@ -1,10 +1,13 @@
-﻿namespace CXChange.Modules.UserAccess.Application.Commands.PasswordChange
+﻿using CXChange.BuildingBlocks.Application.Command;
+using CXChange.BuildingBlocks.Application.MessageInterfaces;
+
+namespace CXChange.Modules.UserAccess.Application.Commands.PasswordChange
 {
-    public record ChangePassword
+    public record ChangePassword : ICommandBase, IValidatable, IPersistable
     {
-        public string UserId { get; set; }
-        public string OldPassword { get; set; }
-        public string NewPassword { get; set; }
-        public string Token { get; set; }
+        public string UserId { get; init; }
+        public string OldPassword { get; init; }
+        public string NewPassword { get; init; }
+        public string Token { get; init; }
     }
 }

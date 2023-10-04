@@ -21,6 +21,8 @@
         Task<bool> CheckPassword(User.User user, string password);
         Task ResetAuthenticatorKey(User.User user);
         Task<string> GetAuthenticatorKey(User.User user);
+        Task<User.User> GetUserByEmail(string email);
+
 
     }
 }

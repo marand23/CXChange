@@ -10,7 +10,7 @@ namespace CXChange.Modules.UserAccess.Domain.User.DomainEvents
 
 
         }
-        public User User { get; private set; }
+        public User User { get; init; }
 
     }
 }

@@ -15,7 +15,7 @@ namespace CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegist
 
         public async Task Consume(ConsumeContext<UserRegisteredDomainEvent> context)
         {
-            await _sender.Send(context.Message.User, string.Concat(KeyWords.ConfirmRegister, context.Message.User.GetSnapShot().Id));
+            await _sender.Send(context.Message.User, CodeType.GeneratePurposeForDefaultTwoFactor(context.Message.User.GetSnapShot(), KeyWords.ConfirmRegister));
 
         }
     }

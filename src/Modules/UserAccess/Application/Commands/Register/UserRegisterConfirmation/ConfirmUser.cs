@@ -5,8 +5,8 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Register.UserRegister
 {
     public record ConfirmUser : IPersistable, IValidatable, ICommandBase
     {
-        public string PhoneNumber { get; set; }
-        public string VerificationCode { get; set; }
+        public string PhoneNumber { get; init; }
+        public string VerificationCode { get; init; }
 
     }
 }

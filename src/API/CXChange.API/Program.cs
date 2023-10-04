@@ -9,12 +9,13 @@ using FluentValidation;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
-              .WriteTo.Console().MinimumLevel.Error()
+              .WriteTo.Console().MinimumLevel.Information()
               // .WriteTo.Telegram("1136419874:AAEx8Vxxn_9j07zz_MoaeP3k1IotWQ9S2_U", "387581401", period: TimeSpan.FromSeconds(10), includeStackTrace: true, applicationName: "oooop")
               .CreateLogger();
 
 try
 {
+
     Log.Information("Starting web application");
 
     var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +49,7 @@ try
     var app = builder.Build();
 
     app.UseMiddleware<ExceptionHandlingMiddleware>();
+
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
@@ -56,6 +58,7 @@ try
     }
     app.UseHttpsRedirection();
     app.UseAuthorization();
+
     app.MapControllers();
 
     app.Run();

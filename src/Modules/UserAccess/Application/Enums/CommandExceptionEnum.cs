@@ -1,16 +1,29 @@
 ﻿namespace CXChange.Modules.UserAccess.Application.Enums
 {
-    internal enum CommandExceptionEnum
+    public enum CommandExceptionEnum
     {
         //enum error code should be in this format -1XXX
         VerificationCodeInvalid = -1999,
-        UserDoesNotExist,
+        UserNotFound,
         UserRegisterTokenNotValid,
         UserLoginTokenNotValid,
-        PasswordInvalid,
+        UserOrPasswordInvalid,
         EnterCodeFirst,
-        ValidateAuthenticatorCode,
-        ValidateVerificationCode
+        DuplicateUserName,
+        DefaultError,
+        OldPasswordInvalid,
+        IsNotAllowed,
+        PasswordTooShort,
+        IsLockedOut,
+        InvalidToken,
+        PhoneNumberDoesNotMatch,
+        EmaiDoesNotMatch,
+        PhoneNumberNotConfirmed,
+        EmailNotConfirmed,
+        EmailAlreadyConfirmed,
+        EmailNotFound,
+        PhoneNumberAlreadyConfirmed
+
 
     }
 }

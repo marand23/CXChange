@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 
 namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore
 {
@@ -35,6 +36,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore
 
             return null;
         }
+
         public async Task RemoveAsync(string key)
         {
             using (var scope = _services.BuildServiceProvider().CreateScope())
@@ -126,12 +128,13 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore
                     authenticationTicket.UserAgenetVersion = $"{clientInfo.UserAgent.Major}.{clientInfo.UserAgent.Minor}.{clientInfo.UserAgent.Patch}";
                     authenticationTicket.DeviceId = "device";
 
+
                 }
-                //send email to client about login with new device
+
                 await context.AuthenticationTickets.AddAsync(authenticationTicket);
 
                 await context.SaveChangesAsync();
-                //  var a = authenticationTicket.Id.ToString();
+
                 return token;
             }
         }
@@ -147,6 +150,21 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore
         private static AuthenticationTicket DeserializeFromBytes(byte[] source)
         {
             return source == null ? null : TicketSerializer.Default.Deserialize(source);
+        }
+
+    }
+    public static class AuthenticationTickeExtensiton
+    {
+        public static AuthenticationTicket AddEmailAndPhoneClaims(this AuthenticationTicket ticket, string PhoneNumber, string Email)
+        {
+            var claims = new[] { new Claim(ClaimTypes.MobilePhone,PhoneNumber),
+                new Claim(ClaimTypes.Email,Email)
+
+            };
+            var currentIdentity = ticket.Principal.Identities as ClaimsIdentity;
+            currentIdentity?.AddClaims(claims);
+            return ticket;
+
         }
     }
 }

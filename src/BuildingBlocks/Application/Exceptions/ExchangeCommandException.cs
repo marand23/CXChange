@@ -2,12 +2,13 @@
 {
     public class ExchangeCommandException : Exception
     {
-        public string Message { get; }
-        public Enum ErrorCode { get; }
-        public ExchangeCommandException(string message, Enum errorCode)
+        public string Message { get; set; }
+        public Enum ErrorCode { get; protected set; }
+        public ExchangeCommandException(Enum errorCode, string message)
         {
-            Message = message;
+
             ErrorCode = errorCode;
+            Message = message;
         }
     }
 }

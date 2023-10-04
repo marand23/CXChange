@@ -1,9 +1,11 @@
-﻿using CXChange.BuildingBlocks.Application.Exceptions;
+﻿using CXChange.BuildingBlocks.Application.Totp;
 using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.UserAccess.Application.Enums;
+using CXChange.Modules.UserAccess.Application.Exceptions;
 using CXChange.Modules.UserAccess.Application.Services.Interfaces;
 using CXChange.Modules.UserAccess.Application.Utils;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
+using CXChange.Modules.UserAccess.Domain.User;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
 
@@ -18,12 +20,14 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Login.ConfirmLogin
 
         IDomainEventDispatcher _dispatcher;
         IVerificationCodeFunctions _verifier;
-        public UserLoginConfirmHandler(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor, IDomainEventDispatcher dispatcher, IVerificationCodeFunctions verifier)
+        IAuthenticator _authenticator;
+        public UserLoginConfirmHandler(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor, IDomainEventDispatcher dispatcher, IVerificationCodeFunctions verifier, IAuthenticator authenticator)
         {
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
             _verifier = verifier;
             _dispatcher = dispatcher;
+            _authenticator = authenticator;
         }
         public async Task Consume(ConsumeContext<ConfirmUserLogin> context)
         {
@@ -31,21 +35,41 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Login.ConfirmLogin
             var user = await _userRepository.GetUserByPhoneNumber(context.Message.PhoneNumber);
             if (user == null)
             {
-                throw new ExchangeCommandException("user does not exist", CommandExceptionEnum.UserDoesNotExist);
+                throw new UserAccessCommandException(CommandExceptionEnum.UserNotFound);
+
 
             }
-            var tokenResult = await _userRepository.ValidateUserToken(user, context.Message.Token, KeyWords.CustomTokenProvider, string.Concat(KeyWords.LoginUser, context.Message.PhoneNumber));
+            var tokenResult = await _userRepository.ValidateUserToken(user, context.Message.Token, KeyWords.CustomTokenProvider, KeyWords.LoginUser);
             if (!tokenResult)
             {
-                throw new ExchangeCommandException("plase login first", CommandExceptionEnum.UserLoginTokenNotValid);
+                throw new UserAccessCommandException(CommandExceptionEnum.UserLoginTokenNotValid);
 
+            }
+            bool codeResult = false;
+            if (user.GetSnapShot().ActiveTwoFactor == TwoFactorEnum.AUTHENTICATOR)
+            {
+                var key = await _userRepository.GetAuthenticatorKey(user);
+                codeResult = _authenticator.ValidateTwoFactorPIN(key, context.Message.VerificationCode, TimeSpan.FromSeconds(30));
+            }
+            else
+            {
+
+                codeResult = _verifier.Verify(user, int.Parse(context.Message.VerificationCode), CodeType.GeneratePurposeForDefaultTwoFactor(user.GetSnapShot(), KeyWords.LoginUser));
+            }
+            ;
+            if (!codeResult)
+            {
+                throw new UserAccessCommandException(CommandExceptionEnum.VerificationCodeInvalid);
             }
 
             user.ConfirmUserLogin();
             await _userRepository.SignIn(user);
             var token = (string)_httpContextAccessor.HttpContext.Items["token"];
+            user.UpdateSecurityStamp();
+            await _userRepository.Update(user);
+            /*await*/
             await _dispatcher.Dispatch(user.DomainEvents);
-            //update user securtiy stamp
+
             await context.RespondAsync(new UserLoginConfirmed { Token = token });
         }
     }

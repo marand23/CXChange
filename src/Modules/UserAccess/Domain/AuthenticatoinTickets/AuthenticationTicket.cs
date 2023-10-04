@@ -1,6 +1,8 @@
-﻿namespace CXChange.Modules.UserAccess.Domain.AuthenticatoinTickets
+﻿using CXChange.BuildingBlocks.Domain;
+
+namespace CXChange.Modules.UserAccess.Domain.AuthenticatoinTickets
 {
-    public class AuthenticationTicket
+    public class AuthenticationTicket : Entity, IAggregateRoot
     {
         private string Id { get; set; }
         private string UserId { get; set; }

@@ -7,7 +7,7 @@ namespace CXChange.API.Modules.UserManagment
 {
     [Route("api/auth/[controller]")]
     [ApiController]
-    // [Authorize(AuthenticationSchemes = "CustomScheme")]
+
     public class RegisterController : ExchangeControllerBase
     {
 
@@ -31,6 +31,7 @@ namespace CXChange.API.Modules.UserManagment
 
             return await ReturnResponse<ConfirmUser, UserConfirmed>(new ConfirmUser { PhoneNumber = request.PhoneNumber, VerificationCode = request.VerificationCode });
         }
+
 
 
 

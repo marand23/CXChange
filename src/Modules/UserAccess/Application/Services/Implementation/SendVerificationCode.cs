@@ -16,7 +16,7 @@ namespace CXChange.Modules.UserAccess.Application.Services.Implementation
         {
 
             var snapShot = user.GetSnapShot();
-            if (snapShot.DefaultTwoFactor == "Authenticator")
+            if (snapShot.ActiveTwoFactor == TwoFactorEnum.AUTHENTICATOR)
             {
                 await Task.CompletedTask;
                 return;
@@ -26,9 +26,9 @@ namespace CXChange.Modules.UserAccess.Application.Services.Implementation
             await _bus.Publish(new UserAccessSendVerificationIntegrationEvent
             {
 
-                Destination = snapShot.DefaultTwoFactor == "SMS" ? snapShot.PhoneNumber : snapShot.Email,
+                Destination = snapShot.ActiveTwoFactor == TwoFactorEnum.SMS ? snapShot.PhoneNumber : snapShot.Email,
                 VerificationCode = verificationCode,
-                DestinationType = snapShot.DefaultTwoFactor == "SMS" ? DestinationType.Phone : DestinationType.Email
+                DestinationType = snapShot.ActiveTwoFactor == TwoFactorEnum.SMS ? DestinationType.Phone : DestinationType.Email
             });
             Console.WriteLine("code sended:" + verificationCode);
 

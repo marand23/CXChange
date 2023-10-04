@@ -2,7 +2,7 @@
 
 namespace CXChange.Modules.UserAccess.Application.Commands.Login.UserLogin
 {
-    internal class CheckUserLoginValidator : AbstractValidator<CheckUserLogin>
+    public class CheckUserLoginValidator : AbstractValidator<CheckUserLogin>
     {
         public CheckUserLoginValidator()
         {

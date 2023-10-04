@@ -1,18 +1,33 @@
 ﻿using CXChange.API.Modules.UserManagment.SuccessMessages.Register;
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CXChange.API
 {
     public class ExchangeControllerBase : ControllerBase
     {
         private IMediator _mediator;
-        private string UserId;
+        private string _cachedUserId;
+
+        protected string UserId
+        {
+            get
+            {
+                if (_cachedUserId == null)
+                {
+                    _cachedUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                }
+                return _cachedUserId;
+            }
+        }
+
         public ExchangeControllerBase(IMediator mediator)
         {
             _mediator = mediator;
 
         }
+
         private async Task<TResponse> GetMediatorResponse<TRequest, TResponse>(TRequest request) where TRequest : class where TResponse : class
         {
 

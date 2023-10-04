@@ -1,6 +1,6 @@
-﻿using CXChange.BuildingBlocks.Application.Exceptions;
-using CXChange.BuildingBlocks.Application.Totp;
+﻿using CXChange.BuildingBlocks.Application.Totp;
 using CXChange.Modules.UserAccess.Application.Enums;
+using CXChange.Modules.UserAccess.Application.Exceptions;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using MassTransit;
 
@@ -21,7 +21,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Authenticator.Authent
             var user = await _repo.GetUserById(context.Message.UserId);
             if (user == null)
             {
-                throw new ExchangeCommandException("user does not exist", CommandExceptionEnum.UserDoesNotExist);
+                throw new UserAccessCommandException(CommandExceptionEnum.UserNotFound);
 
             }
             await _repo.ResetAuthenticatorKey(user);

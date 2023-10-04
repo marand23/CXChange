@@ -25,7 +25,7 @@ namespace CXChange.Modules.UserManagment.Infrastructure.Utils
                 return builder.ToString();
             }
         }
-        public static string GenerateRandomToken(this int length)
+        public static string GenerateRandomToken(int length)
         {
 
             var randomNumber = new byte[length];

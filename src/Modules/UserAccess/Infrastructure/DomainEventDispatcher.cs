@@ -1,17 +1,20 @@
 ﻿using CXChange.BuildingBlocks.Domain;
+using MassTransit.Mediator;
 
 namespace CXChange.Modules.UserAccess.Infrastructure
 {
     internal class DomainEventDispatcher : IDomainEventDispatcher
     {
-        MassTransit.Mediator.IMediator mediator;
-        public DomainEventDispatcher(MassTransit.Mediator.IMediator mediator)
+        IScopedMediator mediator;
+
+        public DomainEventDispatcher(IScopedMediator mediator)
         {
             this.mediator = mediator;
 
+
+
         }
 
-        private readonly List<IDomainEventProvider> providers;
 
 
         public Task Dispatch(List<IDomainEvent> domainEvents)

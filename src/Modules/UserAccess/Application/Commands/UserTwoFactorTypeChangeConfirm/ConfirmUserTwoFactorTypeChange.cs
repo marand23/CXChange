@@ -1,9 +1,11 @@
-﻿namespace CXChange.Modules.UserAccess.Application.Commands.UserTwoFactorTypeChangeConfirm
+﻿using CXChange.BuildingBlocks.Application.MessageInterfaces;
+
+namespace CXChange.Modules.UserAccess.Application.Commands.UserTwoFactorTypeChangeConfirm
 {
-    public record ConfirmUserTwoFactorTypeChange
+    public record ConfirmUserTwoFactorTypeChange : IPersistable
     {
-        public string UserId { get; set; }
-        public string NewTwoFactorType { get; set; }
-        public string Token { get; set; }
+        public string UserId { get; init; }
+        public int NewTwoFactorType { get; init; }
+        public string Token { get; init; }
     }
 }

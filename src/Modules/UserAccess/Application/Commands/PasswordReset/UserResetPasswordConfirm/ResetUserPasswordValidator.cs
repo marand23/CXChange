@@ -2,7 +2,7 @@
 
 namespace CXChange.Modules.UserAccess.Application.Commands.PasswordReset.UserResetPasswordConfirm
 {
-    internal class ResetUserPasswordValidator : AbstractValidator<ResetUserPasswordConfirm>
+    public class ResetUserPasswordValidator : AbstractValidator<ResetUserPasswordConfirm>
     {
         public ResetUserPasswordValidator()
         {

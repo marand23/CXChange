@@ -23,6 +23,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
             return await userManager.FindByNameAsync(userName);
 
 
+
         }
         public async Task<IdentityResult> CreateAsync(AppUser user, string password)
         {
@@ -123,5 +124,21 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         {
             return await userManager.GetAuthenticatorKeyAsync(user);
         }
+
+        public async Task<AppUser> GetUserByEmail(string email)
+        {
+            return await userManager.FindByEmailAsync(email);
+        }
+
+        public async Task<IdentityResult> SetAuthenticationTokenAsync(AppUser user, string loginProvider, string tokenName, string? tokenValue)
+        {
+            return await userManager.SetAuthenticationTokenAsync(user, loginProvider, tokenName, tokenValue);
+        }
+
+        public Task<int> MaxFailedAccessAttemps()
+        {
+            return Task.FromResult(userManager.Options.Lockout.MaxFailedAccessAttempts);
+        }
+
     }
 }

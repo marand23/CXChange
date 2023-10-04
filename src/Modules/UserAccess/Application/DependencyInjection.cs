@@ -6,12 +6,16 @@ using CXChange.Modules.UserAccess.Application.Commands.EmailActivate;
 using CXChange.Modules.UserAccess.Application.Commands.Login.ConfirmLogin;
 using CXChange.Modules.UserAccess.Application.Commands.Login.UserLogin;
 using CXChange.Modules.UserAccess.Application.Commands.PasswordReset.UserResetPasswordCofirm;
+using CXChange.Modules.UserAccess.Application.Commands.PasswordReset.UserResetPasswordVerifCode;
 using CXChange.Modules.UserAccess.Application.Commands.Register.UserRegisterConfirmation;
 using CXChange.Modules.UserAccess.Application.Commands.Register.UserRegistration;
 using CXChange.Modules.UserAccess.Application.Commands.UserDeletion;
-using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.CodeSendToAuthenticatedUser;
+using CXChange.Modules.UserAccess.Application.Commands.UserTwoFactorTypeChangeConfirm;
 using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.CodeSendToUnAuthenticatedUser;
-using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.CodeValidate;
+using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.EmailCodeSend;
+using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.EmailCodeValidate;
+using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.PhoneNumberCodeValidate;
+using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserPasswordResetDomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegisteredDomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegistrationConfirmedDomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.Queries.Users;
@@ -50,17 +54,28 @@ namespace CXChange.Modules.UserAccess.Application
 
             cfg.AddConsumer<RegisterUserHandler>(c =>
             {
-                c.UseMessageRetry(c =>
-                {
-                    c.Immediate(2);
-                    c.Ignore(typeof(NotImplementedException));
-                });
+                //c.UseMessageRetry(c =>
+                //{
+                //    c.Immediate(2);
+                //    c.Ignore(typeof(NotImplementedException));
+                //});
 
 
             });
-            cfg.AddConsumer<SendCodeToAuthenticatedUserHandler>();
-            cfg.AddConsumer<SendCodeToUnAuthenticatedUserHandler>();
+            cfg.AddConsumer<ResetUserPasswordHandler>(c =>
+            {
+                // c.UseDelayedRedelivery(r => r.Intervals(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2), TimeSpan.FromMinutes(3)));
 
+                //c.UseMessageRetry(c =>
+                //{
+                //    c.Immediate(2);
+                //});
+            });
+            cfg.AddConsumer<VerifyResetPasswordCodeHandler>();
+            cfg.AddConsumer<SendCodeToPhoneNumberHandler>();
+            cfg.AddConsumer<SendCodeToEmailHandler>();
+            cfg.AddConsumer<SendCodeToPhoneNumberHandler>();
+            cfg.AddConsumer<RevokeAuthenticationTicketsHandler>();
             cfg.AddConsumer<SendVerificationSmsHandler>();
             cfg.AddConsumer<SendUserRegistrationConfirmedNotificationHandler>();
             cfg.AddConsumer<GetUsersQueryHandler>();
@@ -71,12 +86,14 @@ namespace CXChange.Modules.UserAccess.Application
             cfg.AddConsumer<ActivateEmailHandler>();
             cfg.AddConsumer<ResetUserPasswordHandler>();
             cfg.AddConsumer<InitiateAuthenticatorHandler>();
-            cfg.AddConsumer<ValidateCodeHandler>();
+            cfg.AddConsumer<ValidateEmailCodeHandler>();
+            cfg.AddConsumer<ValidatePhoneNumberCodeHandler>();
             cfg.AddConsumer<ConfirmAuthenticatorHandler>();
+            cfg.AddConsumer<ConfirmUserTwoFactorTypeChangeHandler>();
 
             cfg.ConfigureMediator((context, mcfg) =>
             {
-                mcfg.UseConsumeFilter(typeof(LoggingFilter<>), context);
+                //mcfg.UseConsumeFilter(typeof(LoggingFilter<>), context);
 
                 mcfg.UseConsumeFilter(typeof(ValidationFilter<>), context, x =>
                 {

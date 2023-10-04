@@ -2,6 +2,6 @@
 {
     public record UserLoginConfirmed
     {
-        public string Token { get; set; }
+        public string Token { get; init; }
     }
 }

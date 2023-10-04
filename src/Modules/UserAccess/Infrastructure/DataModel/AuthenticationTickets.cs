@@ -10,7 +10,13 @@
         public string RemoteIpAddress { get; set; }
         public string OS { get; set; }
         public string UserAgentFamily { get; set; }
+
         public string UserAgenetVersion { get; set; }
+
+
+
+
+        public byte[] Version { get; set; }
         public DateTimeOffset? LastActivity { get; set; }
         public DateTimeOffset? Expires { get; set; }
     }

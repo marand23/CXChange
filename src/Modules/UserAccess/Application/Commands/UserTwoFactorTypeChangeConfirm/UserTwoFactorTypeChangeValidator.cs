@@ -7,7 +7,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserTwoFactorTypeChan
         public ConfirmUserTwoFactorTypeChangeValidator()
         {
             RuleFor(x => x.UserId).UserId();
-            RuleFor(x => x.NewTwoFactorType).TwoFactorType();
+            //RuleFor(x => x.NewTwoFactorType).TwoFactorType();
         }
     }
 }

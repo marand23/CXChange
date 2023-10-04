@@ -3,9 +3,9 @@
     public class UserAccessSendVerificationIntegrationEvent
     {
         //email or phone number
-        public string Destination { get; set; }
-        public DestinationType DestinationType { get; set; }
-        public string VerificationCode { get; set; }
+        public string Destination { get; init; }
+        public DestinationType DestinationType { get; init; }
+        public string VerificationCode { get; init; }
     }
     public enum DestinationType
     {

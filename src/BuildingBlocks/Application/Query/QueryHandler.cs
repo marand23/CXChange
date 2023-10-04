@@ -46,6 +46,11 @@ namespace CXChange.BuildingBlocks.Application.Query
             var result = await _connection.GetOpenConnection().QueryAsync<TResponse>(temp.RawSql, temp.Parameters);
             return result;
         }
+        public async Task<TResponse> FirstOrDefaultAsync(string sqlQuery)
+        {
+
+            return await _connection.GetOpenConnection().QueryFirstOrDefaultAsync<TResponse>(sqlQuery);
+        }
 
 
 

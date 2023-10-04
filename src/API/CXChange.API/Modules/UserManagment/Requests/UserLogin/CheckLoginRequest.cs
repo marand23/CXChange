@@ -2,7 +2,8 @@
 {
     public record CheckLoginRequest
     {
-        public string PhoneNumber { get; set; }
-        public string Password { get; set; }
+        public string PhoneNumber { get; init; }
+        public string Password { get; init; }
+
     }
 }

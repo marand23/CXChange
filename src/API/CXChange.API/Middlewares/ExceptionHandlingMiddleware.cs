@@ -21,6 +21,8 @@ namespace CXChange.API.Middlewares
         {
             try
             {
+                //   var body = await System.Text.Json.JsonSerializer.DeserializeAsync<JsonElement>(context.Request.Body);
+                // Console.WriteLine(body);
                 await _next(context);
             }
 

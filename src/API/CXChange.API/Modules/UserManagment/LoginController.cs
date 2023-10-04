@@ -20,6 +20,10 @@ namespace CXChange.API.Modules.UserManagment
         [HttpPost("")]
         public async Task<ActionResult<UserLoginChecked>> Login(CheckLoginRequest request)
         {
+            var a = new CheckLoginRequest
+            {
+                PhoneNumber = request.PhoneNumber,
+            };
             return await ReturnResponse<CheckUserLogin, UserLoginChecked>(new CheckUserLogin { PhoneNumber = request.PhoneNumber, Password = request.Password });
         }
         [HttpPost("confirm")]

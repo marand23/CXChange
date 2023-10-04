@@ -18,7 +18,7 @@ namespace CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserLoginC
 
         public async Task Consume(ConsumeContext<UserLoginCheckedDomainEvent> context)
         {
-            await _sender.Send(context.Message.User, string.Concat(KeyWords.LoginUser, context.Message.User.GetSnapShot().Id));
+            await _sender.Send(context.Message.User, CodeType.GeneratePurposeForDefaultTwoFactor(context.Message.User.GetSnapShot(), KeyWords.LoginUser));
 
 
         }
