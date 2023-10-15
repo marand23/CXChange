@@ -1,6 +1,6 @@
 ﻿namespace CXChange.API.Modules.UserManagment.Requests.TwoFactor
 {
-    public record ActivateEmailRequest
+    public record ConfrimAuthenticatorRequest
     {
 
         public string Email { get; set; }

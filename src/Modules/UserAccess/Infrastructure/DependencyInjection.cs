@@ -30,13 +30,14 @@ namespace CXChange.Modules.UserAccess.Infrastructure
 
             services.AddDbContext<UserManagementDbContext>(options =>
             {
+                //  options.UseSqlServer(connectionString);
                 options.UseMySql(connectionString, serverVersion, b =>
-                {
-                    b.SchemaBehavior(MySqlSchemaBehavior.Translate, (schema, entity) => $"{schema ?? "dbo"}.{entity}");
-                    b.MigrationsHistoryTable("__EFMigrationsHistory", "UserAccess");
-                });
-                options.UseSnakeCaseNamingConvention();
+                 {
+                     b.SchemaBehavior(MySqlSchemaBehavior.Translate, (schema, entity) => $"{schema ?? "dbo"}.{entity}");
+                     b.MigrationsHistoryTable("__EFMigrationsHistory", "UserAccess");
 
+
+                 });
 
 
 

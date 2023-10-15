@@ -7,6 +7,6 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Login.ConfirmLogin
     {
         public string PhoneNumber { get; init; }
         public string Token { get; init; }
-        public string VerificationCode { get; init; }
+        public string Code { get; init; }
     }
 }

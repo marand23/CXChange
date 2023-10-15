@@ -23,86 +23,67 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Migrations
             modelBuilder.Entity("CXChange.Modules.UserAccess.Infrastructure.DataModel.AppUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("id");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int")
-                        .HasColumnName("access_failed_count");
+                        .HasColumnType("int");
 
                     b.Property<int>("ActiveTwoFactor")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("active_two_factor");
+                        .HasDefaultValue(0);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext")
-                        .HasColumnName("concurrency_stamp");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("email");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("email_confirmed");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsAuthenticatorEnabled")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("is_authenticator_enabled");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("lockout_enabled");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("lockout_end");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("normalized_email");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("normalized_user_name");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext")
-                        .HasColumnName("password_hash");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("phone_number");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("phone_number_confirmed");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("longtext")
-                        .HasColumnName("security_stamp");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("two_factor_enabled");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("user_name");
+                        .HasColumnType("varchar(256)");
 
-                    b.HasKey("Id")
-                        .HasName("pk_asp_net_users");
+                    b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique()
-                        .HasDatabaseName("ix_asp_net_users_email");
+                        .IsUnique();
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -112,8 +93,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.HasIndex("PhoneNumber")
-                        .IsUnique()
-                        .HasDatabaseName("ix_asp_net_users_phone_number");
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers", "UserAccess");
                 });
@@ -122,502 +102,342 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(128)
-                        .HasColumnType("varchar(128)")
-                        .HasColumnName("id");
+                        .HasColumnType("varchar(128)");
 
                     b.Property<string>("DeviceId")
                         .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("device_id");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTimeOffset?>("Expires")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("expires");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTimeOffset?>("LastActivity")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("last_activity");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("OS")
                         .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("os");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("RemoteIpAddress")
                         .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("remote_ip_address");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UserAgenetVersion")
                         .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("user_agenet_version");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UserAgentFamily")
                         .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("user_agent_family");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("user_id");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<byte[]>("Value")
                         .IsRequired()
-                        .HasColumnType("longblob")
-                        .HasColumnName("value");
+                        .HasColumnType("longblob");
 
                     b.Property<DateTime>("Version")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp(6)")
-                        .HasColumnName("version");
+                        .HasColumnType("timestamp(6)");
 
-                    b.HasKey("Id")
-                        .HasName("pk_authentication_tickets");
+                    b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_authentication_tickets_user_id");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("authentication_tickets", "UserAccess");
+                    b.ToTable("AuthenticationTickets", "UserAccess");
                 });
 
             modelBuilder.Entity("MassTransit.EntityFrameworkCoreIntegration.InboxState", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("Consumed")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("consumed");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("ConsumerId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("consumer_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("Delivered")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("delivered");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("ExpirationTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("expiration_time");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<long?>("LastSequenceNumber")
-                        .HasColumnType("bigint")
-                        .HasColumnName("last_sequence_number");
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("LockId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("lock_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("MessageId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("message_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("ReceiveCount")
-                        .HasColumnType("int")
-                        .HasColumnName("receive_count");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Received")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("received");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp(6)")
-                        .HasColumnName("row_version");
+                        .HasColumnType("timestamp(6)");
 
-                    b.HasKey("Id")
-                        .HasName("pk_inbox_state");
+                    b.HasKey("Id");
 
-                    b.HasAlternateKey("MessageId", "ConsumerId")
-                        .HasName("ak_inbox_state_message_id_consumer_id");
+                    b.HasAlternateKey("MessageId", "ConsumerId");
 
-                    b.HasIndex("Delivered")
-                        .HasDatabaseName("ix_inbox_state_delivered");
+                    b.HasIndex("Delivered");
 
-                    b.ToTable("inbox_state", "UserAccess");
+                    b.ToTable("InboxState", "UserAccess");
                 });
 
             modelBuilder.Entity("MassTransit.EntityFrameworkCoreIntegration.OutboxMessage", b =>
                 {
                     b.Property<long>("SequenceNumber")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("sequence_number");
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Body")
                         .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("body");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ContentType")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("content_type");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<Guid?>("ConversationId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("conversation_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("CorrelationId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("correlation_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("DestinationAddress")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("destination_address");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<DateTime?>("EnqueueTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("enqueue_time");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("ExpirationTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("expiration_time");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("FaultAddress")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("fault_address");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("Headers")
-                        .HasColumnType("longtext")
-                        .HasColumnName("headers");
+                        .HasColumnType("longtext");
 
                     b.Property<Guid?>("InboxConsumerId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("inbox_consumer_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("InboxMessageId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("inbox_message_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("InitiatorId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("initiator_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("MessageId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("message_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("OutboxId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("outbox_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Properties")
-                        .HasColumnType("longtext")
-                        .HasColumnName("properties");
+                        .HasColumnType("longtext");
 
                     b.Property<Guid?>("RequestId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("request_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("ResponseAddress")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("response_address");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<DateTime>("SentTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("sent_time");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("SourceAddress")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("source_address");
+                        .HasColumnType("varchar(256)");
 
-                    b.HasKey("SequenceNumber")
-                        .HasName("pk_outbox_message");
+                    b.HasKey("SequenceNumber");
 
-                    b.HasIndex("EnqueueTime")
-                        .HasDatabaseName("ix_outbox_message_enqueue_time");
+                    b.HasIndex("EnqueueTime");
 
-                    b.HasIndex("ExpirationTime")
-                        .HasDatabaseName("ix_outbox_message_expiration_time");
+                    b.HasIndex("ExpirationTime");
 
                     b.HasIndex("OutboxId", "SequenceNumber")
-                        .IsUnique()
-                        .HasDatabaseName("ix_outbox_message_outbox_id_sequence_number");
+                        .IsUnique();
 
                     b.HasIndex("InboxMessageId", "InboxConsumerId", "SequenceNumber")
-                        .IsUnique()
-                        .HasDatabaseName("ix_outbox_message_inbox_message_id_inbox_consumer_id_sequence_n");
+                        .IsUnique();
 
-                    b.ToTable("outbox_message", "UserAccess");
+                    b.ToTable("OutboxMessage", "UserAccess");
                 });
 
             modelBuilder.Entity("MassTransit.EntityFrameworkCoreIntegration.OutboxState", b =>
                 {
                     b.Property<Guid>("OutboxId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
-                        .HasColumnName("outbox_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("created");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("Delivered")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("delivered");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<long?>("LastSequenceNumber")
-                        .HasColumnType("bigint")
-                        .HasColumnName("last_sequence_number");
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("LockId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("lock_id");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp(6)")
-                        .HasColumnName("row_version");
+                        .HasColumnType("timestamp(6)");
 
-                    b.HasKey("OutboxId")
-                        .HasName("pk_outbox_state");
+                    b.HasKey("OutboxId");
 
-                    b.HasIndex("Created")
-                        .HasDatabaseName("ix_outbox_state_created");
+                    b.HasIndex("Created");
 
-                    b.ToTable("outbox_state", "UserAccess");
+                    b.ToTable("OutboxState", "UserAccess");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("id");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext")
-                        .HasColumnName("concurrency_stamp");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("name");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("normalized_name");
+                        .HasColumnType("varchar(256)");
 
-                    b.HasKey("Id")
-                        .HasName("pk_asp_net_roles");
+                    b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("asp_net_roles", "UserAccess");
+                    b.ToTable("AspNetRoles", "UserAccess");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("int");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext")
-                        .HasColumnName("claim_type");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext")
-                        .HasColumnName("claim_value");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("role_id");
+                        .HasColumnType("varchar(255)");
 
-                    b.HasKey("Id")
-                        .HasName("pk_asp_net_role_claims");
+                    b.HasKey("Id");
 
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_asp_net_role_claims_role_id");
+                    b.HasIndex("RoleId");
 
-                    b.ToTable("asp_net_role_claims", "UserAccess");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("id");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int")
-                        .HasColumnName("access_failed_count");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("longtext")
-                        .HasColumnName("concurrency_stamp");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("longtext")
-                        .HasColumnName("email");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("email_confirmed");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("lockout_enabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("lockout_end");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("longtext")
-                        .HasColumnName("normalized_email");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("longtext")
-                        .HasColumnName("normalized_user_name");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext")
-                        .HasColumnName("password_hash");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext")
-                        .HasColumnName("phone_number");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("phone_number_confirmed");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("longtext")
-                        .HasColumnName("security_stamp");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("two_factor_enabled");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("longtext")
-                        .HasColumnName("user_name");
-
-                    b.HasKey("Id")
-                        .HasName("pk_asp_net_users");
-
-                    b.ToTable("asp_net_users", "UserAccess");
+                    b.ToTable("AspNetRoleClaims", "UserAccess");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("int");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext")
-                        .HasColumnName("claim_type");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext")
-                        .HasColumnName("claim_value");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("user_id");
+                        .HasColumnType("varchar(255)");
 
-                    b.HasKey("Id")
-                        .HasName("pk_asp_net_user_claims");
+                    b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_asp_net_user_claims_user_id");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("asp_net_user_claims", "UserAccess");
+                    b.ToTable("AspNetUserClaims", "UserAccess");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("login_provider");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("provider_key");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("longtext")
-                        .HasColumnName("provider_display_name");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("user_id");
+                        .HasColumnType("varchar(255)");
 
-                    b.HasKey("LoginProvider", "ProviderKey")
-                        .HasName("pk_asp_net_user_logins");
+                    b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_asp_net_user_logins_user_id");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("asp_net_user_logins", "UserAccess");
+                    b.ToTable("AspNetUserLogins", "UserAccess");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("user_id");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("role_id");
+                        .HasColumnType("varchar(255)");
 
-                    b.HasKey("UserId", "RoleId")
-                        .HasName("pk_asp_net_user_roles");
+                    b.HasKey("UserId", "RoleId");
 
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_asp_net_user_roles_role_id");
+                    b.HasIndex("RoleId");
 
-                    b.ToTable("asp_net_user_roles", "UserAccess");
+                    b.ToTable("AspNetUserRoles", "UserAccess");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("user_id");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("login_provider");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("name");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("longtext")
-                        .HasColumnName("value");
+                        .HasColumnType("longtext");
 
-                    b.HasKey("UserId", "LoginProvider", "Name")
-                        .HasName("pk_asp_net_user_tokens");
+                    b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("asp_net_user_tokens", "UserAccess");
+                    b.ToTable("AspNetUserTokens", "UserAccess");
                 });
 
             modelBuilder.Entity("CXChange.Modules.UserAccess.Infrastructure.DataModel.AuthenticationTickets", b =>
@@ -626,8 +446,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_authentication_tickets_users_user_id");
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -638,8 +457,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_role_claims_asp_net_roles_role_id");
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -648,8 +466,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_claims_asp_net_users_user_id");
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -658,8 +475,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_logins_asp_net_users_user_id");
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -668,15 +484,13 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_roles_asp_net_roles_role_id");
+                        .IsRequired();
 
                     b.HasOne("CXChange.Modules.UserAccess.Infrastructure.DataModel.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_roles_asp_net_users_user_id");
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -685,8 +499,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id");
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,4 @@
-﻿using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.PhoneNumberCodeSend;
-using CXChange.Modules.UserAccess.Application.Enums;
+﻿using CXChange.Modules.UserAccess.Application.Enums;
 using CXChange.Modules.UserAccess.Application.Exceptions;
 using CXChange.Modules.UserAccess.Application.Services.Interfaces;
 using CXChange.Modules.UserAccess.Application.Utils;
@@ -7,7 +6,7 @@ using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using CXChange.Modules.UserAccess.Domain.User;
 using MassTransit;
 
-namespace CXChange.Modules.UserAccess.Application.Commands.VerificationCode.CodeSendToUnAuthenticatedUser
+namespace CXChange.Modules.UserAccess.Application.Commands.VerificationCode.PhoneNumberCodeSend
 {
     internal class SendCodeToPhoneNumberHandler : IConsumer<SendCodeToPhoneNumber>
     {

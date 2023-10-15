@@ -7,7 +7,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Login.ConfirmLogin
         public ConfirmUserLoginValidator()
         {
             RuleFor(x => x.PhoneNumber).PhoneNumber();
-            RuleFor(x => x.VerificationCode).VerificationCode();
+            RuleFor(x => x.Code).VerificationCode();
             RuleFor(x => x.Token).UserToken();
         }
     }

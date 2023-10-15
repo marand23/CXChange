@@ -2,8 +2,11 @@
 
 namespace CXChange.Modules.UserAccess.Application.Queries.UserGet
 {
-    public record GetUser : IQueryBase
+    public record GetUser : IQueryBase /*IFilteredQuery*/
     {
-        public string UserId { get; set; }
+
+
+        //  public List<FilterItem> Filters { get; set; }
+
     }
 }

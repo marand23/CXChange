@@ -1,7 +1,7 @@
 ﻿using CXChange.BuildingBlocks.Application.Data;
 using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace CXChange.CoreElements.Infrastructure
 {
@@ -17,7 +17,8 @@ namespace CXChange.CoreElements.Infrastructure
 
         public IDbConnection CreateNewConnection()
         {
-            var connection = new SqlConnection(_connectionString);
+            //var connection = new MySqlConnection(_connectionString);
+            var connection = _connection;
             connection.Open();
 
             return connection;
@@ -27,7 +28,8 @@ namespace CXChange.CoreElements.Infrastructure
         {
             if (this._connection == null || this._connection.State != ConnectionState.Open)
             {
-                this._connection = new SqlConnection(_connectionString);
+                // this._connection = new SqlConnection(_connectionString);
+                this._connection = new MySqlConnection(_connectionString);
                 this._connection.Open();
             }
 

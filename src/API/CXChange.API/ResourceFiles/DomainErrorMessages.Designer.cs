@@ -61,15 +61,6 @@ namespace CXChange.API.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1.
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to wef.
         /// </summary>
         internal static string String10 {
@@ -156,6 +147,15 @@ namespace CXChange.API.ResourceFiles {
         internal static string String9 {
             get {
                 return ResourceManager.GetString("String9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to کاربر ثبت نام کرده.
+        /// </summary>
+        internal static string UserAlreadyExist {
+            get {
+                return ResourceManager.GetString("UserAlreadyExist", resourceCulture);
             }
         }
     }

@@ -49,12 +49,12 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Login.ConfirmLogin
             if (user.GetSnapShot().ActiveTwoFactor == TwoFactorEnum.AUTHENTICATOR)
             {
                 var key = await _userRepository.GetAuthenticatorKey(user);
-                codeResult = _authenticator.ValidateTwoFactorPIN(key, context.Message.VerificationCode, TimeSpan.FromSeconds(30));
+                codeResult = _authenticator.ValidateTwoFactorPIN(key, context.Message.Code, TimeSpan.FromSeconds(30));
             }
             else
             {
 
-                codeResult = _verifier.Verify(user, int.Parse(context.Message.VerificationCode), CodeType.GeneratePurposeForDefaultTwoFactor(user.GetSnapShot(), KeyWords.LoginUser));
+                codeResult = _verifier.Verify(user, int.Parse(context.Message.Code), CodeType.GeneratePurposeForDefaultTwoFactor(user.GetSnapShot(), KeyWords.LoginUser));
             }
             ;
             if (!codeResult)

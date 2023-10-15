@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="String1" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="String10" xml:space="preserve">
     <value>wef</value>
   </data>
@@ -149,5 +146,8 @@
   </data>
   <data name="String9" xml:space="preserve">
     <value>wef</value>
+  </data>
+  <data name="UserAlreadyExist" xml:space="preserve">
+    <value>کاربر ثبت نام کرده</value>
   </data>
 </root>

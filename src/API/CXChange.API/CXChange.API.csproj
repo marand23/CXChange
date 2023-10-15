@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    
+
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Scrutor" />
@@ -22,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\Contract\CXChange.BuildingBlocks.Contract.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\Infrastructure\CXChange.BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\UserAccess\Application\CXChange.Modules.UserAccess.Application.csproj" />
     <ProjectReference Include="..\..\Modules\UserAccess\Infrastructure\CXChange.Modules.UserAccess.Infrastructure.csproj" />

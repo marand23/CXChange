@@ -11,13 +11,14 @@ using CXChange.Modules.UserAccess.Application.Commands.Register.UserRegisterConf
 using CXChange.Modules.UserAccess.Application.Commands.Register.UserRegistration;
 using CXChange.Modules.UserAccess.Application.Commands.UserDeletion;
 using CXChange.Modules.UserAccess.Application.Commands.UserTwoFactorTypeChangeConfirm;
-using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.CodeSendToUnAuthenticatedUser;
 using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.EmailCodeSend;
 using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.EmailCodeValidate;
+using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.PhoneNumberCodeSend;
 using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.PhoneNumberCodeValidate;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserPasswordResetDomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegisteredDomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegistrationConfirmedDomainEventHandlers;
+using CXChange.Modules.UserAccess.Application.Queries.UserGet;
 using CXChange.Modules.UserAccess.Application.Queries.Users;
 using CXChange.Modules.UserAccess.Application.Services.Implementation;
 using CXChange.Modules.UserAccess.Application.Services.Interfaces;
@@ -90,6 +91,7 @@ namespace CXChange.Modules.UserAccess.Application
             cfg.AddConsumer<ValidatePhoneNumberCodeHandler>();
             cfg.AddConsumer<ConfirmAuthenticatorHandler>();
             cfg.AddConsumer<ConfirmUserTwoFactorTypeChangeHandler>();
+            cfg.AddConsumer<GetUserHandler>();
 
             cfg.ConfigureMediator((context, mcfg) =>
             {

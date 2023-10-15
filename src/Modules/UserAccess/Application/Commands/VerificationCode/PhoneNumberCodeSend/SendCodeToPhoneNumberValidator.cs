@@ -1,5 +1,4 @@
-﻿using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.CodeSendToUnAuthenticatedUser;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace CXChange.Modules.UserAccess.Application.Commands.VerificationCode.PhoneNumberCodeSend
 {

@@ -3,5 +3,6 @@
     //querybase class
     public interface IQueryBase
     {
+
     }
 }

@@ -40,6 +40,8 @@ try
     ValidatorOptions.Global.LanguageManager = new CustomMessageManager();
 
 
+    builder.Services.AddMvc();
+
 
     builder.Services.RegisterCoreElementstInfrastructure();
 

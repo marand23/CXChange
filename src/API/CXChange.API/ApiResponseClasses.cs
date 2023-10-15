@@ -108,7 +108,7 @@ namespace CXChange.API
     }
     public enum status
     {
-        ServerError
+        ServerError = 500
     }
 
 

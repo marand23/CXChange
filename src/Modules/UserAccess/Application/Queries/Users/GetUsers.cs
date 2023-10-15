@@ -2,20 +2,35 @@
 
 namespace CXChange.Modules.UserAccess.Application.Queries.Users
 {
-    public class GetUsers : IQueryBase, IPagedQuery, IFilteredQuery
+    public record GetUsers : IQueryBase, /*IPageQyery,*/  IFilteredQuery<UserFilters>/*, IOrderableQuery,*/
     {
-        public GetUsers(int page, int pagesize, Dictionary<string, string> filter)
-        {
-            this.page = page;
-            this.pageSize = pagesize;
-            Query = filter;
-        }
-        public string Id { get; set; }
 
-        public int page { get; }
 
-        public int pageSize { get; }
+        public int Page { get; set; }
 
-        public Dictionary<string, string> Query { get; }
+        public int PageSize { get; set; }
+
+        public UserFilters Filters { get; set; }
     }
+    public class UserFilters
+    {
+        //public UserFilters(IFilterItem<string> phonenumber, IFilterItem<string> phoneNumberRange, IFilterItem<string> email, IFilterItem<bool> phoneNumberConfirmed)
+        //{
+        //    PhoneNumber = phonenumber;
+        //    PhoneNumberRange = phoneNumberRange;
+        //    Email = email;
+        //    PhoneNumberConfirmed = phoneNumberConfirmed;
+        //    PhoneNumberRange.OperationType = OperationType.Between;
+        //    // EmailConfirmed = new IFilterItem<bool>(OperationType.Equal);
+        //}
+        public IFilterItem<string> PhoneNumber { get; set; }
+        public IFilterItem<string> PhoneNumberRange { get; set; }
+        public IFilterItem<string> Email { get; set; }
+        public IFilterItem<bool> PhoneNumberConfirmed { get; set; }
+        public IFilterItem<bool> EmailConfirmed { get; set; }
+
+
+    }
+
+
 }

@@ -1,6 +1,4 @@
-﻿using CXChange.API.Modules.UserManagment.Requests.UserLogin;
-using CXChange.Modules.UserAccess.Application.Commands.Login.ConfirmLogin;
-using CXChange.Modules.UserAccess.Application.Commands.Login.UserLogin;
+﻿using CXChange.BuildingBlocks.Contract.Mapper;
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,26 +9,20 @@ namespace CXChange.API.Modules.UserManagment
     public class LoginController : ExchangeControllerBase
     {
 
-        public LoginController(IMediator mediator) : base(mediator)
+        public LoginController(IMediator mediator, IMapperService _mapper) : base(mediator, _mapper)
         {
-
-
         }
 
-        [HttpPost("")]
-        public async Task<ActionResult<UserLoginChecked>> Login(CheckLoginRequest request)
-        {
-            var a = new CheckLoginRequest
-            {
-                PhoneNumber = request.PhoneNumber,
-            };
-            return await ReturnResponse<CheckUserLogin, UserLoginChecked>(new CheckUserLogin { PhoneNumber = request.PhoneNumber, Password = request.Password });
-        }
-        [HttpPost("confirm")]
-        public async Task<ActionResult<UserLoginConfirmed>> ConfirmLogin(ConfirmLoginRequest request)
-        {
-            return await ReturnResponse<ConfirmUserLogin, UserLoginConfirmed>(new ConfirmUserLogin { PhoneNumber = request.PhoneNumber, Token = request.Token, VerificationCode = request.VerificationCode });
-        }
+        //[HttpPost("")]
+        //public async Task<ActionResult<UserLoginChecked>> Login(CheckLoginRequest request)
+        //{
+        //    return await ReturnResponse<CheckLoginRequest, CheckUserLogin, UserLoginChecked>(request);
+        //}
+        //[HttpPost("confirm")]
+        //public async Task<ActionResult<UserLoginConfirmed>> ConfirmLogin(ConfirmLoginRequest request)
+        //{
+        //    return await ReturnResponse<ConfirmLoginRequest, ConfirmUserLogin, UserLoginConfirmed>(request);
+        //}
 
 
     }

@@ -1,4 +1,4 @@
-﻿namespace CXChange.Modules.UserAccess.Application.Commands.VerificationCode.CodeSendToUnAuthenticatedUser
+﻿namespace CXChange.Modules.UserAccess.Application.Commands.VerificationCode.PhoneNumberCodeSend
 {
     public record SendCodeToPhoneNumber
     {

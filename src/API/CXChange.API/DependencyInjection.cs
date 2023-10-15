@@ -1,5 +1,8 @@
-﻿
+﻿using CXChange.API.Modules.UserManagment.Maps;
+using CXChange.API.Modules.UserManagment.Requests.User;
+using CXChange.BuildingBlocks.Contract.Mapper;
 using CXChange.Modules.UserAccess.Application;
+using CXChange.Modules.UserAccess.Application.Queries.Users;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +28,8 @@ namespace CXChange.API
                 //o.InvalidModelStateResponseFactory = actionContext =>
                 //    new UnprocessableEntityObjectResult(new ApiValidationErrorModel { message = "ValidationError", errors = actionContext.ModelState.ToDictionary(x => x.Key, x => x.Value.Errors.FirstOrDefault().ErrorMessage), success = false }); ;
             });
-
+            services.AddSingleton<IMapper<GetUsersRequest, GetUsers>, MapUsersReqToUsers>();
+            services.AddSingleton<IMapperService, MapService>();
 
         }
 
