@@ -1,4 +1,5 @@
 ﻿using CXChange.BuildingBlocks.Contract.Mapper;
+using MassTransit.Mediator;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CXChange.API.Modules.UserManagment
@@ -9,7 +10,7 @@ namespace CXChange.API.Modules.UserManagment
     public class RegisterController : ExchangeControllerBase
     {
 
-        public RegisterController(MassTransit.Mediator.IMediator mediator, IMapperService mapperService) : base(mediator, mapperService)
+        public RegisterController(IScopedMediator mediator, IMapperService mapperService) : base(mediator, mapperService)
         {
 
         }

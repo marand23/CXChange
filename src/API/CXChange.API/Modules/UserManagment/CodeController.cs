@@ -18,7 +18,7 @@ namespace CXChange.API.Modules.UserManagment
     public class CodeController : ExchangeControllerBase
     {
 
-        public CodeController(IMediator mediator, IMapperService _mapService) : base(mediator, _mapService)
+        public CodeController(IScopedMediator mediator, IMapperService _mapService) : base(mediator, _mapService)
         {
 
         }
@@ -62,7 +62,7 @@ namespace CXChange.API.Modules.UserManagment
         public async Task<ActionResult<UserList>> GetUsers(GetUsersRequest request)
         {
 
-            return await ReturnResponse<GetUsers, UserList>(_mapService.Map<GetUsersRequest, GetUsers>(request));
+            return await ReturnResponse<GetUsers, UserList>(_mapService.Map<GetUsersRequest, GetUsers>(request, "this is user id"));
         }
         //[HttpGet]
         //[Authorize(AuthenticationSchemes = "CustomScheme")]

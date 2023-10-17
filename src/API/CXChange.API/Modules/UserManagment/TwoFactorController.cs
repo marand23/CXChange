@@ -8,7 +8,7 @@ namespace CXChange.API.Modules.UserManagment
     [ApiController]
     public class TwoFactorController : ExchangeControllerBase
     {
-        public TwoFactorController(IMediator mediator, IMapperService _mapperService) : base(mediator, _mapperService)
+        public TwoFactorController(IScopedMediator mediator, IMapperService _mapperService) : base(mediator, _mapperService)
         {
         }
 

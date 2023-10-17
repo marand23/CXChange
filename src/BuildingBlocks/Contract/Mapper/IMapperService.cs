@@ -2,7 +2,7 @@
 {
     public interface IMapperService
     {
-        TDestination Map<TSource, TDestination>(TSource source);
+        TDestination Map<TSource, TDestination>(TSource source, object extraData = null);
 
     }
 }

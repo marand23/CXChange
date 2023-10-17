@@ -16,10 +16,9 @@ namespace CXChange.Modules.UserAccess.Application.Queries.Users
         public async Task Consume(ConsumeContext<GetUsers> context)
         {
 
-            var result = await _queryHandler.ExecuteAsync(context.Message,
-                $" Select * " +
-
-                $"  from xchangetest.`useraccess.aspnetusers` ");
+            var temp = builder.AddTemplate("select * from xchangetest.`useraccess.aspnetusers`");
+            var result = await _queryHandler.ExecuteWithPaginationAndOrderingAsync(context.Message,
+              temp);
             if (result == null) { throw new ArgumentNullException("query did not return any results"); }
             await context.RespondAsync(new UserList { users = result });
         }

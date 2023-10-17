@@ -1,41 +1,50 @@
-﻿using CXChange.API.Modules.UserManagment.Requests.User;
+﻿using CXChange.API.Modules.UserManagment.Requests.Filter;
+using CXChange.API.Modules.UserManagment.Requests.User;
 using CXChange.BuildingBlocks.Application.Query.QueryInterfaces;
 using CXChange.BuildingBlocks.Contract.Mapper;
 using CXChange.Modules.UserAccess.Application.Queries.Users;
 
 namespace CXChange.API.Modules.UserManagment.Maps
 {
+
     public class MapUsersReqToUsers : IMapper<GetUsersRequest, GetUsers>
     {
 
-        public GetUsers Map(GetUsersRequest source)
+        public MapUsersReqToUsers(IMapperService mapperService)
         {
+
+            _mapperService = mapperService;
+        }
+
+        IMapperService _mapperService;
+
+        public GetUsers Map(GetUsersRequest source, object extraData = default)
+        {
+
             return new GetUsers
             {
+                UserId = extraData.ToString(),
                 Page = source.Page,
                 PageSize = source.PageSize,
                 Filters = MapFilterItemRequestToFilterItem(source.Filters),
-            };
-        }
-        private UserFilters MapFilterItemRequestToFilterItem(Filtersreq source)
-        {
-            return new UserFilters
-            {
-                Email = MapFilterItemRequestToFilterItem(source.Email),
-                EmailConfirmed = MapFilterItemRequestToFilterItem(source.EmailConfirmed),
-                PhoneNumber = MapFilterItemRequestToFilterItem(source.PhoneNumber),
-                PhoneNumberConfirmed = MapFilterItemRequestToFilterItem(source.PhoneNumberConfirmed),
-                PhoneNumberRange = MapFilterItemRequestToFilterItem(source.PhoneNumberRange)
+                OrderBy = source.OrderBy != null ? source.OrderBy.Select(x => new OrderByQuery { Field = x.Field, Dir = x.Dir }).ToList() : null
 
             };
         }
-        private IFilterItem<Tsrcvalue> MapFilterItemRequestToFilterItem<Tsrcvalue>(IFilterItemReq<Tsrcvalue> source)
+
+        private UserFilters MapFilterItemRequestToFilterItem(FiltersRequst source)
         {
-            return new IFilterItem<Tsrcvalue>
+            return new UserFilters()
             {
-                Value = source.Value,
+                Email = _mapperService.Map<FilterItemRequest<string>, FilterItemQuery<string>>(source.Email),
+                EmailConfirmed = _mapperService.Map<FilterItemRequest<bool>, FilterItemQuery<bool>>(source.EmailConfirmed),
+                PhoneNumber = _mapperService.Map<FilterItemRequest<string>, FilterItemQuery<string>>(source.PhoneNumber),
+                PhoneNumberConfirmed = _mapperService.Map<FilterItemRequest<bool>, FilterItemQuery<bool>>(source.PhoneNumberConfirmed),
+                PhoneNumberRange = _mapperService.Map<FilterItemRequest<string>, FilterItemQuery<string>>(source.PhoneNumberRange, OperationType.Between),
+
             };
         }
+
     }
 
 

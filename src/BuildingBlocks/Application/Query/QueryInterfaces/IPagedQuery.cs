@@ -2,8 +2,8 @@
 {
     public interface IPageQyery
     {
-        int page { get; }
-        int pageSize { get; }
+        int Page { get; }
+        int PageSize { get; }
 
     }
 }

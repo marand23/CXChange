@@ -4,17 +4,20 @@ namespace CXChange.API.Modules.UserManagment.Maps
 {
     public class MapService : IMapperService
     {
-
-        IServiceProvider _services;
-        public MapService(IServiceProvider services)
+        IServiceProvider _provide;
+        public MapService(IServiceProvider provider)
         {
 
-            _services = services;
+            _provide = provider;
         }
 
-        public TDestination Map<TSource, TDestination>(TSource source)
+        public TDestination Map<TSource, TDestination>(TSource source, object extraData = null)
         {
-            return _services.GetRequiredService<IMapper<TSource, TDestination>>().Map(source);
+
+            return _provide.GetRequiredService<IMapper<TSource, TDestination>>().Map(source, extraData);
+
         }
+
+
     }
 }

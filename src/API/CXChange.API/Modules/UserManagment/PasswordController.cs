@@ -8,7 +8,7 @@ namespace CXChange.API.Modules.UserManagment
     [ApiController]
     public class PasswordController : ExchangeControllerBase
     {
-        public PasswordController(IMediator mediator, IMapperService _mapperService) : base(mediator, _mapperService)
+        public PasswordController(IScopedMediator mediator, IMapperService _mapperService) : base(mediator, _mapperService)
         {
         }
 

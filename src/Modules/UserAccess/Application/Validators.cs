@@ -39,6 +39,14 @@ namespace CXChange.Modules.UserAccess.Application
 
 
         }
+        public static IRuleBuilderOptions<T, int> PageSize<T>(this IRuleBuilder<T, int> ruleBuilder)
+        {
+            return ruleBuilder.Must(x => x > 0).WithErrorCode("PageSizeValidator");
+        }
+        public static IRuleBuilderOptions<T, int> Page<T>(this IRuleBuilder<T, int> ruleBuilder)
+        {
+            return ruleBuilder.Must(x => x > 0).WithErrorCode("PageValidator");
+        }
 
 
     }

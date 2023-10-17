@@ -2,12 +2,12 @@
 {
     public interface IOrderableQuery
     {
-        public List<Order> OrderBy { get; set; }
+        public List<OrderByQuery> OrderBy { get; init; }
 
     }
-    public class Order
+    public class OrderByQuery
     {
-        public string Field { get; set; }
-        public string Dir { get; set; }
+        public string Field { get; init; }
+        public string Dir { get; init; }
     }
 }

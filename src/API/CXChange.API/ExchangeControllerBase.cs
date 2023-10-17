@@ -9,7 +9,7 @@ namespace CXChange.API
 {
     public class ExchangeControllerBase : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IScopedMediator _mediator;
         private string _cachedUserId;
         protected readonly IMapperService _mapService;
 
@@ -26,7 +26,7 @@ namespace CXChange.API
             }
         }
 
-        public ExchangeControllerBase(IMediator mediator, IMapperService mapService)
+        public ExchangeControllerBase(IScopedMediator mediator, IMapperService mapService)
         {
             _mediator = mediator;
             _mapService = mapService;
@@ -34,25 +34,14 @@ namespace CXChange.API
 
         }
 
-        private async Task<TResponse> GetMediatorResponse<TCommand, TResponse>(TCommand request) where TCommand : class where TResponse : class
+        private async Task<TResponse> GetMediatorResponse<TRequest, TResponse>(TRequest request) where TRequest : class where TResponse : class
         {
-            var client = _mediator.CreateRequestClient<TCommand>();
+            var client = _mediator.CreateRequestClient<TRequest>();
             var response = await client.GetResponse<TResponse>(request);
             return response.Message;
         }
         public async Task<ActionResult<TResponse>> ReturnResponse<TRequest, TResponse>(TRequest result) where TRequest : class where TResponse : class
         {
-            //     TCommand command;
-            //     if (typeof(TCommand) is INeedsAuthentication cmd)
-            //     {
-            //         command = _mapper.Map<TRequest, TCommand>(result, opt =>
-            //opt.AfterMap((src, dest) => ((INeedsAuthentication)dest).UserId = cmd.UserId));
-            //     }
-            //     else
-            //     {
-            //         command = _mapper.Map<TRequest, TCommand>(result);
-            //     }
-            //     var mediatorResponse = await GetMediatorResponse<TCommand, TResponse>(command);
             var mediatorResponse = await GetMediatorResponse<TRequest, TResponse>(result);
             return TranslateToHttp(mediatorResponse);
         }
@@ -63,8 +52,5 @@ namespace CXChange.API
 
 
     }
-    public enum CommandType
-    {
-        NeedsAuthentication
-    }
+
 }

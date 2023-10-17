@@ -1,6 +1,6 @@
 ﻿namespace CXChange.API.Modules.UserManagment.Requests.Code
 {
-    public class ValidatePhoneCodeRequest : IValidateCode
+    public class ValidatePhoneCodeRequest
     {
         public string CodeType { get; set; }
 

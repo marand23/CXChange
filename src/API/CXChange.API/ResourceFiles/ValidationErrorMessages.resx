@@ -126,6 +126,12 @@
   <data name="NotEmptyValidator" xml:space="preserve">
     <value> نمیتواند خالی باشد </value>
   </data>
+  <data name="PageSizeValidator" xml:space="preserve">
+    <value>سایز صفحه باید بزرگتر از 0 باشد</value>
+  </data>
+  <data name="PageValidator" xml:space="preserve">
+    <value>صفحه باید بزرگتر از صفر باشد</value>
+  </data>
   <data name="PasswordValidator" xml:space="preserve">
     <value>پسوورد باید شامل حداقل هشت کاراکتر باشد</value>
   </data>

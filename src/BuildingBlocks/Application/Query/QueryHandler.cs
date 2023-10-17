@@ -23,16 +23,19 @@ namespace CXChange.BuildingBlocks.Application.Query
             if (query == null) throw new ArgumentNullException("query");
 
             IPageQyery pagedQuery = (IPageQyery)query;
-            int offSet = (pagedQuery.page - 1) * pagedQuery.pageSize;
+            int offSet = (pagedQuery.Page - 1) * pagedQuery.PageSize;
 
             parameters.Add("@offset", offSet);
-            parameters.Add("@pagesize", pagedQuery.pageSize);
-            temp = sql.AddTemplate($"{temp.RawSql}  Limit @offset , @pagesize");
+            parameters.Add("@pagesize", pagedQuery.PageSize);
+            temp = sql.AddTemplate($"{temp.RawSql}  /**where**/ /**orderby**/  Limit @offset , @pagesize");
+
+            // temp = sql.AddTemplate(temp.RawSql + "/**where**/ /**orderby**/");
         }
         private void GenerateOrderableSql(T query)
         {
             if (query == null) throw new ArgumentNullException("query");
             IOrderableQuery orderdQuery = (IOrderableQuery)query;
+            if (orderdQuery.OrderBy == null) { return; }
             foreach (var ob in orderdQuery.OrderBy)
             {
                 sql.OrderBy($"@o_{orderdQuery.OrderBy.IndexOf(ob)} {ob.Dir}");
@@ -59,45 +62,38 @@ namespace CXChange.BuildingBlocks.Application.Query
                 //parameters.Add($"@v_{properties.IndexOf(property)}", property.GetValue(query));
             }
         }
-        private SqlBuilder.Template ConstructSql(T query, string sqlQuery)
+        private void ConstructSql(T query, SqlBuilder.Template template)
         {
 
-            //if (query is IFilteredQuery<T>)
-            //{
-            GenerateFilteredSql(query);
-            //}
-            //GenerateRangedFilterSql(query);
-
-            //if (query is IOrderableQuery)
-            //{
-            //    GenerateOrderableSql(query);
-            //}
-            //if (query is IPageQyery)
-            //{
-            //    GeneratePagedSql(query);
-            //}
-
-            temp = sql.AddTemplate(sqlQuery + "/**where**/ /**orderby**/");
-
-
-            return temp;
+            if (query is IOrderableQuery)
+            {
+                GenerateOrderableSql(query);
+            }
+            if (query is IPageQyery)
+            {
+                GeneratePagedSql(query);
+            }
         }
 
         #endregion
-        public async Task<IEnumerable<TResponse>> ExecuteAsync(T query, string sqlQuery)
+        public async Task<IEnumerable<TResponse>> ExecuteWithPaginationAndOrderingAsync(T query, SqlBuilder.Template template)
         {
-
-            ConstructSql(query, sqlQuery);
+            temp = template;
+            ConstructSql(query, template);
             Console.WriteLine(temp.RawSql);
             var result = await _connection.GetOpenConnection().QueryAsync<TResponse>(temp.RawSql, parameters);
             return result;
         }
-        public async Task<TResponse> FirstOrDefaultAsync(T query, string sqlQuery)
+        public async Task<IEnumerable<TResponse>> ExecuteQueryAsync(SqlBuilder.Template template)
         {
-
-
-            ConstructSql(query, sqlQuery);
-            return await _connection.GetOpenConnection().QueryFirstOrDefaultAsync<TResponse>(temp.RawSql, parameters);
+            temp = template;
+            var result = await _connection.GetOpenConnection().QueryAsync<TResponse>(temp.RawSql, parameters);
+            return result;
+        }
+        public async Task<TResponse> FirstOrDefaultAsync(SqlBuilder.Template template)
+        {
+            temp = template;
+            return await _connection.GetOpenConnection().QueryFirstOrDefaultAsync<TResponse>(template.RawSql, parameters);
         }
 
 

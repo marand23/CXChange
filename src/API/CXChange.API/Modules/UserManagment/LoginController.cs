@@ -9,7 +9,7 @@ namespace CXChange.API.Modules.UserManagment
     public class LoginController : ExchangeControllerBase
     {
 
-        public LoginController(IMediator mediator, IMapperService _mapper) : base(mediator, _mapper)
+        public LoginController(IScopedMediator mediator, IMapperService _mapper) : base(mediator, _mapper)
         {
         }
 

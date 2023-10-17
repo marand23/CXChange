@@ -88,6 +88,24 @@ namespace CXChange.API.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to سایز صفحه باید بزرگتر از 0 باشد.
+        /// </summary>
+        internal static string PageSizeValidator {
+            get {
+                return ResourceManager.GetString("PageSizeValidator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to صفحه باید بزرگتر از صفر باشد.
+        /// </summary>
+        internal static string PageValidator {
+            get {
+                return ResourceManager.GetString("PageValidator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to پسوورد باید شامل حداقل هشت کاراکتر باشد.
         /// </summary>
         internal static string PasswordValidator {

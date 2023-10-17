@@ -103,7 +103,10 @@ namespace CXChange.API
         PasswordValidator,
         PhoneNumberValidator,
         VerificationCodeValidator,
-        NotEmptyNotNullValidator
+        NotEmptyNotNullValidator,
+        PageSizeValidator,
+        PageValidator,
+        OrderByValidator
 
     }
     public enum status

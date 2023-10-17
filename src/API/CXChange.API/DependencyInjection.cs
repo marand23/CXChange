@@ -1,5 +1,7 @@
 ﻿using CXChange.API.Modules.UserManagment.Maps;
+using CXChange.API.Modules.UserManagment.Requests.Filter;
 using CXChange.API.Modules.UserManagment.Requests.User;
+using CXChange.BuildingBlocks.Application.Query.QueryInterfaces;
 using CXChange.BuildingBlocks.Contract.Mapper;
 using CXChange.Modules.UserAccess.Application;
 using CXChange.Modules.UserAccess.Application.Queries.Users;
@@ -28,6 +30,19 @@ namespace CXChange.API
                 //o.InvalidModelStateResponseFactory = actionContext =>
                 //    new UnprocessableEntityObjectResult(new ApiValidationErrorModel { message = "ValidationError", errors = actionContext.ModelState.ToDictionary(x => x.Key, x => x.Value.Errors.FirstOrDefault().ErrorMessage), success = false }); ;
             });
+
+            //services.Scan(scan => scan
+            //.FromCallingAssembly()
+            //.AddClasses(classes => classes.AssignableTo(typeof(IMapper<,>)))
+            //.AsImplementedInterfaces()
+            //.WithSingletonLifetime());
+
+            services.AddSingleton<IMapper<FilterItemRequest<string>, FilterItemQuery<string>>, MapFilterItemRequestToFilterItemQuery<string>>();
+            services.AddSingleton<IMapper<FilterItemRequest<bool>, FilterItemQuery<bool>>, MapFilterItemRequestToFilterItemQuery<bool>>();
+
+
+
+
             services.AddSingleton<IMapper<GetUsersRequest, GetUsers>, MapUsersReqToUsers>();
             services.AddSingleton<IMapperService, MapService>();
 
