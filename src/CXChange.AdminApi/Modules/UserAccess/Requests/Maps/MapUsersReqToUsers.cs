@@ -1,8 +1,7 @@
-﻿using CXChange.API.Modules.UserManagment.Requests.Filter;
-using CXChange.API.Modules.UserManagment.Requests.User;
+﻿using CXChange.AdminAPI.Modules.UserAccess.Requests.User;
 using CXChange.BuildingBlocks.Application.Query.QueryInterfaces;
 using CXChange.BuildingBlocks.Contract.Mapper;
-using CXChange.Modules.UserAccess.Application.Queries.Users;
+using CXChange.Modules.UserAccess.Administrator.Application.Queries.Users;
 
 namespace CXChange.API.Modules.UserManagment.Maps
 {
@@ -40,7 +39,7 @@ namespace CXChange.API.Modules.UserManagment.Maps
                 EmailConfirmed = _mapperService.Map<FilterItemRequest<bool>, FilterItemQuery<bool>>(source.EmailConfirmed),
                 PhoneNumber = _mapperService.Map<FilterItemRequest<string>, FilterItemQuery<string>>(source.PhoneNumber),
                 PhoneNumberConfirmed = _mapperService.Map<FilterItemRequest<bool>, FilterItemQuery<bool>>(source.PhoneNumberConfirmed),
-                PhoneNumberRange = _mapperService.Map<FilterItemRequest<string>, FilterItemQuery<string>>(source.PhoneNumberRange, OperationType.Between),
+
 
             };
         }

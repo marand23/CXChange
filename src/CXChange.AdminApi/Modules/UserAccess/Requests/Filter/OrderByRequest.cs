@@ -1,4 +1,4 @@
-﻿namespace CXChange.API.Modules.UserManagment.Requests.Filter
+﻿namespace CXChange.AdminAPI.Modules.UserAccess.Requests.Filter
 {
     public record OrderByRequest
     {

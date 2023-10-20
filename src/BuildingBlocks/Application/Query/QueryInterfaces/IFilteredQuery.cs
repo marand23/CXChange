@@ -8,19 +8,21 @@
     public record FilterItemQuery<T>
     {
 
-        public FilterItemQuery(T value, OperationType filterType = OperationType.Equal)
+        public FilterItemQuery(List<T> value, FilterType filterType = FilterType.Equal)
         {
             Value = value;
-            OperationType = filterType;
+            FilterType = filterType;
         }
-        public OperationType OperationType { get; init; }
+        public FilterType FilterType { get; init; }
 
-        public T Value { get; init; }
+        public List<T> Value { get; init; }
     }
-    public enum OperationType
+    public enum FilterType
     {
         Equal,
-        Between,
+        NotEqual,
+        DiscreteRange,
+        ContinousRange,
         Like
     }
 

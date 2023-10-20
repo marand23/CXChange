@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CXChange.Modules.UserAccess.Administrator.Application.Queries.Users;
+using FluentValidation;
 
 namespace CXChange.Modules.UserAccess.Application.Queries.Users
 {
@@ -16,9 +17,9 @@ namespace CXChange.Modules.UserAccess.Application.Queries.Users
             //RuleFor(x => x.OrderBy).Null().When(x => x.OrderBy != null);
             //RuleFor(x => x.OrderBy).Must(orderBy => orderBy.All(order => allowedOrderBy.Contains(order.Field))).
             //    WithErrorCode("OrderByValidator");
-            RuleFor(x => x.Filters.PhoneNumber.Value).PhoneNumber().WithName("PhoneNumber");
-            RuleFor(x => x.Page).Page();
-            RuleFor(x => x.PageSize).PageSize();
+            //  RuleFor(x => x.Filters.PhoneNumber.Value).PhoneNumber().WithName("PhoneNumber");
+            //RuleFor(x => x.Page).Page();
+            //RuleFor(x => x.PageSize).PageSize();
 
         }
     }

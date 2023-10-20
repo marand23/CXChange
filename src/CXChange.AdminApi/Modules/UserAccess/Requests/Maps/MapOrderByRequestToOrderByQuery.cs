@@ -1,8 +1,8 @@
-﻿using CXChange.API.Modules.UserManagment.Requests.Filter;
+﻿using CXChange.AdminAPI.Modules.UserAccess.Requests.Filter;
 using CXChange.BuildingBlocks.Application.Query.QueryInterfaces;
 using CXChange.BuildingBlocks.Contract.Mapper;
 
-namespace CXChange.API.Modules.UserManagment.Maps
+namespace CXChange.AdminAPI.Modules.UserAccess.Maps
 {
     public class MapOrderByRequestToOrderByQuery : IMapper<OrderByRequest, OrderByQuery>
     {

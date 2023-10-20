@@ -4,7 +4,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CXChange.CoreElements.Infrastructure.Totp
+namespace CXChange.BuildingBlocks.Infrastructure.Totp
 {
     internal class Totp : ITotp
     {

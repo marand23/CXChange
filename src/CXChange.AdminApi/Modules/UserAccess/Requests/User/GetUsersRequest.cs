@@ -1,6 +1,7 @@
-﻿using CXChange.API.Modules.UserManagment.Requests.Filter;
+﻿using CXChange.AdminAPI.Modules.UserAccess.Requests.Filter;
+using CXChange.BuildingBlocks.Application.Query.QueryInterfaces;
 
-namespace CXChange.API.Modules.UserManagment.Requests.User
+namespace CXChange.AdminAPI.Modules.UserAccess.Requests.User
 {
     public class GetUsersRequest
     {
@@ -16,11 +17,16 @@ public class FiltersRequst
 {
 
     public FilterItemRequest<string> PhoneNumber { get; set; }
-    public FilterItemRequest<string> PhoneNumberRange { get; set; }
-    public FilterItemRequest<string> Email { get; set; }
-    public FilterItemRequest<bool> PhoneNumberConfirmed { get; set; }
-    public FilterItemRequest<bool> EmailConfirmed { get; set; }
-}
 
+    public FilterItemRequest<string> Email { get; set; }
+
+    public FilterItemRequest<bool> EmailConfirmed { get; set; }
+    public FilterItemRequest<bool> PhoneNumberConfirmed { get; set; }
+}
+public class FilterItemRequest<T>
+{
+    public List<T> Value { get; set; }
+    public FilterType FilterType { get; set; }
+}
 
 

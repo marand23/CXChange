@@ -1,12 +1,12 @@
-﻿using CXChange.API.Modules.UserManagment.Requests.Code;
-using CXChange.API.Modules.UserManagment.Requests.User;
+﻿using CXChange.API.Modules.UserManagment.Requests.AuthenticationTickets;
+using CXChange.API.Modules.UserManagment.Requests.Code;
 using CXChange.BuildingBlocks.Contract.Mapper;
 using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.AuthenticatorCodeValidate;
 using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.CodeValidate;
 using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.EmailCodeSend;
 using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.EmailCodeValidate;
 using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.PhoneNumberCodeSend;
-using CXChange.Modules.UserAccess.Application.Queries.Users;
+using CXChange.Modules.UserAccess.Application.Queries.UserAuthenticationTickets;
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -58,19 +58,14 @@ namespace CXChange.API.Modules.UserManagment
         {
             return await ReturnResponse<ValidateAuthenticatorCode, AuthenticatorCodeValidated>(new ValidateAuthenticatorCode { });
         }
-        [HttpPost]
-        public async Task<ActionResult<UserList>> GetUsers(GetUsersRequest request)
+
+        [HttpGet]
+
+        public async Task<ActionResult<TicketList>> GetUser([FromQuery] GetUserAuthenticationTicketsRequest request)
         {
+            return await ReturnResponse<GetUserAuthenticationTickets, TicketList>(_mapService.Map<GetUserAuthenticationTicketsRequest, GetUserAuthenticationTickets>(request));
 
-            return await ReturnResponse<GetUsers, UserList>(_mapService.Map<GetUsersRequest, GetUsers>(request, "this is user id"));
         }
-        //[HttpGet]
-        //[Authorize(AuthenticationSchemes = "CustomScheme")]
-        //public async Task<ActionResult<Result>> GetUser()
-        //{
-        //    return await ReturnResponse<GetUser, Result>(new GetUser { Filters = new List<FilterItem> { new FilterItem { Field = "id", Value = UserId } } });
-
-        //}
 
     }
 }

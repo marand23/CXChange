@@ -6,17 +6,21 @@ namespace CXChange.BuildingBlocks.Application.Query
 {
     public class QueryHandler<T, TResponse> where T : class
     {
-        public SqlBuilder sql { get; private set; } = new SqlBuilder();
         private ISqlConnectionFactory _connection;
         readonly DynamicParameters parameters = new DynamicParameters();
-        SqlBuilder.Template temp = null;
+        List<string> filterClause = new List<string>();
+        string finalSql = string.Empty;
+        private int paramCounter = 0;
 
         public QueryHandler(ISqlConnectionFactory connection)
         {
             _connection = connection;
         }
         #region GenerateSql
-
+        public void AddToParameters(string name, object value)
+        {
+            parameters.Add(name, value);
+        }
         private void GeneratePagedSql(T query)
         {
 
@@ -24,45 +28,82 @@ namespace CXChange.BuildingBlocks.Application.Query
 
             IPageQyery pagedQuery = (IPageQyery)query;
             int offSet = (pagedQuery.Page - 1) * pagedQuery.PageSize;
+            finalSql += $" {SqlKeyWords.Limit} @offset , @pagesize";
+            AddToParameters("@offset", offSet);
+            AddToParameters("@pagesize", pagedQuery.PageSize);
 
-            parameters.Add("@offset", offSet);
-            parameters.Add("@pagesize", pagedQuery.PageSize);
-            temp = sql.AddTemplate($"{temp.RawSql}  /**where**/ /**orderby**/  Limit @offset , @pagesize");
-
-            // temp = sql.AddTemplate(temp.RawSql + "/**where**/ /**orderby**/");
         }
         private void GenerateOrderableSql(T query)
         {
+
+            paramCounter++;
             if (query == null) throw new ArgumentNullException("query");
             IOrderableQuery orderdQuery = (IOrderableQuery)query;
             if (orderdQuery.OrderBy == null) { return; }
+            finalSql += SqlKeyWords.OrderBy;
+            List<string> orClauses = new List<string>();
+
             foreach (var ob in orderdQuery.OrderBy)
             {
-                sql.OrderBy($"@o_{orderdQuery.OrderBy.IndexOf(ob)} {ob.Dir}");
-                parameters.Add($"@o_{orderdQuery.OrderBy.IndexOf(ob)}", ob.Field);
+                orClauses.Add($"@o_{paramCounter} {ob.Dir}");
+                AddToParameters($"@o_{paramCounter}", ob.Field);
+                paramCounter++;
             }
+            finalSql += string.Join(" , ", orClauses);
         }
-        private void GenerateFilteredSql(T query)
+        public void BuildFilterSql<TType>(FilterItemQuery<TType> query, string columnName)
         {
-            if (query == null) throw new ArgumentNullException("query");
+            //this is not a full feautered filter method
+            //it wil be used in simple filter situations
+            //like select * from table where [conditions] order by limit page,offset
 
-            //IFilteredQuery<T> query1 = (IFilteredQuery<T>)query;
-            var properties = query.GetType().GetProperties().ToList();
-            foreach (var property in properties)
+
+
+
+            string paramPrefix = "value_";
+            string paramName = paramPrefix + paramCounter;
+            paramCounter++;
+
+            switch (query.FilterType)
             {
-                if (property.Name == "PhoneNumber")
-                {
-                    //  sql.Where($"{property.Name} = {property.GetValue(query)}");
-                    sql.Where($"{property.Name}=@v_{properties.IndexOf(property)}");
-                    parameters.Add($"@v_{properties.IndexOf(property)}", property.GetValue(query));
-                }
-                //var value = property.GetValue(query);
 
-                //sql.Where($"{property.Name}=@v_{properties.IndexOf(property)}");
-                //parameters.Add($"@v_{properties.IndexOf(property)}", property.GetValue(query));
+                case FilterType.Like:
+                    filterClause.Add($"{columnName} {SqlKeyWords.Like} @{paramName}");
+                    AddToParameters($"@{paramName}", query.Value[0]);
+                    break;
+                case FilterType.Equal:
+                    filterClause.Add($"{columnName}=@{paramName}");
+                    AddToParameters($"@{paramName}", query.Value[0]);
+                    break;
+                case FilterType.ContinousRange:
+                    filterClause.Add($"{columnName} {SqlKeyWords.Between} @{paramName}_min {SqlKeyWords.And} @{paramName}_max");
+                    AddToParameters($"{paramName}_min", query.Value[0]);
+                    AddToParameters($"{paramName}_max", query.Value[1]);
+                    break;
+                case FilterType.DiscreteRange:
+                    List<string> orClauses = new List<string>();
+                    int index = 0;
+                    foreach (var v in query.Value)
+                    {
+                        orClauses.Add($"{columnName}=@{paramName + "_" + index}");
+                        AddToParameters($"@{paramName + "_" + index}", query.Value[index]);
+                        index++;
+                    }
+                    filterClause.Add($"({string.Join($" {SqlKeyWords.Or} ", orClauses)})");
+
+                    break;
+                case FilterType.NotEqual:
+                    filterClause.Add($"{columnName}<>@{paramName}");
+                    AddToParameters($"@{paramName}", query.Value[0]);
+                    break;
+
+
             }
+
+
         }
-        private void ConstructSql(T query, SqlBuilder.Template template)
+
+        private void ConstructPageAndOrderSql(T query)
         {
 
             if (query is IOrderableQuery)
@@ -76,24 +117,29 @@ namespace CXChange.BuildingBlocks.Application.Query
         }
 
         #endregion
-        public async Task<IEnumerable<TResponse>> ExecuteWithPaginationAndOrderingAsync(T query, SqlBuilder.Template template)
+        public async Task<IEnumerable<TResponse>> ExecuteWithPaginationAndOrderingAsync(T query, string initialQuery)
         {
-            temp = template;
-            ConstructSql(query, template);
-            Console.WriteLine(temp.RawSql);
-            var result = await _connection.GetOpenConnection().QueryAsync<TResponse>(temp.RawSql, parameters);
+
+            if (filterClause.Count > 0)
+            {
+                finalSql += string.Join(SqlKeyWords.And, filterClause);
+            }
+            finalSql = finalSql.AddInitialQuery(initialQuery.SetInitialQuery(), filterClause.Count > 0);
+            ConstructPageAndOrderSql(query);
+            Console.WriteLine(finalSql);
+            var result = await _connection.GetOpenConnection().QueryAsync<TResponse>(finalSql, parameters);
             return result;
         }
-        public async Task<IEnumerable<TResponse>> ExecuteQueryAsync(SqlBuilder.Template template)
+        public async Task<IEnumerable<TResponse>> ExecuteQueryAsync(string query)
         {
-            temp = template;
-            var result = await _connection.GetOpenConnection().QueryAsync<TResponse>(temp.RawSql, parameters);
+
+            var result = await _connection.GetOpenConnection().QueryAsync<TResponse>(query, parameters);
             return result;
         }
-        public async Task<TResponse> FirstOrDefaultAsync(SqlBuilder.Template template)
+        public async Task<TResponse> FirstOrDefaultAsync(string query)
         {
-            temp = template;
-            return await _connection.GetOpenConnection().QueryFirstOrDefaultAsync<TResponse>(template.RawSql, parameters);
+
+            return await _connection.GetOpenConnection().QueryFirstOrDefaultAsync<TResponse>(query, parameters);
         }
 
 

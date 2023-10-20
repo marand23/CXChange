@@ -1,7 +1,7 @@
 ﻿using CXChange.BuildingBlocks.Application.MessageInterfaces;
 using CXChange.BuildingBlocks.Application.Query.QueryInterfaces;
 
-namespace CXChange.Modules.UserAccess.Application.Queries.Users
+namespace CXChange.Modules.UserAccess.Administrator.Application.Queries.Users
 {
     public record GetUsers : IQueryBase, IPageQyery, IFilteredQuery<UserFilters>, IOrderableQuery, IValidatable
     {

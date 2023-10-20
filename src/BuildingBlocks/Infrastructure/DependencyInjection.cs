@@ -3,7 +3,7 @@ using CXChange.BuildingBlocks.Application.Totp;
 using CXChange.BuildingBlocks.Infrastructure.Totp;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CXChange.CoreElements.Infrastructure
+namespace CXChange.BuildingBlocks.Infrastructure
 {
     public static class DependencyInjection
     {

@@ -1,4 +1,4 @@
-﻿namespace CXChange.Modules.UserAccess.Application.Queries.Users
+﻿namespace CXChange.Modules.UserAccess.Administrator.Application.Queries.Users
 {
     public class UserDto
     {

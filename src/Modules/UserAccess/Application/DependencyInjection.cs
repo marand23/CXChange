@@ -18,8 +18,9 @@ using CXChange.Modules.UserAccess.Application.Commands.VerificationCode.PhoneNum
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserPasswordResetDomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegisteredDomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegistrationConfirmedDomainEventHandlers;
+using CXChange.Modules.UserAccess.Application.Queries.UserAuthenticationTickets;
 using CXChange.Modules.UserAccess.Application.Queries.UserGet;
-using CXChange.Modules.UserAccess.Application.Queries.Users;
+
 using CXChange.Modules.UserAccess.Application.Services.Implementation;
 using CXChange.Modules.UserAccess.Application.Services.Interfaces;
 using FluentValidation;
@@ -79,7 +80,6 @@ namespace CXChange.Modules.UserAccess.Application
             cfg.AddConsumer<RevokeAuthenticationTicketsHandler>();
             cfg.AddConsumer<SendVerificationSmsHandler>();
             cfg.AddConsumer<SendUserRegistrationConfirmedNotificationHandler>();
-            cfg.AddConsumer<GetUsersQueryHandler>();
             cfg.AddConsumer<DeleteUserHandler>();
             cfg.AddConsumer<ConfirmUserRegistrationHandler>();
             cfg.AddConsumer<UserLoginCheckHandler>();
@@ -92,6 +92,7 @@ namespace CXChange.Modules.UserAccess.Application
             cfg.AddConsumer<ConfirmAuthenticatorHandler>();
             cfg.AddConsumer<ConfirmUserTwoFactorTypeChangeHandler>();
             cfg.AddConsumer<GetUserHandler>();
+            cfg.AddConsumer<GetUserAuthenticationTicketsHandler>();
 
             cfg.ConfigureMediator((context, mcfg) =>
             {

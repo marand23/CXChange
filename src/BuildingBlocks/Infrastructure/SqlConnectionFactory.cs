@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using System.Data;
 
-namespace CXChange.CoreElements.Infrastructure
+namespace CXChange.BuildingBlocks.Infrastructure
 {
     internal class SqlConnectionFactory : ISqlConnectionFactory, IDisposable
     {
