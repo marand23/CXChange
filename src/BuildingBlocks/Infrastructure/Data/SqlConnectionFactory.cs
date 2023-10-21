@@ -1,9 +1,8 @@
-﻿using CXChange.BuildingBlocks.Application.Data;
-using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
+﻿using Microsoft.Extensions.Configuration;
+using Npgsql;
 using System.Data;
 
-namespace CXChange.BuildingBlocks.Infrastructure
+namespace CXChange.BuildingBlocks.Infrastructure.Data
 {
     internal class SqlConnectionFactory : ISqlConnectionFactory, IDisposable
     {
@@ -26,20 +25,20 @@ namespace CXChange.BuildingBlocks.Infrastructure
 
         public IDbConnection GetOpenConnection()
         {
-            if (this._connection == null || this._connection.State != ConnectionState.Open)
+            if (_connection == null || _connection.State != ConnectionState.Open)
             {
                 // this._connection = new SqlConnection(_connectionString);
-                this._connection = new MySqlConnection(_connectionString);
-                this._connection.Open();
+                _connection = new NpgsqlConnection(_connectionString);
+                _connection.Open();
             }
 
-            return this._connection;
+            return _connection;
         }
         public void Dispose()
         {
-            if (this._connection != null && this._connection.State == ConnectionState.Open)
+            if (_connection != null && _connection.State == ConnectionState.Open)
             {
-                this._connection.Dispose();
+                _connection.Dispose();
             }
         }
 

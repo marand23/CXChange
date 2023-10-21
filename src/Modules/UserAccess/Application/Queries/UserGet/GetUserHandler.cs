@@ -5,8 +5,8 @@ namespace CXChange.Modules.UserAccess.Application.Queries.UserGet
 {
     internal class GetUserHandler : IConsumer<GetUser>
     {
-        private readonly QueryHandler<GetUser, Result> _queryHandler;
-        public GetUserHandler(QueryHandler<GetUser, Result> queryHandler)
+        private readonly IQueryHandler<GetUser, Result> _queryHandler;
+        public GetUserHandler(IQueryHandler<GetUser, Result> queryHandler)
         {
             _queryHandler = queryHandler;
         }

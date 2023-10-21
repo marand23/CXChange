@@ -1,8 +1,6 @@
 ﻿using CXChange.API.Modules.UserManagment.Maps;
 using CXChange.BuildingBlocks.Contract.Mapper;
 using CXChange.Modules.UserAccess.Application;
-
-
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,7 +49,13 @@ namespace CXChange.API
             services.AddMassTransit(x =>
             {
                 // x.AddConsumer<sendemailcosumer> ();
-
+                //x.AddEntityFrameworkOutbox<UserManagementDbContext>(o =>
+                //{
+                //    // configure which database lock provider to use (Postgres, SqlServer, or MySql)
+                //    o.UsePostgres();
+                //    // enable the bus outbox
+                //    o.UseBusOutbox();
+                //});
 
 
 

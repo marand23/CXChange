@@ -12,10 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BuildingBlocks\Application\CXChange.BuildingBlocks.Application.csproj" />
-    <ProjectReference Include="..\BuildingBlocks\Contract\CXChange.BuildingBlocks.Contract.csproj" />
-    <ProjectReference Include="..\BuildingBlocks\Infrastructure\CXChange.BuildingBlocks.Infrastructure.csproj" />
-    <ProjectReference Include="..\Modules\UserAccess\Application.Administrator\CXChange.Modules.UserAccess.Administrator.Application.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\Application\CXChange.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\Contract\CXChange.BuildingBlocks.Contract.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\Infrastructure\CXChange.BuildingBlocks.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\UserAccess\Application.Administrator\CXChange.Modules.UserAccess.Administrator.Application.csproj" />
   </ItemGroup>
 
 </Project>

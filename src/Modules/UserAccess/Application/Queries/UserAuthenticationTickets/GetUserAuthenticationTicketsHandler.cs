@@ -5,8 +5,8 @@ namespace CXChange.Modules.UserAccess.Application.Queries.UserAuthenticationTick
 {
     internal class GetUserAuthenticationTicketsHandler : IConsumer<GetUserAuthenticationTickets>
     {
-        private readonly QueryHandler<GetUserAuthenticationTickets, TicketsResult> _queryHandler;
-        public GetUserAuthenticationTicketsHandler(QueryHandler<GetUserAuthenticationTickets, TicketsResult> queryHandler)
+        private readonly IQueryHandler<GetUserAuthenticationTickets, TicketsResult> _queryHandler;
+        public GetUserAuthenticationTicketsHandler(IQueryHandler<GetUserAuthenticationTickets, TicketsResult> queryHandler)
         {
             _queryHandler = queryHandler;
         }

@@ -1,5 +1,4 @@
-﻿using CXChange.BuildingBlocks.Application.Query;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace CXChange.BuildingBlocks.Application
 {
@@ -7,7 +6,7 @@ namespace CXChange.BuildingBlocks.Application
     {
         public static void RegisterCoreElementstApplication(this IServiceCollection services)
         {
-            services.AddTransient(typeof(QueryHandler<,>));
+
 
         }
     }

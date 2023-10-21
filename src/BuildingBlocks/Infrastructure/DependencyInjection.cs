@@ -1,5 +1,8 @@
-﻿using CXChange.BuildingBlocks.Application.Data;
+﻿
+using CXChange.BuildingBlocks.Application.Query;
 using CXChange.BuildingBlocks.Application.Totp;
+using CXChange.BuildingBlocks.Infrastructure.Data;
+using CXChange.BuildingBlocks.Infrastructure.Query;
 using CXChange.BuildingBlocks.Infrastructure.Totp;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +15,8 @@ namespace CXChange.BuildingBlocks.Infrastructure
             services.AddScoped<ITotp, Totp.Totp>();
             services.AddScoped<IAuthenticator, Authenticator>();
             services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
+            services.AddScoped(typeof(IQueryHandler<,>), typeof(QueryHandler<,>));
+
 
         }
     }

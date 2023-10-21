@@ -1,10 +1,12 @@
-﻿using CXChange.BuildingBlocks.Application.Data;
+﻿
+using CXChange.BuildingBlocks.Application.Query;
 using CXChange.BuildingBlocks.Application.Query.QueryInterfaces;
+using CXChange.BuildingBlocks.Infrastructure.Data;
 using Dapper;
 
-namespace CXChange.BuildingBlocks.Application.Query
+namespace CXChange.BuildingBlocks.Infrastructure.Query
 {
-    public class QueryHandler<T, TResponse> where T : class
+    internal class QueryHandler<T, TResponse> : IQueryHandler<T, TResponse> where T : IQueryBase
     {
         private ISqlConnectionFactory _connection;
         readonly DynamicParameters parameters = new DynamicParameters();
@@ -28,7 +30,7 @@ namespace CXChange.BuildingBlocks.Application.Query
 
             IPageQyery pagedQuery = (IPageQyery)query;
             int offSet = (pagedQuery.Page - 1) * pagedQuery.PageSize;
-            finalSql += $" {SqlKeyWords.Limit} @offset , @pagesize";
+            finalSql += $" {SqlKeyWords.Limit} @pagesize offset @offset";
             AddToParameters("@offset", offSet);
             AddToParameters("@pagesize", pagedQuery.PageSize);
 
@@ -68,15 +70,15 @@ namespace CXChange.BuildingBlocks.Application.Query
             {
 
                 case FilterType.Like:
-                    filterClause.Add($"{columnName} {SqlKeyWords.Like} @{paramName}");
+                    filterClause.Add($"{columnName.ToSnakeCase()} {SqlKeyWords.Like} @{paramName}");
                     AddToParameters($"@{paramName}", query.Value[0]);
                     break;
                 case FilterType.Equal:
-                    filterClause.Add($"{columnName}=@{paramName}");
+                    filterClause.Add($"{columnName.ToSnakeCase()}=@{paramName}");
                     AddToParameters($"@{paramName}", query.Value[0]);
                     break;
                 case FilterType.ContinousRange:
-                    filterClause.Add($"{columnName} {SqlKeyWords.Between} @{paramName}_min {SqlKeyWords.And} @{paramName}_max");
+                    filterClause.Add($"{columnName.ToSnakeCase()} {SqlKeyWords.Between} @{paramName}_min {SqlKeyWords.And} @{paramName}_max");
                     AddToParameters($"{paramName}_min", query.Value[0]);
                     AddToParameters($"{paramName}_max", query.Value[1]);
                     break;
@@ -85,7 +87,7 @@ namespace CXChange.BuildingBlocks.Application.Query
                     int index = 0;
                     foreach (var v in query.Value)
                     {
-                        orClauses.Add($"{columnName}=@{paramName + "_" + index}");
+                        orClauses.Add($"{columnName.ToSnakeCase()}=@{paramName + "_" + index}");
                         AddToParameters($"@{paramName + "_" + index}", query.Value[index]);
                         index++;
                     }
@@ -93,7 +95,7 @@ namespace CXChange.BuildingBlocks.Application.Query
 
                     break;
                 case FilterType.NotEqual:
-                    filterClause.Add($"{columnName}<>@{paramName}");
+                    filterClause.Add($"{columnName.ToSnakeCase()}<>@{paramName}");
                     AddToParameters($"@{paramName}", query.Value[0]);
                     break;
 
@@ -120,6 +122,7 @@ namespace CXChange.BuildingBlocks.Application.Query
         public async Task<IEnumerable<TResponse>> ExecuteWithPaginationAndOrderingAsync(T query, string initialQuery)
         {
 
+
             if (filterClause.Count > 0)
             {
                 finalSql += string.Join(SqlKeyWords.And, filterClause);
@@ -127,17 +130,22 @@ namespace CXChange.BuildingBlocks.Application.Query
             finalSql = finalSql.AddInitialQuery(initialQuery.SetInitialQuery(), filterClause.Count > 0);
             ConstructPageAndOrderSql(query);
             Console.WriteLine(finalSql);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+
+
             var result = await _connection.GetOpenConnection().QueryAsync<TResponse>(finalSql, parameters);
             return result;
         }
         public async Task<IEnumerable<TResponse>> ExecuteQueryAsync(string query)
         {
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
 
             var result = await _connection.GetOpenConnection().QueryAsync<TResponse>(query, parameters);
             return result;
         }
         public async Task<TResponse> FirstOrDefaultAsync(string query)
         {
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
 
             return await _connection.GetOpenConnection().QueryFirstOrDefaultAsync<TResponse>(query, parameters);
         }

@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace CXChange.Modules.UserAccess.Infrastructure
 {
@@ -25,19 +24,18 @@ namespace CXChange.Modules.UserAccess.Infrastructure
         public static void RegisterUserAccessInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
 
-            var serverVersion = new MySqlServerVersion(new Version(8, 0, 34));
+
             string connectionString = configuration["ConnectionStrings:DefaultConnection"];
 
             services.AddDbContext<UserManagementDbContext>(options =>
             {
+                options.UseNpgsql(connectionString, opt =>
+                {
+                    opt.MigrationsHistoryTable("ef_migrations_history", "user_access");
+                })
+                .UseSnakeCaseNamingConvention();
                 //  options.UseSqlServer(connectionString);
-                options.UseMySql(connectionString, serverVersion, b =>
-                 {
-                     b.SchemaBehavior(MySqlSchemaBehavior.Translate, (schema, entity) => $"{schema ?? "dbo"}.{entity}");
-                     b.MigrationsHistoryTable("__EFMigrationsHistory", "UserAccess");
 
-
-                 });
 
 
 

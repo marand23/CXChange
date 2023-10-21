@@ -1,8 +1,8 @@
 ﻿using System.Data;
 
-namespace CXChange.BuildingBlocks.Application.Data
+namespace CXChange.BuildingBlocks.Infrastructure.Data
 {
-    public interface ISqlConnectionFactory
+    internal interface ISqlConnectionFactory
     {
         IDbConnection GetOpenConnection();
         IDbConnection CreateNewConnection();

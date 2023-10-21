@@ -7,8 +7,8 @@ namespace CXChange.Modules.UserAccess.Application.Queries.Users
     internal class GetUsersQueryHandler : IConsumer<GetUsers>
     {
 
-        private readonly QueryHandler<GetUsers, UserDto> _queryHandler;
-        public GetUsersQueryHandler(QueryHandler<GetUsers, UserDto> queryHandler)
+        private readonly IQueryHandler<GetUsers, UserDto> _queryHandler;
+        public GetUsersQueryHandler(IQueryHandler<GetUsers, UserDto> queryHandler)
         {
             _queryHandler = queryHandler;
         }
@@ -30,7 +30,13 @@ namespace CXChange.Modules.UserAccess.Application.Queries.Users
                 _queryHandler.BuildFilterSql(context.Message.Filters.EmailConfirmed, "EmailConfirmed");
             }
 
-            var initalQuery = "select * from xchangetest.`useraccess.aspnetusers`  ";
+            var initalQuery = $@"
+    SELECT {nameof(UserDto.Id).ToSnakeCase()}, 
+           {nameof(UserDto.PhoneNumber).ToSnakeCase()}, 
+           {nameof(UserDto.UserName).ToSnakeCase()}
+    FROM   {"user_access.asp_net_users".ToSnakeCase()}";
+
+
             _queryHandler.AddToParameters("id", "this is id");
             var result = await _queryHandler.ExecuteWithPaginationAndOrderingAsync(context.Message, initalQuery);
             if (result == null) { throw new ArgumentNullException("query did not return any results"); }
