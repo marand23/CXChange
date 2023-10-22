@@ -1,7 +1,9 @@
-﻿using CXChange.Modules.UserAccess.Infrastructure.DataModel;
+﻿using CXChange.Modules.UserAccess.Domain.User;
+using CXChange.Modules.UserAccess.Infrastructure.DataModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System.Reflection;
 
 namespace CXChange.Modules.UserAccess.Infrastructure.DataAccess
@@ -10,11 +12,12 @@ namespace CXChange.Modules.UserAccess.Infrastructure.DataAccess
     {
 
 
-
+        static UserManagementDbContext()
+    => NpgsqlConnection.GlobalTypeMapper.MapEnum<TwoFactorEnum>("user_access.active_two_factor");
         public UserManagementDbContext(DbContextOptions<UserManagementDbContext> options)
             : base(options)
         {
-
+            //NpgsqlConnection.GlobalTypeMapper.MapEnum<TwoFactorEnum>("active_two_factor");
         }
 
 
@@ -25,7 +28,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.HasPostgresEnum<TwoFactorEnum>(schema: "user_access", name: "active_two_factor");
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             modelBuilder.HasDefaultSchema("user_access");
             modelBuilder.Entity<AppUser>().ToTable("asp_net_users");

@@ -29,6 +29,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure
 
             services.AddDbContext<UserManagementDbContext>(options =>
             {
+
                 options.UseNpgsql(connectionString, opt =>
                 {
                     opt.MigrationsHistoryTable("ef_migrations_history", "user_access");

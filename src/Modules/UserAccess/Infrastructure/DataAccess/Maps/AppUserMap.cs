@@ -13,6 +13,8 @@ namespace CXChange.Modules.UserAccess.Infrastructure.DataAccess.Maps
             builder.HasIndex(x => x.PhoneNumber).IsUnique();
             builder.HasIndex(x => x.Email).IsUnique();
 
+
+
         }
     }
 }

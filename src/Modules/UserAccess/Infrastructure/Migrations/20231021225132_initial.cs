@@ -1,4 +1,5 @@
 ﻿using System;
+using CXChange.Modules.UserAccess.Domain.User;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -14,6 +15,9 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Migrations
         {
             migrationBuilder.EnsureSchema(
                 name: "user_access");
+
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:Enum:user_access.active_two_factor", "sms,email,authenticator");
 
             migrationBuilder.CreateTable(
                 name: "asp_net_roles",
@@ -36,7 +40,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<string>(type: "text", nullable: false),
-                    active_two_factor = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
+                    active_two_factor = table.Column<TwoFactorEnum>(type: "user_access.active_two_factor", nullable: false, defaultValue: TwoFactorEnum.SMS),
                     is_authenticator_enabled = table.Column<bool>(type: "boolean", nullable: false),
                     user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     normalized_user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
