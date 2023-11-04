@@ -4,7 +4,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.AuthenticatorDeactiva
 {
     public record DeactivateAuthenticator : IPersistable, IValidatable
     {
-        public string UserId { get; init; }
+        public Guid UserId { get; init; }
         public string Token { get; init; }
     }
 }

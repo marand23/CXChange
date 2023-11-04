@@ -4,12 +4,12 @@
     {
         Task CreateUser(User.User user);
         Task Update(User.User user);
-        Task<User.User> GetUserById(string id);
+        Task<User.User> GetUserById(Guid id);
         Task RemoveTicket(User.User user);
         Task<User.User> GetUserByPhoneNumber(string phoneNumber);
         Task<byte[]> GetUserSecurityToken(User.User user);
-        Task DeleteUser(string phonNumber);
-        Task CheckUserPassword(string id, string Password);
+        Task DeleteUser(Guid userId);
+        Task CheckUserPassword(Guid id, string Password);
         Task<User.User> CheckSignIn(string PhoneNumber, string Password);
         Task SignIn(User.User user);
         Task<string> GenerateUserToken(User.User user, string tokenProvider, string purpose);

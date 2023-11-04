@@ -9,6 +9,7 @@ namespace CXChange.Modules.UserAccess.Administrator.Application
         {
             cfg.AddConsumer<GetUsersQueryHandler>();
 
+
         }
     }
 }

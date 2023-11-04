@@ -5,7 +5,7 @@ namespace CXChange.Modules.UserAccess.Domain.User.DomainEvents
     public class EmailActivatedDomainEvent : IDomainEvent
     {
         public string Email { get; init; }
-        public string Id { get; }
+        public Guid Id { get; }
 
         public EmailActivatedDomainEvent(User user)
         {

@@ -27,7 +27,7 @@
 
 	
 
-	<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
+	
 
 	
 	

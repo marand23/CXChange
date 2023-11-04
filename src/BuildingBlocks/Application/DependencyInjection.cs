@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CXChange.BuildingBlocks.Domain;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CXChange.BuildingBlocks.Application
 {
@@ -6,7 +7,7 @@ namespace CXChange.BuildingBlocks.Application
     {
         public static void RegisterCoreElementstApplication(this IServiceCollection services)
         {
-
+            services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
 
         }
     }

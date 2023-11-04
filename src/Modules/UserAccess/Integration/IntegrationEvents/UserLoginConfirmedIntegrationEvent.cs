@@ -2,7 +2,7 @@
 {
     public record UserLoginConfirmedIntegrationEvent
     {
-        public string Id { get; init; }
+        public Guid Id { get; init; }
         public string PhoneNumber { get; init; }
     }
 }

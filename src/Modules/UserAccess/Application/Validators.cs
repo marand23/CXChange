@@ -22,7 +22,7 @@ namespace CXChange.Modules.UserAccess.Application
         {
             return ruleBuilder.NotNull().NotEmpty();
         }
-        public static IRuleBuilderOptions<T, string> UserId<T>(this IRuleBuilder<T, string> ruleBuilder)
+        public static IRuleBuilderOptions<T, Guid> UserId<T>(this IRuleBuilder<T, Guid> ruleBuilder)
         {
             return ruleBuilder.NotNull().NotEmpty();
         }

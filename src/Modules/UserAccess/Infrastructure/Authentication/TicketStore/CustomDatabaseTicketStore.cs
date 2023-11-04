@@ -74,7 +74,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore
         public async Task<string> StoreAsync(AuthenticationTicket ticket)
         {
             var token = string.Empty;
-            var userId = string.Empty;
+            var userId = Guid.Empty;
             var nameIdentifier = ticket.Principal.Identity.Name;
 
             using (var scope = _services.BuildServiceProvider().CreateScope())
@@ -83,13 +83,13 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore
 
                 if (ticket.AuthenticationScheme == "Identity.Application")
                 {
-                    userId = nameIdentifier;
+                    userId = Guid.Parse(nameIdentifier);
 
                 }
                 else if (ticket.AuthenticationScheme == "CustomScheme")
                 {
 
-                    userId = (await context.Users.SingleAsync(x => x.UserName == nameIdentifier)).Id;
+                    userId = (await context.Users.SingleAsync(x => x.UserName == (nameIdentifier))).Id;
 
                 }
                 // If using a external login provider like google we need to resolve the userid through the Userlogins

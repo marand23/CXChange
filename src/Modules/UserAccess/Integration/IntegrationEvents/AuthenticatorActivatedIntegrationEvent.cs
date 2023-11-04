@@ -2,7 +2,7 @@
 {
     public class AuthenticatorActivatedIntegrationEvent
     {
-        public string UserId { get; init; }
+        public Guid UserId { get; init; }
 
     }
 }

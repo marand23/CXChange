@@ -10,11 +10,12 @@
 	
 		<PackageReference Include="FluentValidation" />
 		<PackageReference Include="MassTransit" />
-		
+		<PackageReference Include="Serilog" />
 
 	</ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Map\" />
     <Folder Include="Sms\" />
   </ItemGroup>
   <ItemGroup>

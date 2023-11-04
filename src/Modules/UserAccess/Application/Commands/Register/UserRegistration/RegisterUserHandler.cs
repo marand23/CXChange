@@ -14,24 +14,18 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Register.UserRegistra
 
         IMediator _mediator;
         ITicketRepository _ticketRepository;
+
         public RegisterUserHandler(IUserRepository userRepository, IDomainEventDispatcher dispatcher, IMediator mediator, ITicketRepository ticketRepository)
         {
             _userRepository = userRepository;
             _dispatcher = dispatcher;
             _mediator = mediator;
             _ticketRepository = ticketRepository;
+
         }
 
         public async Task Consume(ConsumeContext<RegisterUser> context)
         {
-            //await _ticketRepository.RemoveAllAsync("");
-            //await context.RespondAsync(new UserRegistered { PhoneNumber = context.Message.PhoneNumber, TwoFactorType = TwoFactorType.SMS });
-            //{
-
-
-
-            //};
-            //return;
 
             var user = await _userRepository.GetUserByPhoneNumber(context.Message.PhoneNumber);
             if (user != null)
@@ -42,41 +36,14 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Register.UserRegistra
 
                 var response = await client.GetResponse<UserDeleted>(new DeleteUser { UserId = user.GetSnapShot().Id });
 
-
-
             }
-
-            user = User.RegisterNewUser(context.Message.PhoneNumber, context.Message.Password, true);
-
-
+            user = User.RegisterNewUser(context.Message.PhoneNumber, context.Message.Password, true, context.Message.PhoneNumber, NewId.NextSequentialGuid());
             await _userRepository.CreateUser(user);
-
-            /* await*/
             await _dispatcher.Dispatch(user.DomainEvents);
-
-
-
-
-
-
             await context.RespondAsync(new UserRegistered { PhoneNumber = context.Message.PhoneNumber, TwoFactorType = TwoFactorType.SMS });
             {
-
-
-
             };
-
-
         }
-
-
-
     }
-
-
-
-
-
-
 }
 

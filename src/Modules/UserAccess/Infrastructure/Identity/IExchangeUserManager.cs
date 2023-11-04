@@ -18,7 +18,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         Task<IdentityResult> UpdateSecurityStampAsync(AppUser user);
         Task<string> GeneratePasswordResetTokenAsync(AppUser user);
         Task<IdentityResult> ResetPasswordAsync(AppUser user, string token, string newPassword);
-        Task<AppUser> FindByIdAsync(string userUd);
+        Task<AppUser> FindByIdAsync(Guid userUd);
 
         Task<AppUser> GetUserByPhoneNumber(string PhoneNumber);
         Task<byte[]> GetUserSecurityToken(AppUser user);

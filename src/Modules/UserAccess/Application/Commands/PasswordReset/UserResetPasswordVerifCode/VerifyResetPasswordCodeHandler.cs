@@ -20,7 +20,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.PasswordReset.UserRes
 
         public async Task Consume(ConsumeContext<VerifyResetPasswordCode> context)
         {
-            await _ticket.RemoveAllAsync("fs");
+            // await _ticket.RemoveAllAsync("fs");
 
             var user = await _repo.GetUserByPhoneNumber(context.Message.PhoneNumber);
             if (user == null)

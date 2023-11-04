@@ -1,6 +1,4 @@
-﻿using CXChange.BuildingBlocks.Application.MessageInterfaces;
-using CXChange.Modules.UserAccess.Application.CommandFilters;
-using CXChange.Modules.UserAccess.Application.Commands.Authenticator.AuthenticatorConfirm;
+﻿using CXChange.Modules.UserAccess.Application.Commands.Authenticator.AuthenticatorConfirm;
 using CXChange.Modules.UserAccess.Application.Commands.Authenticator.AuthenticatorInitiate;
 using CXChange.Modules.UserAccess.Application.Commands.EmailActivate;
 using CXChange.Modules.UserAccess.Application.Commands.Login.ConfirmLogin;
@@ -25,7 +23,6 @@ using CXChange.Modules.UserAccess.Application.Services.Implementation;
 using CXChange.Modules.UserAccess.Application.Services.Interfaces;
 using FluentValidation;
 using MassTransit;
-using MassTransit.Internals;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -94,24 +91,24 @@ namespace CXChange.Modules.UserAccess.Application
             cfg.AddConsumer<GetUserHandler>();
             cfg.AddConsumer<GetUserAuthenticationTicketsHandler>();
 
-            cfg.ConfigureMediator((context, mcfg) =>
-            {
-                //mcfg.UseConsumeFilter(typeof(LoggingFilter<>), context);
+            //cfg.ConfigureMediator((context, mcfg) =>
+            //{
+            //    mcfg.UseConsumeFilter(typeof(LoggingFilter<>), context);
 
-                mcfg.UseConsumeFilter(typeof(ValidationFilter<>), context, x =>
-                {
-                    x.Include(type => type.HasInterface<IValidatable>());
+            //    mcfg.UseConsumeFilter(typeof(ValidationFilter<>), context, x =>
+            //    {
+            //        x.Include(type => type.HasInterface<IValidatable>());
 
-                });
+            //    });
 
-                mcfg.UseConsumeFilter(typeof(UnitOfWorkFilter<>), context, x =>
-                {
-                    x.Include(type => type.HasInterface<IPersistable>());
-                });
+            //    mcfg.UseConsumeFilter(typeof(UnitOfWorkFilter<>), context, x =>
+            //    {
+            //        x.Include(type => type.HasInterface<IPersistable>());
+            //    });
 
 
 
-            });
+            //});
 
 
         }

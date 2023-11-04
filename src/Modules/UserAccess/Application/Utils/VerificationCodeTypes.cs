@@ -90,7 +90,7 @@ namespace CXChange.Modules.UserAccess.Application.Utils
 
 
         }
-        internal static string GeneratePurposeForSpecificTwoFactor(string UserId, string codeType, string destination)
+        internal static string GeneratePurposeForSpecificTwoFactor(Guid UserId, string codeType, string destination)
         {
             return string.Concat(codeType, UserId, destination);
 

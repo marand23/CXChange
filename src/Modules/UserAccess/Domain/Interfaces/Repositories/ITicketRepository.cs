@@ -6,7 +6,7 @@
         //   Task<string> StoreAsync(AuthenticationTicket ticket);
         //  Task RenewAsync(string key, AuthenticationTicket ticket);
         //Task<AuthenticationTicket> RetrieveAsync(string key);
-        Task RemoveAllAsync(string UserId);
+        Task RemoveAllAsync(Guid UserId);
 
     }
 }

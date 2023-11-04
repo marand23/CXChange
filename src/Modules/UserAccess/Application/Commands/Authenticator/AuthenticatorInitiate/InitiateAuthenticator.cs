@@ -4,6 +4,6 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Authenticator.Authent
 {
     public record InitiateAuthenticator : IPersistable
     {
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 }

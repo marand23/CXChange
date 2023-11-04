@@ -1,4 +1,5 @@
-﻿using CXChange.BuildingBlocks.Application.Query.QueryInterfaces;
+﻿using CXChange.AdminAPI.Modules.UserAccess.Requests.Filter;
+using CXChange.BuildingBlocks.Application.Query.QueryInterfaces;
 using CXChange.BuildingBlocks.Contract.Mapper;
 
 namespace CXChange.AdminAPI.Modules.UserAccess.Maps
@@ -9,7 +10,7 @@ namespace CXChange.AdminAPI.Modules.UserAccess.Maps
 
         public FilterItemQuery<T> Map(FilterItemRequest<T> source, object extraData = null)
         {
-
+            if (source == null) return null;
             return new FilterItemQuery<T>(source.Value, source.FilterType);
         }
 

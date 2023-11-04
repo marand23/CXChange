@@ -123,8 +123,17 @@
   <data name="ExactLengthValidator" xml:space="preserve">
     <value>تعداد کاراکترها کافی نیست</value>
   </data>
+  <data name="KycImageExtensionValidator" xml:space="preserve">
+    <value>عکس  احراز هویت باید در فرمت jpg یا jpeg باشد</value>
+  </data>
+  <data name="KycImageSizeValidator" xml:space="preserve">
+    <value>عکس احراز نمیتواند بیشتر از 20 مگابایت باشد</value>
+  </data>
   <data name="NotEmptyValidator" xml:space="preserve">
     <value> نمیتواند خالی باشد </value>
+  </data>
+  <data name="NotNullValidator" xml:space="preserve">
+    <value>نمیتواند خالی باشد </value>
   </data>
   <data name="PageSizeValidator" xml:space="preserve">
     <value>سایز صفحه باید بزرگتر از 0 باشد</value>

@@ -1,5 +1,5 @@
 ﻿using CXChange.BuildingBlocks.Application.MessageInterfaces;
-using CXChange.BuildingBlocks.Domain;
+using CXChange.Modules.UserAccess.Domain;
 using MassTransit;
 
 namespace CXChange.Modules.UserAccess.Application.CommandFilters
@@ -16,11 +16,6 @@ namespace CXChange.Modules.UserAccess.Application.CommandFilters
         {
 
         }
-
-
-
-
-
         public async Task Send(ConsumeContext<T> context, IPipe<ConsumeContext<T>> next)
         {
             await next.Send(context);

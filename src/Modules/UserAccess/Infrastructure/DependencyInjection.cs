@@ -1,5 +1,5 @@
-﻿using CXChange.BuildingBlocks.Domain;
-using CXChange.Modules.UserAccess.Application.Utils;
+﻿using CXChange.Modules.UserAccess.Application.Utils;
+using CXChange.Modules.UserAccess.Domain;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using CXChange.Modules.UserAccess.Infrastructure.Authentication.AuthenticationHandlers;
 using CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore;
@@ -35,26 +35,17 @@ namespace CXChange.Modules.UserAccess.Infrastructure
                     opt.MigrationsHistoryTable("ef_migrations_history", "user_access");
                 })
                 .UseSnakeCaseNamingConvention();
-                //  options.UseSqlServer(connectionString);
-
-
-
-
-
-
-
-
 
 
             });
 
 
 
-            services.AddIdentity<AppUser, IdentityRole>()
+            services.AddIdentity<AppUser, IdentityRole<Guid>>()
              .AddDefaultTokenProviders()
              .AddCustomTokenProvider()
 
-             .AddUserStore<CustomUSerStore>()
+             .AddUserStore<CustomUserStore>()
             .AddEntityFrameworkStores<UserManagementDbContext>();
             services.Configure<IdentityOptions>(options =>
             {
@@ -100,14 +91,12 @@ namespace CXChange.Modules.UserAccess.Infrastructure
             });
 
             services.AddSingleton<IAuthorizationHandler, CodeTypeAuthorizationHandler>();
-
             services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<IExchangeUserManager, ExchangeUserManager>();
             services.AddScoped<IExchangeSignInManager, ExchangeSignInManager>();
             services.AddScoped<IUserRepository, UserRepository>();
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+
 
 
 

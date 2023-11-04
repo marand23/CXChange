@@ -9,8 +9,10 @@ namespace CXChange.Modules.UserAccess.Domain.User.DomainEvents
             var snapshot = user.GetSnapShot();
             UserName = snapshot.UserName;
             PhoneNumber = snapshot.PhoneNumber;
+            UserId = snapshot.Id;
         }
         public string UserName { get; init; }
         public string PhoneNumber { get; init; }
+        public Guid UserId { get; init; }
     }
 }

@@ -5,7 +5,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.EmailDisable
 {
     public record DisableEmail : IPersistable, IValidatable, ICommandBase
     {
-        public string UserId { get; init; }
+        public Guid UserId { get; init; }
         public string Token { get; init; }
 
     }

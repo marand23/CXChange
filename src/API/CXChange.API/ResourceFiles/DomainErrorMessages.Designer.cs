@@ -61,6 +61,42 @@ namespace CXChange.API.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to احراز هویت تایید شده است.
+        /// </summary>
+        internal static string KycAlreadyVerified {
+            get {
+                return ResourceManager.GetString("KycAlreadyVerified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to احراز هویت در دست بررسی میباشد .
+        /// </summary>
+        internal static string KycVerificationInProgress {
+            get {
+                return ResourceManager.GetString("KycVerificationInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to احراز هویت امکان پذیر نمیباشد.
+        /// </summary>
+        internal static string KycVerificationIsNotPossible {
+            get {
+                return ResourceManager.GetString("KycVerificationIsNotPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to کد ملی تکراری میباشد.
+        /// </summary>
+        internal static string NationalIdIsNotUnique {
+            get {
+                return ResourceManager.GetString("NationalIdIsNotUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to wef.
         /// </summary>
         internal static string String10 {

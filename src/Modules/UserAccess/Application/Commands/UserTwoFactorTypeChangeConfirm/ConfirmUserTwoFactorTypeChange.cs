@@ -4,7 +4,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.UserTwoFactorTypeChan
 {
     public record ConfirmUserTwoFactorTypeChange : IPersistable
     {
-        public string UserId { get; init; }
+        public Guid UserId { get; init; }
         public int NewTwoFactorType { get; init; }
         public string Token { get; init; }
     }

@@ -3,6 +3,6 @@
     public record EmailActivatedIntegrationEvent
     {
         public string Email { get; init; }
-        public string Id { get; init; }
+        public Guid Id { get; init; }
     }
 }

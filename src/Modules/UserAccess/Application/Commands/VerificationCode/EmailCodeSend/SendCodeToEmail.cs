@@ -7,6 +7,6 @@ namespace CXChange.Modules.UserAccess.Application.Commands.VerificationCode.Emai
         public string Email { get; init; }
         public string CodeType { get; init; }
         public string Token { get; init; }
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 }

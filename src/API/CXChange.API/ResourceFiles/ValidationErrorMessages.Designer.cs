@@ -79,11 +79,38 @@ namespace CXChange.API.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عکس  احراز هویت باید در فرمت jpg یا jpeg باشد.
+        /// </summary>
+        internal static string KycImageExtensionValidator {
+            get {
+                return ResourceManager.GetString("KycImageExtensionValidator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عکس احراز نمیتواند بیشتر از 20 مگابایت باشد.
+        /// </summary>
+        internal static string KycImageSizeValidator {
+            get {
+                return ResourceManager.GetString("KycImageSizeValidator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  نمیتواند خالی باشد .
         /// </summary>
         internal static string NotEmptyValidator {
             get {
                 return ResourceManager.GetString("NotEmptyValidator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نمیتواند خالی باشد .
+        /// </summary>
+        internal static string NotNullValidator {
+            get {
+                return ResourceManager.GetString("NotNullValidator", resourceCulture);
             }
         }
         

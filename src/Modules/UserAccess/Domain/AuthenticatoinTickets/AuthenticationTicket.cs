@@ -2,7 +2,7 @@
 
 namespace CXChange.Modules.UserAccess.Domain.AuthenticatoinTickets
 {
-    public class AuthenticationTicket : Entity, IAggregateRoot
+    public class AuthenticationTicket : Entity<string>, IAggregateRoot
     {
         private string Id { get; set; }
         private string UserId { get; set; }

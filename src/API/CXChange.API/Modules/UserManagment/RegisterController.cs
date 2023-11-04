@@ -13,7 +13,7 @@ namespace CXChange.API.Modules.UserManagment
     public class RegisterController : ExchangeControllerBase
     {
 
-        public RegisterController(IScopedMediator mediator, IMapperService mapperService) : base(mediator, mapperService)
+        public RegisterController(IScopedMediator mediator, IMapService mapperService) : base(mediator, mapperService)
         {
 
         }

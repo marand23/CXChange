@@ -1,12 +1,19 @@
-﻿using CXChange.AdminAPI.Modules.UserAccess.Maps;
+﻿using CXChange.AdminAPI.Modules.Kyc.Maps;
+using CXChange.AdminAPI.Modules.Kyc.Requests;
+using CXChange.AdminAPI.Modules.UserAccess.Maps;
+using CXChange.AdminAPI.Modules.UserAccess.Requests.Filter;
 using CXChange.AdminAPI.Modules.UserAccess.Requests.User;
 using CXChange.API.Modules.UserManagment.Maps;
+using CXChange.BuildingBlocks.Application.MessageInterfaces;
 using CXChange.BuildingBlocks.Application.Query.QueryInterfaces;
 using CXChange.BuildingBlocks.Contract.Mapper;
+using CXChange.Modules.Kyc.Administrator.Application;
+using CXChange.Modules.Kyc.Administrator.Application.CommandFilters;
+using CXChange.Modules.Kyc.Administrator.Application.Queries.KycRequestsGet;
 using CXChange.Modules.UserAccess.Administrator.Application;
 using CXChange.Modules.UserAccess.Administrator.Application.Queries.Users;
 using MassTransit;
-
+using MassTransit.Internals;
 namespace CXChange.AdminAPI
 {
     public static class DependencyInjection
@@ -16,7 +23,8 @@ namespace CXChange.AdminAPI
             services.AddSingleton<IMapper<FilterItemRequest<string>, FilterItemQuery<string>>, MapFilterItemRequestToFilterItemQuery<string>>();
             services.AddSingleton<IMapper<FilterItemRequest<bool>, FilterItemQuery<bool>>, MapFilterItemRequestToFilterItemQuery<bool>>();
             services.AddSingleton<IMapper<GetUsersRequest, GetUsers>, MapUsersReqToUsers>();
-            services.AddSingleton<IMapperService, MapService>();
+            services.AddSingleton<IMapper<KycRequests, GetKycRequests>, MapKycRequestToKycRequestQuery>();
+
 
 
         }
@@ -73,6 +81,18 @@ namespace CXChange.AdminAPI
             services.AddMediator(cfg =>
             {
                 cfg.AddUserAccessApplicationMediator();
+                cfg.AddKycAdminApplicationMediator();
+                cfg.ConfigureMediator((context, mcfg) =>
+                {
+
+
+                    mcfg.UseConsumeFilter(typeof(UnitOfWorkFilter<>), context, x =>
+                    {
+                        x.Include(type => type.HasInterface<IPersistable>());
+                    });
+
+
+                });
             });
         }
     }

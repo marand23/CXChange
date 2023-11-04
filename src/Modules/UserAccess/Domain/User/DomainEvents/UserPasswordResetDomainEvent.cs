@@ -11,6 +11,6 @@ namespace CXChange.Modules.UserAccess.Domain.User.DomainEvents
             Id = snapshot.Id;
         }
         public string PhoneNumber { get; init; }
-        public string Id { get; init; }
+        public Guid Id { get; init; }
     }
 }

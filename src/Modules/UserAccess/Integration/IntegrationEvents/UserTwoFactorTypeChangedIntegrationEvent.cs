@@ -2,6 +2,6 @@
 {
     public record UserTwoFactorTypeChangedIntegrationEvent
     {
-        public string UserId { get; init; }
+        public Guid UserId { get; init; }
     }
 }

@@ -7,6 +7,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
 
     internal class ExchangeUserManager : IExchangeUserManager
     {
+
         private readonly UserManager<AppUser> userManager;
         public ExchangeUserManager(UserManager<AppUser> userManager)
         {
@@ -84,9 +85,9 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Identity
         {
             return await userManager.ResetPasswordAsync(user, token, newPassword);
         }
-        public async Task<AppUser> FindByIdAsync(string id)
+        public async Task<AppUser> FindByIdAsync(Guid id)
         {
-            return await userManager.FindByIdAsync(id);
+            return await userManager.FindByIdAsync(id.ToString());
 
 
         }

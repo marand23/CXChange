@@ -10,7 +10,7 @@ namespace CXChange.AdminAPI.Modules.UserAccess.Controllers
     [ApiController]
     public class UserController : AdminControllerBase
     {
-        public UserController(IScopedMediator mediator, IMapperService _mapService) : base(mediator, _mapService)
+        public UserController(IScopedMediator mediator, IMapService _mapService) : base(mediator, _mapService)
         {
         }
 

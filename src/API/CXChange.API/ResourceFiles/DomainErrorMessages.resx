@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="KycAlreadyVerified" xml:space="preserve">
+    <value>احراز هویت تایید شده است</value>
+  </data>
+  <data name="KycVerificationInProgress" xml:space="preserve">
+    <value>احراز هویت در دست بررسی میباشد </value>
+  </data>
+  <data name="KycVerificationIsNotPossible" xml:space="preserve">
+    <value>احراز هویت امکان پذیر نمیباشد</value>
+  </data>
+  <data name="NationalIdIsNotUnique" xml:space="preserve">
+    <value>کد ملی تکراری میباشد</value>
+  </data>
   <data name="String10" xml:space="preserve">
     <value>wef</value>
   </data>

@@ -2,6 +2,7 @@
 using CXChange.Modules.UserAccess.Application.Commands.PasswordReset.UserResetPasswordConfirm;
 using CXChange.Modules.UserAccess.Application.Enums;
 using CXChange.Modules.UserAccess.Application.Exceptions;
+using CXChange.Modules.UserAccess.Domain;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using MassTransit;
 using MassTransit.Mediator;

@@ -4,7 +4,7 @@ namespace CXChange.Modules.UserAccess.Domain.User.DomainEvents
 {
     public record UserBannedDomainEvent : IDomainEvent
     {
-        public string UserId { get; init; }
+        public Guid UserId { get; init; }
 
         public UserBannedDomainEvent(User user)
         {

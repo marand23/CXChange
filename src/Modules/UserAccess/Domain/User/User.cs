@@ -4,18 +4,18 @@ using CXChange.Modules.UserAccess.Domain.User.Specifications;
 
 namespace CXChange.Modules.UserAccess.Domain.User
 {
-    public class User : Entity, IAggregateRoot
+    public class User : Entity<Guid>, IAggregateRoot
     {
-        private User(string phoneNumber, string password, bool twoFactorEnabled)
+        private User(string phoneNumber, string password, bool twoFactorEnabled, string username, Guid id)
         {
 
             PhoneNumber = phoneNumber;
             Password = password;
-
+            UserName = phoneNumber;
             TwoFactorEnabled = twoFactorEnabled;
             SecurityStamp = Guid.NewGuid().ToString();
-            Id = Guid.NewGuid().ToString();
-            UserName = phoneNumber;
+            UserName = username;
+            Id = id;
             SetDefaultTwoFactor();
             AddDomainEvent(new UserRegisteredDomainEvent(this));
 
@@ -38,7 +38,7 @@ namespace CXChange.Modules.UserAccess.Domain.User
 
 
         }
-        private string Id { get; set; }
+
         private string Email { get; set; }
         private string SecurityStamp { get; set; }
         private string PhoneNumber { get; set; }
@@ -62,12 +62,12 @@ namespace CXChange.Modules.UserAccess.Domain.User
             CheckRule(new UserShoudNotBeRestricted(IsRestricted));
             CheckRule(new UsersPhoneNumberShouldNotBeConfirmed(PhoneNumberConfirmed));
         }
-        public static User RegisterNewUser(string phoneNumber, string password, bool twoFactorEnabled)
+        public static User RegisterNewUser(string phoneNumber, string password, bool twoFactorEnabled, string username, Guid id)
         {
             ArgumentException.ThrowIfNullOrEmpty(nameof(PhoneNumberConfirmed));
             ArgumentException.ThrowIfNullOrEmpty(nameof(Password));
 
-            return new User(phoneNumber, password, twoFactorEnabled);
+            return new User(phoneNumber, password, twoFactorEnabled, username, id);
 
 
 

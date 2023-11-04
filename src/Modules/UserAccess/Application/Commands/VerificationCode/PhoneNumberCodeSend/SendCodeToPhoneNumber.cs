@@ -5,6 +5,6 @@
         public string PhoneNumber { get; init; }
         public string CodeType { get; init; }
         public string Token { get; init; }
-        public string UserId { get; init; }
+        public Guid UserId { get; init; }
     }
 }

@@ -1,12 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using CXChange.Modules.Kyc.Application.Commands.Kyc;
+using CXChange.Modules.Kyc.Application.IntegrationEventsConsumers;
+using FluentValidation;
+using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 namespace CXChange.Modules.Kyc.Application
 {
-    internal class DependencyInjection
+    public static class DependencyInjection
     {
+        public static void RegisterKycApplication(this IServiceCollection services)
+        {
+
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        }
+        public static void AddKycApplicationMediator(this IMediatorRegistrationConfigurator cfg)
+        {
+            cfg.AddConsumer<InitiateKycHandler>();
+
+        }
+        public static void AddKycApplicationBus(this IBusRegistrationConfigurator cfg)
+        {
+
+            cfg.AddConsumer<UserRegisterConfirmedConsumer>();
+
+
+        }
+
+
     }
 }

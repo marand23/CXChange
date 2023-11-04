@@ -20,7 +20,7 @@ namespace CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegist
 
 
 
-            await _bus.Publish(new UserRegistrationConfiremedIntegrationEvent { PhoneNumber = context.Message.PhoneNumber });
+            await _bus.Publish(new UserRegistrationConfiremedIntegrationEvent { PhoneNumber = context.Message.PhoneNumber, UserId = context.Message.UserId });
             Console.WriteLine("email sent");
 
         }

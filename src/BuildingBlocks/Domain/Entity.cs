@@ -2,8 +2,9 @@
 
 namespace CXChange.BuildingBlocks.Domain
 {
-    public abstract class Entity
+    public abstract class Entity<TId>
     {
+        public TId Id { get; protected set; }
         private List<IDomainEvent> _domainEvents;
         public List<IDomainEvent> DomainEvents => _domainEvents;
 

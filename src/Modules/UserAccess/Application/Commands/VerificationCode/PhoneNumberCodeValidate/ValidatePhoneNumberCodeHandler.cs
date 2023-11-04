@@ -23,7 +23,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.VerificationCode.Phon
 
         public async Task Consume(ConsumeContext<ValidatePhoneNumberCode> context)
         {
-            var user = await _repo.GetUserByPhoneNumber(context.Message.UserId);
+            var user = await _repo.GetUserByPhoneNumber(context.Message.PhoneNumber);
             if (user == null)
             {
                 throw new UserAccessCommandException(CommandExceptionEnum.UserNotFound);

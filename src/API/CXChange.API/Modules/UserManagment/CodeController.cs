@@ -18,7 +18,7 @@ namespace CXChange.API.Modules.UserManagment
     public class CodeController : ExchangeControllerBase
     {
 
-        public CodeController(IScopedMediator mediator, IMapperService _mapService) : base(mediator, _mapService)
+        public CodeController(IScopedMediator mediator, IMapService _mapService) : base(mediator, _mapService)
         {
 
         }
@@ -65,6 +65,11 @@ namespace CXChange.API.Modules.UserManagment
         {
             return await ReturnResponse<GetUserAuthenticationTickets, TicketList>(_mapService.Map<GetUserAuthenticationTicketsRequest, GetUserAuthenticationTickets>(request));
 
+        }
+        [HttpGet("test")]
+        public async Task<ActionResult<string>> Test()
+        {
+            return "this is a test";
         }
 
     }

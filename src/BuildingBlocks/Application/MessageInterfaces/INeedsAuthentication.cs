@@ -2,6 +2,6 @@
 {
     public interface INeedsAuthentication
     {
-        string UserId { get; set; }
+        Guid UserId { get; set; }
     }
 }

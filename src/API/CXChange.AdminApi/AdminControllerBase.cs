@@ -9,7 +9,7 @@ namespace CXChange.AdminAPI
     {
         private readonly IScopedMediator _mediator;
         private string _cachedUserId;
-        protected readonly IMapperService _mapService;
+        protected readonly IMapService _mapService;
 
 
         protected string UserId
@@ -24,7 +24,7 @@ namespace CXChange.AdminAPI
             }
         }
 
-        public AdminControllerBase(IScopedMediator mediator, IMapperService mapService)
+        public AdminControllerBase(IScopedMediator mediator, IMapService mapService)
         {
             _mediator = mediator;
             _mapService = mapService;

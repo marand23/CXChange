@@ -24,7 +24,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
 
         }
 
-        public async Task RemoveAllAsync(string UserId)
+        public async Task RemoveAllAsync(Guid UserId)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             const int stringLength = 5;
@@ -45,8 +45,8 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
             Console.WriteLine("this is test");
             using (var trnsaction = _context.Database.BeginTransaction(isolationLevel: System.Data.IsolationLevel.ReadCommitted))
             {
-                var t = _context.AuthenticationTickets.Where(x => x.UserId == "6d8c9051-0532-4888-8e57-da8e6e4616bf").FirstOrDefault();
-                t.DeviceId = randomString.ToString();
+                //var t = _context.AuthenticationTickets.Where(x => x.UserId == "6d8c9051-0532-4888-8e57-da8e6e4616bf").FirstOrDefault();
+                //t.DeviceId = randomString.ToString();
                 //_context.AuthenticationTickets.Add(new AuthenticationTickets
                 //{
                 //    DeviceId = "",

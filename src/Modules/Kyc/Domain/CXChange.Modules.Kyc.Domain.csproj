@@ -10,10 +10,4 @@
     <ProjectReference Include="..\..\..\BuildingBlocks\Domain\CXChange.BuildingBlocks.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DomainEvents\" />
-    <Folder Include="User\DomainEvents\" />
-    <Folder Include="User\Specifications\" />
-  </ItemGroup>
-
 </Project>

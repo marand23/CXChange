@@ -1,7 +1,7 @@
-﻿using CXChange.BuildingBlocks.Domain;
-using CXChange.Modules.UserAccess.Application.Enums;
+﻿using CXChange.Modules.UserAccess.Application.Enums;
 using CXChange.Modules.UserAccess.Application.Exceptions;
 using CXChange.Modules.UserAccess.Application.Utils;
+using CXChange.Modules.UserAccess.Domain;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using MassTransit;
 

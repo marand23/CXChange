@@ -1,7 +1,10 @@
-﻿using CXChange.API.Modules.UserManagment.Maps;
-using CXChange.BuildingBlocks.Contract.Mapper;
+﻿using CXChange.BuildingBlocks.Application.CommandFilters;
+using CXChange.BuildingBlocks.Application.MessageInterfaces;
+using CXChange.Modules.Kyc.Application;
+using CXChange.Modules.Kyc.Application.CommandFilters;
 using CXChange.Modules.UserAccess.Application;
 using MassTransit;
+using MassTransit.Internals;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CXChange.API
@@ -39,7 +42,6 @@ namespace CXChange.API
 
 
 
-            services.AddSingleton<IMapperService, MapService>();
 
         }
 
@@ -48,20 +50,21 @@ namespace CXChange.API
 
             services.AddMassTransit(x =>
             {
-                // x.AddConsumer<sendemailcosumer> ();
+                // x.AddConsumer<sendemailcosumer>();
                 //x.AddEntityFrameworkOutbox<UserManagementDbContext>(o =>
                 //{
-                //    // configure which database lock provider to use (Postgres, SqlServer, or MySql)
+                //    configure which database lock provider to use(Postgres, SqlServer, or MySql)
                 //    o.UsePostgres();
-                //    // enable the bus outbox
+                //    enable the bus outbox
                 //    o.UseBusOutbox();
                 //});
 
 
-
+                x.AddKycApplicationBus();
                 x.UsingInMemory((context, cfg) =>
                 {
-                    //cfg.ConfigureEndpoints(context);
+
+                    cfg.ConfigureEndpoints(context);
                     //cfg.UseDelayedRedelivery(r => r.Intervals(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(15), TimeSpan.FromMinutes(30)));
                     //cfg.UseMessageRetry(r => r.Interval(5, TimeSpan.FromSeconds(20)));
                 });
@@ -102,8 +105,30 @@ namespace CXChange.API
             services.AddMediator(cfg =>
             {
                 cfg.AddUserAccessApplicationMediator();
+                cfg.AddKycApplicationMediator();
+                cfg.ConfigureMediator((context, mcfg) =>
+                {
+                    mcfg.UseConsumeFilter(typeof(LoggingFilter<>), context);
+
+                    mcfg.UseConsumeFilter(typeof(ValidationFilter<>), context, x =>
+                    {
+                        x.Include(type => type.HasInterface<IValidatable>());
+
+                    });
+
+                    mcfg.UseConsumeFilter(typeof(UnitOfWorkFilter<>), context, x =>
+                    {
+                        x.Include(type => type.HasInterface<IPersistable>());
+                    });
+                    mcfg.UseConsumeFilter(typeof(CXChange.Modules.UserAccess.Application.CommandFilters.UnitOfWorkFilter<>), context, x =>
+                    {
+                        x.Include(type => type.HasInterface<IPersistable>());
+                    });
+
+                });
+
+
             });
         }
-
     }
 }

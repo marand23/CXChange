@@ -106,7 +106,11 @@ namespace CXChange.API
         NotEmptyNotNullValidator,
         PageSizeValidator,
         PageValidator,
-        OrderByValidator
+        OrderByValidator,
+        KycImageExtensionValidator,
+        KycImageSizeValidator,
+        FullNameValidator,
+        NationalIdValidator
 
     }
     public enum status

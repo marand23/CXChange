@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -7,11 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
     <Folder Include="DomainEventHandlers\" />
     <Folder Include="Enums\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Queries\" />
+	  <PackageReference Include="Hangfire.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" />
+ 
+	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Application\CXChange.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\..\UserAccess\Integration\CXChange.Modules.UserAccess.Integration.csproj" />
+    <ProjectReference Include="..\Domain\CXChange.Modules.Kyc.Domain.csproj" />
   </ItemGroup>
 
 </Project>

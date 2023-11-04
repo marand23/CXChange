@@ -8,7 +8,16 @@
             Name = name;
             SurName = surname;
         }
-        public string Name { get; init; }
-        public string SurName { get; init; }
+        private string Name { get; init; }
+        private string SurName { get; init; }
+        public FullNameSnapShot GetSnapshot()
+        {
+            return new FullNameSnapShot
+            {
+                SurName = this.SurName,
+                Name = this.Name,
+            };
+        }
+
     }
 }

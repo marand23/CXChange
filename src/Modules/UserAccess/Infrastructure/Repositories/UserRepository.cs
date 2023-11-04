@@ -59,7 +59,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
 
         public void Map(AppUser appuser, SnapShot snapShot)
         {
-
+            appuser.Id = snapShot.Id;
             appuser.Email = snapShot.Email;
             appuser.UserName = snapShot.UserName;
             appuser.PhoneNumber = snapShot.PhoneNumber;
@@ -73,7 +73,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
 
         }
 
-        public async Task<User> GetUserById(string id)
+        public async Task<User> GetUserById(Guid id)
         {
 
             AppUser user = await _exchangeUserManager.FindByIdAsync(id);
@@ -129,14 +129,14 @@ namespace CXChange.Modules.UserAccess.Infrastructure.Repositories
 
 
         }
-        public async Task DeleteUser(string userId)
+        public async Task DeleteUser(Guid userId)
         {
             AppUser user = await _exchangeUserManager.FindByIdAsync(userId);
 
 
             await _exchangeUserManager.DeleteAsync(user);
         }
-        public async Task CheckUserPassword(string id, string Password)
+        public async Task CheckUserPassword(Guid id, string Password)
         {
             var user = await _exchangeUserManager.FindByIdAsync(id);
             await _exchangeUserManager.CheckPasswordAsync(user, Password);

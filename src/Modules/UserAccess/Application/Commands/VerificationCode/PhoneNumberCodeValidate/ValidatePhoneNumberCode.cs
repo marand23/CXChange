@@ -7,7 +7,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.VerificationCode.Code
 
         public string Code { get; init; }
         public string CodeType { get; init; }
-        public string UserId { get; init; }
+        public Guid UserId { get; init; }
         public string PhoneNumber { get; init; }
     }
 }

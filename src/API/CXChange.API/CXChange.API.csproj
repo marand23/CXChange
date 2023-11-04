@@ -11,6 +11,14 @@
     
 
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    
+
+    <PackageReference Include="Hangfire.AspNetCore" />
+    
+
+    <PackageReference Include="Hangfire.MemoryStorage" />
+  
+	 
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Scrutor" />
     <PackageReference Include="Serilog" />
@@ -26,13 +34,16 @@
   <ItemGroup>
     <ProjectReference Include="..\..\BuildingBlocks\Contract\CXChange.BuildingBlocks.Contract.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\Infrastructure\CXChange.BuildingBlocks.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Kyc\Application\CXChange.Modules.Kyc.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Kyc\ExternalApiAdapter\CXChange.Modules.Kyc.ExternalApiAdapter.csproj" />
+    <ProjectReference Include="..\..\Modules\Kyc\Infrastructure\CXChange.Modules.Kyc.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\UserAccess\Application\CXChange.Modules.UserAccess.Application.csproj" />
     <ProjectReference Include="..\..\Modules\UserAccess\Infrastructure\CXChange.Modules.UserAccess.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="EXtensions\" />
-    <Folder Include="Modules\Kyc\" />
+    <Folder Include="Modules\UserManagment\Maps\" />
   </ItemGroup>
 
   <ItemGroup>
