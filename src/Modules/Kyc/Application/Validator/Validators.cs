@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CXChange.Modules.Kyc.Application.Commands.Kyc;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 
 namespace CXChange.Modules.Kyc.Application.Validator
@@ -21,6 +22,10 @@ namespace CXChange.Modules.Kyc.Application.Validator
             return ruleBuilder.NotEmpty().NotNull().Matches(" \"^[آ-ی ء چ]+$\"").WithErrorCode("FullNameValidator");
         }
 
+        public static IRuleBuilderOptions<T, BirthDay> Age<T>(this IRuleBuilder<T, BirthDay> ruleBuilder)
+        {
+            return ruleBuilder.NotEmpty().NotNull().Must(x => CheckAge.IsBirthDayValid(x.Year, x.Month, x.Day)).WithErrorCode("BirthDayValidator").Must(x => CheckAge.IsAgeMoreThan18(x.Year, x.Month, x.Day)).WithErrorCode("AgeValidator");
+        }
     }
 }
 

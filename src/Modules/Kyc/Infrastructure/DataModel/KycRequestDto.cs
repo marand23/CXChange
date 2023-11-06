@@ -14,6 +14,7 @@ namespace CXChange.Modules.Kyc.Infrastructure.DataModel
         public string KycPhotoId { get; set; }
         public KycRequestStatus KycRequestStatus { get; set; }
         public StorageTypeEnum StorageType { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
     }
 }

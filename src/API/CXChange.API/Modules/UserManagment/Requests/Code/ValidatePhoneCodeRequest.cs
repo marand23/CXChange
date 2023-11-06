@@ -5,5 +5,6 @@
         public string CodeType { get; set; }
 
         public string Code { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

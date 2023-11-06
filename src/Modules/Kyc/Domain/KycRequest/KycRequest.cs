@@ -1,4 +1,5 @@
 ﻿using CXChange.BuildingBlocks.Domain;
+using CXChange.Modules.Kyc.Domain.KycRequest.DomainEvents;
 using CXChange.Modules.Kyc.Domain.KycRequest.Enums;
 using CXChange.Modules.Kyc.Domain.User.ValueObjects;
 
@@ -6,12 +7,13 @@ namespace CXChange.Modules.Kyc.Domain.KycRequest
 {
     public class KycRequest : Entity<Guid>
     {
-        private KycRequest(Guid id, string name, string surname, string nationalId, DateOnly birthdate)
+        private KycRequest(Guid id, string name, string surname, string nationalId, DateOnly birthDate)
         {
             Id = id;
             FullName = new FullName(name, surname);
-            BirthDate = birthdate;
+            BirthDate = birthDate;
             NationalId = new NationalId(nationalId);
+            AddDomainEvent(new KycRequestInitiatedDomainEvent(this));
         }
         private KycRequest(KycRequestSnapShot snashot)
         {
@@ -21,12 +23,14 @@ namespace CXChange.Modules.Kyc.Domain.KycRequest
             NationalId = new NationalId(snashot.NationalId);
             KycPhotoId = snashot.KycPhotoId;
             StorageType = snashot.StorageType;
+            CreatedAt = snashot.CreatedAt;
         }
 
         private FullName FullName { get; set; }
         private NationalId NationalId { get; set; }
         private DateOnly BirthDate { get; set; }
         private string KycPhotoId { get; set; }
+        private DateTimeOffset CreatedAt { get; }
         private KycRequestStatus Status { get; set; }
         private StorageTypeEnum StorageType;
         public static KycRequest CreateFrom(KycRequestSnapShot snapshot)
@@ -34,9 +38,10 @@ namespace CXChange.Modules.Kyc.Domain.KycRequest
             return new KycRequest(snapshot);
 
         }
-        public static KycRequest CreateKycRequest(Guid id, string name, string surname, string nationalId, DateOnly Birthdate)
+        public static KycRequest CreateKycRequest(Guid id, string name, string surname, string nationalId, DateOnly birthDay)
         {
-            return new KycRequest(id, name, surname, nationalId, Birthdate);
+
+            return new KycRequest(id, name, surname, nationalId, birthDay);
         }
         public KycRequestSnapShot GetSnapShot()
         {
@@ -49,7 +54,9 @@ namespace CXChange.Modules.Kyc.Domain.KycRequest
                 NationalId = NationalId.NationalNumber,
                 KycPhotoId = KycPhotoId,
                 KycRequestStatus = Status,
-                StorageType = StorageType
+                StorageType = StorageType,
+                CreatedAt = CreatedAt
+
 
             };
         }

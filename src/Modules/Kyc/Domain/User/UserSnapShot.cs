@@ -8,9 +8,12 @@ namespace CXChange.Modules.Kyc.Domain.User
         public string Name { get; set; }
         public string SurName { get; set; }
         public string NationalId { get; set; }
-        public DateOnly BirthDate { get; set; }
+        public DateOnly BirthDay { get; set; }
         public LandLineStatus LandLineStatus { get; set; }
         public KycStatus KycStatus { get; set; }
+        public int Version { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public string LandLine { get; set; }
 
     }
 }

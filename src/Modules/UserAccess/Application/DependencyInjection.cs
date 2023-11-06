@@ -1,4 +1,5 @@
-﻿using CXChange.Modules.UserAccess.Application.Commands.Authenticator.AuthenticatorConfirm;
+﻿using CXChange.Modules.UserAccess.Application.ApplicationEvents;
+using CXChange.Modules.UserAccess.Application.Commands.Authenticator.AuthenticatorConfirm;
 using CXChange.Modules.UserAccess.Application.Commands.Authenticator.AuthenticatorInitiate;
 using CXChange.Modules.UserAccess.Application.Commands.EmailActivate;
 using CXChange.Modules.UserAccess.Application.Commands.Login.ConfirmLogin;
@@ -18,7 +19,6 @@ using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegistered
 using CXChange.Modules.UserAccess.Application.DomainEventHandlers.UserRegistrationConfirmedDomainEventHandlers;
 using CXChange.Modules.UserAccess.Application.Queries.UserAuthenticationTickets;
 using CXChange.Modules.UserAccess.Application.Queries.UserGet;
-
 using CXChange.Modules.UserAccess.Application.Services.Implementation;
 using CXChange.Modules.UserAccess.Application.Services.Interfaces;
 using FluentValidation;
@@ -90,6 +90,7 @@ namespace CXChange.Modules.UserAccess.Application
             cfg.AddConsumer<ConfirmUserTwoFactorTypeChangeHandler>();
             cfg.AddConsumer<GetUserHandler>();
             cfg.AddConsumer<GetUserAuthenticationTicketsHandler>();
+            cfg.AddConsumer<TotpCodeVerifiedEventHandler>();
 
             //cfg.ConfigureMediator((context, mcfg) =>
             //{

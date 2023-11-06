@@ -8,9 +8,11 @@ namespace CXChange.Modules.Kyc.Infrastructure.DataAccess.Maps
     {
         public void Configure(EntityTypeBuilder<UserDataModel> builder)
         {
-            ;
+
             builder.HasIndex(x => x.NationlId).IsUnique();
             builder.Property(x => x.Id).ValueGeneratedNever();
+            builder.Property(x => x.Version).IsConcurrencyToken().HasDefaultValue(1);
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("now()");
         }
     }
 }

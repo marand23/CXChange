@@ -48,6 +48,12 @@ namespace CXChange.AdminAPI
         {
             return Ok(new { data = result, success = true });
         }
+        public async Task<TResponse> ReturnRawResponse<TRequest, TResponse>(TRequest result) where TRequest : class where TResponse : class
+        {
+            var mediatorResponse = await GetMediatorResponse<TRequest, TResponse>(result);
+
+            return mediatorResponse; ;
+        }
 
     }
 }

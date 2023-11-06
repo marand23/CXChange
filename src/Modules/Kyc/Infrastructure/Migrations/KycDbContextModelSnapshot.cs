@@ -23,6 +23,7 @@ namespace CXChange.Modules.Kyc.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "kyc", "kyc_land_line_status", new[] { "un_verified", "verified" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "kyc", "kyc_request_status", new[] { "active", "stale" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "kyc", "kyc_request_storage_type", new[] { "google_drive", "drop_box", "custom_s3" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "kyc", "kyc_status", new[] { "unverified", "in_progress", "verified", "rejected", "denied" });
@@ -31,13 +32,18 @@ namespace CXChange.Modules.Kyc.Infrastructure.Migrations
             modelBuilder.Entity("CXChange.Modules.Kyc.Infrastructure.DataModel.KycRequestDto", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
                     b.Property<DateOnly>("BirthDate")
                         .HasColumnType("date")
                         .HasColumnName("birth_date");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("now()");
 
                     b.Property<string>("KycPhotoId")
                         .IsRequired()
@@ -76,13 +82,26 @@ namespace CXChange.Modules.Kyc.Infrastructure.Migrations
             modelBuilder.Entity("CXChange.Modules.Kyc.Infrastructure.DataModel.UserDataModel", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<DateOnly>("BirthDate")
                         .HasColumnType("date")
                         .HasColumnName("birth_date");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("now()");
+
+                    b.Property<string>("LandLine")
+                        .HasColumnType("text")
+                        .HasColumnName("land_line");
+
+                    b.Property<LandLineStatus>("LandLineStatus")
+                        .HasColumnType("kyc.kyc_land_line_status")
+                        .HasColumnName("land_line_status");
 
                     b.Property<string>("Name")
                         .HasColumnType("text")
@@ -95,6 +114,13 @@ namespace CXChange.Modules.Kyc.Infrastructure.Migrations
                     b.Property<string>("SurName")
                         .HasColumnType("text")
                         .HasColumnName("sur_name");
+
+                    b.Property<int>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1)
+                        .HasColumnName("version");
 
                     b.Property<KycStatus>("kycStatus")
                         .HasColumnType("kyc.kyc_status")

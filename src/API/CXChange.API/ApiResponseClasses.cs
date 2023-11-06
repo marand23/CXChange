@@ -110,7 +110,9 @@ namespace CXChange.API
         KycImageExtensionValidator,
         KycImageSizeValidator,
         FullNameValidator,
-        NationalIdValidator
+        NationalIdValidator,
+        AgeValidator,
+        BirthDayValidator
 
     }
     public enum status

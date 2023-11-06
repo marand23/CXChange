@@ -10,7 +10,13 @@ namespace CXChange.Modules.Kyc.Application.Commands.Kyc
         public string NationalId { get; init; }
         public string Name { get; init; }
         public string SurName { get; init; }
-        public DateOnly BithDate { get; set; }
+        public BirthDay BirthDay { get; init; }
         public IFormFile Image { get; init; }
     };
+    public record BirthDay
+    {
+        public int Day { get; init; }
+        public int Month { get; init; }
+        public int Year { get; init; }
+    }
 }

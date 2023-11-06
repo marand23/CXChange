@@ -1,4 +1,5 @@
-﻿using CXChange.Modules.Kyc.Administrator.Application.Commands.KycRequestApprove;
+﻿using CXChange.Modules.Kyc.Administrator.Application.Commands.KycPhotoDownlaod;
+using CXChange.Modules.Kyc.Administrator.Application.Commands.KycRequestApprove;
 using CXChange.Modules.Kyc.Administrator.Application.Commands.KycRequestReject;
 using CXChange.Modules.Kyc.Administrator.Application.Queries.KycRequestsGet;
 using MassTransit;
@@ -17,6 +18,7 @@ namespace CXChange.Modules.Kyc.Administrator.Application
             cfg.AddConsumer<GetKycRequestsHandler>();
             cfg.AddConsumer<ApproveKycRequestHandler>();
             cfg.AddConsumer<RejectKycRequestHandler>();
+            cfg.AddConsumer<DownloadKycPhotoHandler>();
 
         }
     }

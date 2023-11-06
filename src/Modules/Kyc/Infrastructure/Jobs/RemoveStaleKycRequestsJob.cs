@@ -1,4 +1,4 @@
-﻿using CXChange.Modules.Kyc.Application.ExternalApiServices;
+﻿using CXChange.Modules.Kyc.Domain.Interfaces;
 using CXChange.Modules.Kyc.Infrastructure.DataAccess;
 
 namespace CXChange.Modules.Kyc.Infrastructure.Jobs
@@ -6,9 +6,9 @@ namespace CXChange.Modules.Kyc.Infrastructure.Jobs
     internal class RemoveStaleKycRequestsJob
     {
         KycDbContext _context;
-        IEnumerable<IKycPhotoActions> _kycPhotoActions;
+        IEnumerable<IkycPhotoActions> _kycPhotoActions;
 
-        public RemoveStaleKycRequestsJob(KycDbContext context, IEnumerable<IKycPhotoActions> kycPhotoActions)
+        public RemoveStaleKycRequestsJob(KycDbContext context, IEnumerable<IkycPhotoActions> kycPhotoActions)
         {
             _context = context;
             _kycPhotoActions = kycPhotoActions;

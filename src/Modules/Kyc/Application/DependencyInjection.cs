@@ -17,12 +17,13 @@ namespace CXChange.Modules.Kyc.Application
         {
             cfg.AddConsumer<InitiateKycHandler>();
 
+
         }
         public static void AddKycApplicationBus(this IBusRegistrationConfigurator cfg)
         {
 
             cfg.AddConsumer<UserRegisterConfirmedConsumer>();
-
+            cfg.AddConsumer<LandLineConfirmedConsumer>();
 
         }
 

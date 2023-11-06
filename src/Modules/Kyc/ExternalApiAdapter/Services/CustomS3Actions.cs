@@ -1,12 +1,12 @@
 ﻿using Amazon.S3.Model;
-using CXChange.Modules.Kyc.Application.ExternalApiServices;
+using CXChange.Modules.Kyc.Domain.Interfaces;
 using CXChange.Modules.Kyc.Domain.KycRequest.Enums;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace CXChange.Modules.Kyc.ExternalApiAdapter.Services.Clients
 {
-    internal class CustomS3Actions : IKycPhotoActions
+    internal class CustomS3Actions : IkycPhotoActions
     {
         private readonly string Bucket = "testatro";
         public StorageTypeEnum StorageType => StorageTypeEnum.CustomS3;

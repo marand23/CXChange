@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Modules\UserAccess\Domain\CXChange.Modules.UserAccess.Domain.csproj" />
     <ProjectReference Include="..\Application\CXChange.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\Contract\CXChange.BuildingBlocks.Contract.csproj" />
   </ItemGroup>
 
 </Project>

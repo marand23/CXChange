@@ -30,6 +30,7 @@ try
     NpgsqlConnection.GlobalTypeMapper.MapEnum<KycRequestStatus>("kyc.kyc_request_status");
     NpgsqlConnection.GlobalTypeMapper.MapEnum<StorageTypeEnum>("kyc.kyc_request_storage_type");
     NpgsqlConnection.GlobalTypeMapper.MapEnum<TwoFactorEnum>("user_access.active_two_factor");
+    NpgsqlConnection.GlobalTypeMapper.MapEnum<LandLineStatus>("kyc.kyc_land_line_status");
     Log.Information("Starting web application");
 
     var builder = WebApplication.CreateBuilder(args);

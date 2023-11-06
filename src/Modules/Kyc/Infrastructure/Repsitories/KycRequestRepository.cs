@@ -23,6 +23,7 @@ namespace CXChange.Modules.Kyc.Infrastructure.Repsitories
                 SurName = kycRequestDataModel.SurName,
                 KycRequestStatus = kycRequestDataModel.KycRequestStatus,
                 StorageType = kycRequestDataModel.StorageType,
+                CreatedAt = kycRequestDataModel.CreatedAt,
             });
 
         }
@@ -55,6 +56,8 @@ namespace CXChange.Modules.Kyc.Infrastructure.Repsitories
             kycRequestData.KycPhotoId = snapShot.KycPhotoId;
             kycRequestData.KycRequestStatus = snapShot.KycRequestStatus;
             kycRequestData.StorageType = snapShot.StorageType;
+            kycRequestData.CreatedAt = snapShot.CreatedAt;
+
         }
 
     }

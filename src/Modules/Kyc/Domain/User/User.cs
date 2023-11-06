@@ -17,9 +17,12 @@ namespace CXChange.Modules.Kyc.Domain.User
             this.Id = snapShot.Id;
             FullName = new FullName(snapShot.Name, snapShot.SurName);
             NationalId = new NationalId(snapShot.NationalId);
-            BirthDate = snapShot.BirthDate;
+            BirthDate = snapShot.BirthDay;
             LandLineStatus = snapShot.LandLineStatus;
             KycStatus = snapShot.KycStatus;
+            CreatedAt = snapShot.CreatedAt;
+            Version = snapShot.Version;
+            LandLine = snapShot.LandLine;
 
 
         }
@@ -27,9 +30,11 @@ namespace CXChange.Modules.Kyc.Domain.User
         private FullName FullName { get; set; }
         private NationalId NationalId { get; set; }
         private DateOnly BirthDate { get; set; }
-        private uint Version { get; set; }
+        private int Version { get; set; }
         private KycStatus KycStatus { get; set; }
         private LandLineStatus LandLineStatus { get; set; }
+        private DateTimeOffset CreatedAt { get; set; }
+        private string LandLine { get; set; }
         public static User CreateUser(Guid id)
         {
             if (id == null) { throw new ArgumentNullException("id"); }
@@ -48,11 +53,15 @@ namespace CXChange.Modules.Kyc.Domain.User
             {
                 Id = Id,
                 Name = FullName?.GetSnapshot().Name,
-                BirthDate = BirthDate,
                 NationalId = NationalId?.NationalNumber,
                 SurName = FullName?.GetSnapshot().SurName,
                 LandLineStatus = LandLineStatus,
                 KycStatus = KycStatus,
+                Version = Version,
+                CreatedAt = CreatedAt,
+                BirthDay = BirthDate,
+                LandLine = LandLine
+
             };
 
         }
@@ -87,6 +96,14 @@ namespace CXChange.Modules.Kyc.Domain.User
             CheckRule(new KycStatusShouldBeInProgressOnRejection(KycStatus));
             KycStatus = KycStatus.Rejected;
             AddDomainEvent(new KycRejectedDomainEvent(this));
+        }
+        public void VerifyLandLine(string landLineNum)
+        {
+            CheckRule(new LandLineShouldNotBeConfirmedOnLandLineConfirm(LandLineStatus));
+            CheckRule(new LandLineCannotBeConfirmedBeforeKycConfirmation(KycStatus));
+            LandLine = landLineNum;
+            LandLineStatus = LandLineStatus.Verified;
+            AddDomainEvent(new LandLineConfirmedDomainEvent(this));
         }
 
     }

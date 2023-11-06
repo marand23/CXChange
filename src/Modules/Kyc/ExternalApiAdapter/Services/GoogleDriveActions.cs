@@ -1,4 +1,4 @@
-﻿using CXChange.Modules.Kyc.Application.ExternalApiServices;
+﻿using CXChange.Modules.Kyc.Domain.Interfaces;
 using CXChange.Modules.Kyc.Domain.KycRequest.Enums;
 using Google;
 using Google.Apis.Download;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CXChange.Modules.Kyc.ExternalApiAdapter.Services.Clients
 {
-    internal class GoogleDriveActions : IKycPhotoActions
+    internal class GoogleDriveActions : IkycPhotoActions
     {
         public StorageTypeEnum StorageType => StorageTypeEnum.GoogleDrive;
 

@@ -18,11 +18,9 @@ namespace CXChange.API.Modules.Kyc
         public async Task<ActionResult<KycInitiated>> DoKyc([FromForm] KycRequest requset)
         {
 
-            return await ReturnResponse<InitiateKyc, KycInitiated>(new InitiateKyc { Image = requset.Image, BithDate = requset.BirthDate, Name = requset.Name, SurName = requset.SurName, NationalId = requset.NationalId, UserId = requset.UserId });
-
-
-
+            return await ReturnResponse<InitiateKyc, KycInitiated>(new InitiateKyc { Image = requset.Image, Name = requset.Name, SurName = requset.SurName, NationalId = requset.NationalId, UserId = requset.UserId, BirthDay = new BirthDay { Day = requset.BirthDay, Month = requset.BirthMonth, Year = requset.BirthYear } });
         }
+
     }
 }
 

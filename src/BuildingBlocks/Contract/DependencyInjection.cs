@@ -1,5 +1,4 @@
-﻿using CXChange.BuildingBlocks.Contract.Mapper;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace CXChange.BuildingBlocks.Contract
 {
@@ -7,7 +6,7 @@ namespace CXChange.BuildingBlocks.Contract
     {
         public static void RegisterBuldingBlocksContract(this IServiceCollection services)
         {
-            services.AddSingleton<IMapService, MapService>();
+
         }
     }
 }

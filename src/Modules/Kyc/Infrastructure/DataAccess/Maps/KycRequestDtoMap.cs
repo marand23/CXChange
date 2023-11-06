@@ -10,6 +10,7 @@ namespace CXChange.Modules.Kyc.Infrastructure.DataAccess.Maps
         {
             builder.HasKey(x => x.UserId);
             builder.Property(x => x.UserId).ValueGeneratedNever();
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("now()");
 
 
         }

@@ -8,7 +8,9 @@
         KycVerificationIsNotPossible,
         NationalIdIsNotUnique,
         KycIsNotInProgressOnApproval,
-        KycAlreadyApprovedOnRejection
+        KycAlreadyApprovedOnRejection,
+        LandLineAlreadyConfirmed,
+        LandLineCannotConfirmedBeforeKyc
 
     }
 }

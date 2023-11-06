@@ -21,6 +21,7 @@ namespace CXChange.Modules.UserAccess.Application.Utils
         public static readonly string VerifyEmailOnEmailSet = "verify_email";
         public static readonly string ConfirmRegister = "confirm_user_registration";
         public static readonly string DisableAuthenticator = "disable_authenticator";
+        public static readonly string LandLine = "LandLine";
 
     }
     public class CodeType
@@ -53,7 +54,8 @@ namespace CXChange.Modules.UserAccess.Application.Utils
             new CodeType(KeyWords.DisableAuthenticator),
             new CodeType(KeyWords.VerifyPhoneNumberOnSet),
             new CodeType(KeyWords.VerifyOldPhoneNumberOnChange),
-            new CodeType(KeyWords.VerifyNewPhoneNumberOnChange)
+            new CodeType(KeyWords.VerifyNewPhoneNumberOnChange),
+            new CodeType(KeyWords.LandLine)
 
 
 

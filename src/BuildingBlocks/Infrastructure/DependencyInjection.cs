@@ -1,6 +1,7 @@
 ﻿
 using CXChange.BuildingBlocks.Application.Query;
 using CXChange.BuildingBlocks.Application.Totp;
+using CXChange.BuildingBlocks.Contract.Mapper;
 using CXChange.BuildingBlocks.Infrastructure.Data;
 using CXChange.BuildingBlocks.Infrastructure.Query;
 using CXChange.BuildingBlocks.Infrastructure.Totp;
@@ -16,6 +17,7 @@ namespace CXChange.BuildingBlocks.Infrastructure
             services.AddScoped<IAuthenticator, Authenticator>();
             services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
             services.AddScoped(typeof(IQueryHandler<,>), typeof(QueryHandler<,>));
+            services.AddSingleton<IMapService, MapService>();
 
 
         }

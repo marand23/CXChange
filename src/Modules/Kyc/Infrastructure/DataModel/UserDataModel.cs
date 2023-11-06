@@ -10,8 +10,10 @@ namespace CXChange.Modules.Kyc.Infrastructure.DataModel
         public string? NationlId { get; set; }
         public DateOnly BirthDate { get; set; }
         public KycStatus kycStatus { get; set; }
-
-
+        public int Version { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public LandLineStatus LandLineStatus { get; set; }
+        public string? LandLine { get; set; }
 
     }
 }

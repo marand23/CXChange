@@ -61,6 +61,24 @@ namespace CXChange.API.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to برای احراز هویت  باید حداقل 18 سال داشته باشید.
+        /// </summary>
+        internal static string AgeValidator {
+            get {
+                return ResourceManager.GetString("AgeValidator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تاریخ تولد معتبر نمیباشد .
+        /// </summary>
+        internal static string BirthDayValidator {
+            get {
+                return ResourceManager.GetString("BirthDayValidator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ایمیل صحیح نمیباشد .
         /// </summary>
         internal static string EmailValidator {

@@ -16,14 +16,19 @@ namespace CXChange.Modules.Kyc.Infrastructure.Repsitories
         public async Task<User> FindUserById(Guid id)
         {
             var user = await _context.Users.FindAsync(id);
+            if (user == null) { return null; }
             return User.CreateFrom(new UserSnapShot
             {
-                BirthDate = user.BirthDate,
+                BirthDay = user.BirthDate,
                 NationalId = user.NationlId,
                 SurName = user.SurName,
                 Name = user.Name,
                 Id = user.Id,
                 KycStatus = user.kycStatus,
+                CreatedAt = user.CreatedAt,
+                Version = user.Version,
+                LandLineStatus = user.LandLineStatus,
+                LandLine = user.LandLine,
 
 
 
@@ -45,17 +50,22 @@ namespace CXChange.Modules.Kyc.Infrastructure.Repsitories
         public async Task UpdateUser(User user)
         {
             var snapshot = user.GetSnapshot();
+            snapshot.Version++;
             UserDataModel userData = await _context.Users.FindAsync(snapshot.Id);
             Map(userData, snapshot);
         }
         private void Map(UserDataModel userData, UserSnapShot snapshot)
         {
             userData.Id = snapshot.Id;
-            userData.BirthDate = snapshot.BirthDate;
+            userData.BirthDate = snapshot.BirthDay;
             userData.Name = snapshot.Name;
             userData.SurName = snapshot.SurName;
             userData.NationlId = snapshot.NationalId;
             userData.kycStatus = snapshot.KycStatus;
+            userData.CreatedAt = snapshot.CreatedAt;
+            userData.Version = snapshot.Version;
+            userData.LandLineStatus = snapshot.LandLineStatus;
+            userData.LandLine = snapshot.LandLine;
         }
 
     }

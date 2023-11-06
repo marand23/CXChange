@@ -12,6 +12,7 @@ namespace CXChange.Modules.Kyc.Application.Commands.Kyc
             RuleFor(x => x.NationalId).NationalId();
             //RuleFor(x => x.Name).FullName();
             //RuleFor(x => x.SurName).FullName();
+            RuleFor(x => x.BirthDay).NotEmpty().NotNull().Age();
 
 
         }

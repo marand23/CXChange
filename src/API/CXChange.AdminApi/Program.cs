@@ -1,8 +1,10 @@
 using CXChange.AdminAPI;
 using CXChange.BuildingBlocks.Application;
+using CXChange.BuildingBlocks.Contract;
 using CXChange.BuildingBlocks.Infrastructure;
 using CXChange.Modules.Kyc.Domain.KycRequest.Enums;
 using CXChange.Modules.Kyc.Domain.User.Enums;
+using CXChange.Modules.Kyc.ExternalApiAdapter;
 using CXChange.Modules.Kyc.Infrastructure;
 using CXChange.Modules.UserAccess.Domain.User;
 using Npgsql;
@@ -24,6 +26,9 @@ builder.Services.RegisterMediator(builder.Environment);
 builder.Services.RegisterCoreElementstApplication();
 builder.Services.RegisterCoreElementstInfrastructure();
 builder.Services.RegisterKycInfrastructure(builder.Configuration);
+builder.Services.RegisterCoreElementstApplication();
+builder.Services.RegisterBuldingBlocksContract();
+builder.Services.RegisterExternalApiAdaper();
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 app.UseHttpsRedirection();

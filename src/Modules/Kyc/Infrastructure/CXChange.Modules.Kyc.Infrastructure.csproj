@@ -17,7 +17,6 @@
 	  <PackageReference Include="Hangfire.MemoryStorage" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Application\CXChange.Modules.Kyc.Application.csproj" />
     <ProjectReference Include="..\Domain\CXChange.Modules.Kyc.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>

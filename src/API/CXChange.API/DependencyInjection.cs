@@ -61,10 +61,12 @@ namespace CXChange.API
 
 
                 x.AddKycApplicationBus();
+                x.AddUserManagmentApplicationBus();
                 x.UsingInMemory((context, cfg) =>
                 {
 
                     cfg.ConfigureEndpoints(context);
+
                     //cfg.UseDelayedRedelivery(r => r.Intervals(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(15), TimeSpan.FromMinutes(30)));
                     //cfg.UseMessageRetry(r => r.Interval(5, TimeSpan.FromSeconds(20)));
                 });
