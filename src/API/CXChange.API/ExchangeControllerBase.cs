@@ -48,15 +48,7 @@ namespace CXChange.API
         }
         private ActionResult<T> TranslateToHttp<T>(T result, string responseType = null) where T : class
         {
-            //    if (responseType == "jpg")
-            //    {
 
-            //        //if (result is KycInitiated d)
-            //        //{
-            //        //    Response.Headers.Add("Content-Disposition", $"attachment; filename={d.FileName}.jpg");
-            //        //    return File(d.data, "image/jpeg");
-            //        //}
-            //    }
             return Ok(new ApiSuccessResponse<T> { data = result, success = true, message = RegisterMessages.GetMessage(result) });
         }
 

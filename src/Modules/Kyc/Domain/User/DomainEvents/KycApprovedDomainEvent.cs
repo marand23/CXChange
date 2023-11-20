@@ -7,7 +7,7 @@ namespace CXChange.Modules.Kyc.Domain.User.DomainEvents
         public Guid UserId { get; init; }
         public KycApprovedDomainEvent(User user)
         {
-            UserId = user.GetSnapshot().Id;
+            UserId = user.Id;
         }
     }
 }

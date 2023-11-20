@@ -16,6 +16,11 @@ namespace CXChange.BuildingBlocks.Domain
             this.Code = specification.Code;
 
         }
+        protected BusinessRuleException(Enum code, string message)
+        {
+            Code = code;
+            Message = message;
+        }
 
         //public override string ToString()
         //{

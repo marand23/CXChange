@@ -27,6 +27,7 @@ namespace CXChange.AdminAPI
 
 
 
+
         }
         public static void RegisterMAssTransit(this IServiceCollection services, IWebHostEnvironment environment)
         {

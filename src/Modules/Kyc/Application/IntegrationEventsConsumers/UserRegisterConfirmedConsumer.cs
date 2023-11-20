@@ -1,8 +1,9 @@
-﻿using CXChange.Modules.Kyc.Domain;
+﻿using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.Kyc.Domain.Interfaces.Repositories;
 using CXChange.Modules.Kyc.Domain.User;
 using CXChange.Modules.UserAccess.Integration.IntegrationEvents;
 using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CXChange.Modules.Kyc.Application.IntegrationEventsConsumers
 {
@@ -10,7 +11,7 @@ namespace CXChange.Modules.Kyc.Application.IntegrationEventsConsumers
     {
         IUserRepository _repo;
         IUnitOfWork _uow;
-        public UserRegisterConfirmedConsumer(IUserRepository repo, IUnitOfWork uow)
+        public UserRegisterConfirmedConsumer(IUserRepository repo, [FromKeyedServices("kyc")] IUnitOfWork uow)
         {
             _repo = repo;
             _uow = uow;

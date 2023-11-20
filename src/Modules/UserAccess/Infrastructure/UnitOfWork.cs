@@ -1,4 +1,4 @@
-﻿using CXChange.Modules.UserAccess.Domain;
+﻿using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.UserAccess.Infrastructure.DataAccess;
 
 namespace CXChange.Modules.UserAccess.Infrastructure

@@ -2,7 +2,7 @@
 {
     public interface IDomainEventDispatcher
     {
-        Task Dispatch(List<IDomainEvent> domainEvents);
+        Task Dispatch(IReadOnlyList<IDomainEvent> domainEvents);
 
     }
 }

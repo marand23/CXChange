@@ -1,6 +1,6 @@
 ﻿using Amazon.S3.Model;
 using CXChange.Modules.Kyc.Domain.Interfaces;
-using CXChange.Modules.Kyc.Domain.KycRequest.Enums;
+using CXChange.Modules.Kyc.Domain.User.Enums;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 

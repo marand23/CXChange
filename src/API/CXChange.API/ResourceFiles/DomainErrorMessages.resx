@@ -162,4 +162,7 @@
   <data name="UserAlreadyExist" xml:space="preserve">
     <value>کاربر ثبت نام کرده</value>
   </data>
+  <data name="UserCantHaveMoreThanFourCards" xml:space="preserve">
+    <value>کاربر نمیتواند بیش از 4 کارت بانکی ثبت نماید </value>
+  </data>
 </root>

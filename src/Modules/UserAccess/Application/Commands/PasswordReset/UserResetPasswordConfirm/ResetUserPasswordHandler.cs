@@ -2,10 +2,8 @@
 using CXChange.Modules.UserAccess.Application.Commands.PasswordReset.UserResetPasswordConfirm;
 using CXChange.Modules.UserAccess.Application.Enums;
 using CXChange.Modules.UserAccess.Application.Exceptions;
-using CXChange.Modules.UserAccess.Domain;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using MassTransit;
-using MassTransit.Mediator;
 
 namespace CXChange.Modules.UserAccess.Application.Commands.PasswordReset.UserResetPasswordCofirm
 {
@@ -15,7 +13,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.PasswordReset.UserRes
         IDomainEventDispatcher _dispatcher;
 
 
-        public ResetUserPasswordHandler(IUserRepository repo, IDomainEventDispatcher dispatcher, IMediator mediator, ITicketRepository ticket, IUnitOfWork unitOfWork)
+        public ResetUserPasswordHandler(IUserRepository repo, IDomainEventDispatcher dispatcher)
         {
             _repo = repo;
             _dispatcher = dispatcher;

@@ -17,7 +17,7 @@ namespace CXChange.BuildingBlocks.Application
 
 
 
-        public Task Dispatch(List<IDomainEvent> domainEvents)
+        public Task Dispatch(IReadOnlyList<IDomainEvent> domainEvents)
         {
             if (domainEvents != null)
             {

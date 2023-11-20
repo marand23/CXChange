@@ -10,6 +10,8 @@ namespace CXChange.Modules.Kyc.ExternalApiAdapter
         {
             services.AddScoped<IkycPhotoActions, GoogleDriveActions>();
             services.AddScoped<IkycPhotoActions, CustomS3Actions>();
+
         }
+
     }
 }

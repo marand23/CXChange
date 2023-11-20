@@ -1,4 +1,4 @@
-﻿using CXChange.Modules.Kyc.Domain.KycRequest.Enums;
+﻿using CXChange.Modules.Kyc.Domain.User.Enums;
 using Microsoft.AspNetCore.Http;
 
 namespace CXChange.Modules.Kyc.Domain.Interfaces

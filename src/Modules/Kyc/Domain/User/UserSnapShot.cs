@@ -14,6 +14,7 @@ namespace CXChange.Modules.Kyc.Domain.User
         public int Version { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public string LandLine { get; set; }
+        public ValueObjects.KycRequest UserKycRequst { get; set; }
 
     }
 }

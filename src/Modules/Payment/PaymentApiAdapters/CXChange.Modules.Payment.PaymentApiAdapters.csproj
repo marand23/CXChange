@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure\CXChange.BuildingBlocks.Infrastructure.csproj" />
+    <ProjectReference Include="..\Application\CXChange.Modules.Payment.Application.csproj" />
+  </ItemGroup>
+
+</Project>

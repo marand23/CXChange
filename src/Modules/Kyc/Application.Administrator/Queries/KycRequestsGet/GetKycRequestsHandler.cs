@@ -1,4 +1,5 @@
 ﻿using CXChange.BuildingBlocks.Application.Query;
+using CXChange.Modules.Kyc.Domain.User;
 using MassTransit;
 
 namespace CXChange.Modules.Kyc.Administrator.Application.Queries.KycRequestsGet
@@ -33,7 +34,7 @@ namespace CXChange.Modules.Kyc.Administrator.Application.Queries.KycRequestsGet
                 _queryHandler.BuildFilterSql(context.Message.Filters.BirthDate, nameof(context.Message.Filters.BirthDate));
             }
             var initalQuery = $@"
-    SELECT {nameof(KycRequestDto.UserId).ToSnakeCase()},
+    SELECT {nameof(User.Id).ToSnakeCase()},
            {nameof(KycRequestDto.Name).ToSnakeCase()} ,
            {nameof(KycRequestDto.SurName).ToSnakeCase()},
            {nameof(KycRequestDto.NationalId).ToSnakeCase()},

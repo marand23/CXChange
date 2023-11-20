@@ -1,5 +1,5 @@
-﻿using CXChange.Modules.UserAccess.Application.Utils;
-using CXChange.Modules.UserAccess.Domain;
+﻿using CXChange.BuildingBlocks.Domain;
+using CXChange.Modules.UserAccess.Application.Utils;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using CXChange.Modules.UserAccess.Infrastructure.Authentication.AuthenticationHandlers;
 using CXChange.Modules.UserAccess.Infrastructure.Authentication.TicketStore;
@@ -95,7 +95,7 @@ namespace CXChange.Modules.UserAccess.Infrastructure
             services.AddScoped<IExchangeUserManager, ExchangeUserManager>();
             services.AddScoped<IExchangeSignInManager, ExchangeSignInManager>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddKeyedScoped<IUnitOfWork, UnitOfWork>("user_access");
 
 
 

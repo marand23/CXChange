@@ -194,5 +194,14 @@ namespace CXChange.API.ResourceFiles {
                 return ResourceManager.GetString("UserAlreadyExist", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to کاربر نمیتواند بیش از 4 کارت بانکی ثبت نماید .
+        /// </summary>
+        internal static string UserCantHaveMoreThanFourCards {
+            get {
+                return ResourceManager.GetString("UserCantHaveMoreThanFourCards", resourceCulture);
+            }
+        }
     }
 }

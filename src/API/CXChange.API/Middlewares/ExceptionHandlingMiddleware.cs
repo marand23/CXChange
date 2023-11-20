@@ -1,5 +1,6 @@
 ﻿using CXChange.BuildingBlocks.Application.Exceptions;
 using CXChange.BuildingBlocks.Domain;
+using CXChange.BuildingBlocks.Infrastructure;
 using MassTransit;
 using Newtonsoft.Json;
 using System.Net;
@@ -31,6 +32,10 @@ namespace CXChange.API.Middlewares
                 await HandleExceptionAsync(context, ex.GetBaseException());
 
             }
+            catch (ApiException exception)
+            {
+
+            }
             catch (Exception ex)
             {
 
@@ -60,16 +65,19 @@ namespace CXChange.API.Middlewares
                 case ExchangeCommandException ex:
                     response.StatusCode = 400;
                     break;
+                case ApiException ex:
+                    response.StatusCode = 500;
+                    break;
                 default:
-
+                    _logger.Error(exception.Message);
+                    _logger.Error(exception.StackTrace);
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
             }
             ;
 
 
-            _logger.Error(exception.Message);
-            _logger.Error(exception.StackTrace);
+
             var result = JsonConvert.SerializeObject(errorResponse);
             await response.WriteAsync(result);
         }

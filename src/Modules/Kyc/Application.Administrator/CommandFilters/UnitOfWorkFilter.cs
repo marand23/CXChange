@@ -1,13 +1,14 @@
 ﻿using CXChange.BuildingBlocks.Application.MessageInterfaces;
-using CXChange.Modules.Kyc.Domain;
+using CXChange.BuildingBlocks.Domain;
 using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CXChange.Modules.Kyc.Administrator.Application.CommandFilters
 {
     public class UnitOfWorkFilter<T> : IFilter<ConsumeContext<T>> where T : class, IPersistable
     {
         private IUnitOfWork _unitOfWork;
-        public UnitOfWorkFilter(IUnitOfWork unitOfWork)
+        public UnitOfWorkFilter([FromKeyedServices("kyc")] IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

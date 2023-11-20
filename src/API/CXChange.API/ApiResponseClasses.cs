@@ -27,6 +27,8 @@ namespace CXChange.API
             }
             else if (ex is BusinessRuleException be)
             {
+
+
                 return new ApiErrorResponse { code = be.Code, message = DomainErrorMessages.ResourceManager.GetString(be.Code.ToString()), success = false };
             }
             else
@@ -71,7 +73,7 @@ namespace CXChange.API
     }
     public enum ValidationErrorCodes
     {
-        //erro codes should be of format :-1xx
+        //error codes should be of format :-1xx
         NotEmptyValidator = -199,
         ExactLengthValidator,
         RegularExpressionValidator,

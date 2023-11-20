@@ -16,21 +16,21 @@ namespace CXChange.Modules.Kyc.Infrastructure.Jobs
         }
         public async Task Remove()
         {
-            var staleKycRequests = _context.KycRequests.Where(x => x.KycRequestStatus == Domain.KycRequest.Enums.KycRequestStatus.Stale).ToList();
-            foreach (var kyc in staleKycRequests)
-            {
-                try
-                {
-                    var kycStorage = _kycPhotoActions.FirstOrDefault(x => x.StorageType == kyc.StorageType);
-                    await kycStorage.DeleteKycPhoto(kyc.KycPhotoId);
-                    _context.Remove(kyc);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("exception in removing");
-                }
-            }
-            await _context.SaveChangesAsync();
+            //var staleKycRequests = _context.KycRequests.Where(x => x.KycRequestStatus == Domain.KycRequest.Enums.KycRequestStatus.Stale).ToList();
+            //foreach (var kyc in staleKycRequests)
+            //{
+            //    try
+            //    {
+            //        var kycStorage = _kycPhotoActions.FirstOrDefault(x => x.StorageType == kyc.StorageType);
+            //        await kycStorage.DeleteKycPhoto(kyc.KycPhotoId);
+            //        _context.Remove(kyc);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine("exception in removing");
+            //    }
+            //}
+            //await _context.SaveChangesAsync();
         }
 
 

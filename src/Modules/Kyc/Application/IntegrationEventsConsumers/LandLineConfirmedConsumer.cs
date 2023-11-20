@@ -1,8 +1,8 @@
 ﻿using CXChange.BuildingBlocks.Domain;
-using CXChange.Modules.Kyc.Domain;
 using CXChange.Modules.Kyc.Domain.Interfaces.Repositories;
 using CXChange.Modules.UserAccess.Integration.IntegrationEvents;
 using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CXChange.Modules.Kyc.Application.IntegrationEventsConsumers
 {
@@ -11,7 +11,7 @@ namespace CXChange.Modules.Kyc.Application.IntegrationEventsConsumers
         private readonly IUserRepository _repo;
         private IUnitOfWork _uow;
         private readonly IDomainEventDispatcher _dispatcher;
-        public LandLineConfirmedConsumer(IUserRepository repo, IDomainEventDispatcher dispatcher, IUnitOfWork uow)
+        public LandLineConfirmedConsumer(IUserRepository repo, IDomainEventDispatcher dispatcher, [FromKeyedServices("kyc")] IUnitOfWork uow)
         {
             _repo = repo;
             _dispatcher = dispatcher;

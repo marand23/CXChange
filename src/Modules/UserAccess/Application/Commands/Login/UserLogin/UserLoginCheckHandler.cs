@@ -1,9 +1,10 @@
-﻿using CXChange.Modules.UserAccess.Application.Enums;
+﻿using CXChange.BuildingBlocks.Domain;
+using CXChange.Modules.UserAccess.Application.Enums;
 using CXChange.Modules.UserAccess.Application.Exceptions;
 using CXChange.Modules.UserAccess.Application.Utils;
-using CXChange.Modules.UserAccess.Domain;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CXChange.Modules.UserAccess.Application.Commands.Login.UserLogin
 {
@@ -12,7 +13,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Login.UserLogin
         IUserRepository _userRepository;
         IUnitOfWork _unitOfWork;
 
-        public UserLoginCheckHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+        public UserLoginCheckHandler(IUserRepository userRepository, [FromKeyedServices("user_access")] IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;

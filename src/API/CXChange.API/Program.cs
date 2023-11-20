@@ -5,10 +5,14 @@ using CXChange.BuildingBlocks.Application.Validator;
 using CXChange.BuildingBlocks.Contract;
 using CXChange.BuildingBlocks.Infrastructure;
 using CXChange.Modules.Kyc.Application;
-using CXChange.Modules.Kyc.Domain.KycRequest.Enums;
 using CXChange.Modules.Kyc.Domain.User.Enums;
 using CXChange.Modules.Kyc.ExternalApiAdapter;
 using CXChange.Modules.Kyc.Infrastructure;
+using CXChange.Modules.Payment.Domain.BankCard.Enums;
+using CXChange.Modules.Payment.Domain.Deposit.Enums;
+using CXChange.Modules.Payment.Domain.Shaba.Enums;
+using CXChange.Modules.Payment.Infrastructure;
+using CXChange.Modules.Payment.PaymentApiAdapters;
 using CXChange.Modules.UserAccess.Application;
 using CXChange.Modules.UserAccess.Domain.User;
 using CXChange.Modules.UserAccess.Infrastructure;
@@ -31,6 +35,9 @@ try
     NpgsqlConnection.GlobalTypeMapper.MapEnum<StorageTypeEnum>("kyc.kyc_request_storage_type");
     NpgsqlConnection.GlobalTypeMapper.MapEnum<TwoFactorEnum>("user_access.active_two_factor");
     NpgsqlConnection.GlobalTypeMapper.MapEnum<LandLineStatus>("kyc.kyc_land_line_status");
+    NpgsqlConnection.GlobalTypeMapper.MapEnum<BankCardStatus>("payment.bankcard_status");
+    NpgsqlConnection.GlobalTypeMapper.MapEnum<ShabaStatus>("payment.shaba_status");
+    NpgsqlConnection.GlobalTypeMapper.MapEnum<DepositStatus>("payment.deposit_status");
     Log.Information("Starting web application");
 
     var builder = WebApplication.CreateBuilder(args);
@@ -64,6 +71,8 @@ try
     builder.Services.RegisterUserAccessInfrastructure(builder.Configuration);
     builder.Services.RegisterKycApplication();
     builder.Services.RegisterBuldingBlocksContract();
+    builder.Services.RegisterPaymentInfrastructure(builder.Configuration);
+
     ValidatorOptions.Global.LanguageManager = new CustomMessageManager();
 
 
@@ -73,7 +82,7 @@ try
 
     builder.Services.RegisterCoreElementstInfrastructure();
     builder.Services.RegisterKycInfrastructure(builder.Configuration);
-
+    builder.Services.RegisterPaymentApiAdapters(builder.Configuration);
 
 
     var app = builder.Build();
@@ -111,4 +120,10 @@ catch (Exception ex)
 finally
 {
     Log.CloseAndFlush();
+}
+public class zibal
+{
+    public string Purchase { get; set; }
+    public string Verify { get; set; }
+    public string CallbackUrl { get; set; }
 }

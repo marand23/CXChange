@@ -25,16 +25,15 @@ namespace CXChange.BuildingBlocks.Application.CommandFilters
         {
             try
             {
-                Console.WriteLine("logging filter started");
+
                 await next.Send(context);
-                Console.WriteLine("logging filter stopped");
+
             }
             catch (BusinessRuleException ex)
             {
                 var a = context.GetType();
-                _logger.Error($"Exception occured in{context.SourceAddress}");
                 _logger.Error(ex.Message);
-                // _logger.Error(ex.StackTrace);
+
                 throw;
             }
             catch (ExchangeCommandException ex)

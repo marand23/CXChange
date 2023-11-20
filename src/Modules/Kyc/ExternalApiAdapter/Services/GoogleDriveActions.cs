@@ -1,5 +1,5 @@
 ﻿using CXChange.Modules.Kyc.Domain.Interfaces;
-using CXChange.Modules.Kyc.Domain.KycRequest.Enums;
+using CXChange.Modules.Kyc.Domain.User.Enums;
 using Google;
 using Google.Apis.Download;
 using Microsoft.AspNetCore.Http;

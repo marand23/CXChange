@@ -8,64 +8,31 @@ namespace CXChange.Modules.Kyc.Domain.User
 {
     public class User : Entity<Guid>, IAggregateRoot
     {
+        private User() { }
         private User(Guid id)
         {
             Id = id;
         }
-        private User(UserSnapShot snapShot)
-        {
-            this.Id = snapShot.Id;
-            FullName = new FullName(snapShot.Name, snapShot.SurName);
-            NationalId = new NationalId(snapShot.NationalId);
-            BirthDate = snapShot.BirthDay;
-            LandLineStatus = snapShot.LandLineStatus;
-            KycStatus = snapShot.KycStatus;
-            CreatedAt = snapShot.CreatedAt;
-            Version = snapShot.Version;
-            LandLine = snapShot.LandLine;
 
 
-        }
+        private FullName FullName;
+        private NationalId NationalId;
+        private DateOnly BirthDate;
+        private int Version;
+        private KycStatus KycStatus;
+        private LandLineStatus LandLineStatus;
+        private DateTimeOffset CreatedAt;
+        private string? LandLine;
+        private KycRequest UserKycRequest;
 
-        private FullName FullName { get; set; }
-        private NationalId NationalId { get; set; }
-        private DateOnly BirthDate { get; set; }
-        private int Version { get; set; }
-        private KycStatus KycStatus { get; set; }
-        private LandLineStatus LandLineStatus { get; set; }
-        private DateTimeOffset CreatedAt { get; set; }
-        private string LandLine { get; set; }
         public static User CreateUser(Guid id)
         {
-            if (id == null) { throw new ArgumentNullException("id"); }
+            if (id == Guid.Empty) { throw new ArgumentNullException("id"); }
             return new User(id);
 
         }
-        public static User CreateFrom(UserSnapShot snapShot)
-        {
 
-            return new User(snapShot);
-        }
-        public UserSnapShot GetSnapshot()
-        {
-
-            return new UserSnapShot
-            {
-                Id = Id,
-                Name = FullName?.GetSnapshot().Name,
-                NationalId = NationalId?.NationalNumber,
-                SurName = FullName?.GetSnapshot().SurName,
-                LandLineStatus = LandLineStatus,
-                KycStatus = KycStatus,
-                Version = Version,
-                CreatedAt = CreatedAt,
-                BirthDay = BirthDate,
-                LandLine = LandLine
-
-            };
-
-        }
-        public void PreCheckKycInitialization(bool isNationalIdUnique)
+        private void PreCheckKycInitialization(bool isNationalIdUnique)
         {
             CheckRule(new UsersKycShouldNotBeVerifiedOnKycInitialization(KycStatus));
             CheckRule(new NationalIdShouldBeUnique(isNationalIdUnique));
@@ -73,21 +40,23 @@ namespace CXChange.Modules.Kyc.Domain.User
             CheckRule(new UserKycShouldNotBeInProgressOnKycInitialization(KycStatus));
 
         }
-        public void ChangeKycStateToInProgress()
+        private void ChangeKycStateToInProgress()
         {
             KycStatus = KycStatus.InProgress;
         }
-        public void PreCheckKycRequestApproval(bool isNationalIdUnique)
+        private void PreCheckKycRequestApproval()
         {
             CheckRule(new KycShouldBeInProgressStateOnKycApprove(KycStatus));
-            CheckRule(new NationalIdShouldBeUnique(isNationalIdUnique));
+            CheckRule(new NationalIdShouldBeUnique(true));
         }
-        public void ApproveKyc(string nationalId, string name, string surname, DateOnly birthDate)
+        public void ApproveKyc()
         {
+            PreCheckKycRequestApproval();
             KycStatus = KycStatus.Verified;
-            FullName = new FullName(name, surname);
-            BirthDate = birthDate;
-            NationalId = new NationalId(nationalId);
+            FullName = UserKycRequest.FullName;
+            BirthDate = UserKycRequest.BirthDate;
+            NationalId = UserKycRequest.NationalId;
+            UserKycRequest = UserKycRequest with { Status = KycRequestStatus.Stale };
             AddDomainEvent(new KycApprovedDomainEvent(this));
 
         }
@@ -95,6 +64,7 @@ namespace CXChange.Modules.Kyc.Domain.User
         {
             CheckRule(new KycStatusShouldBeInProgressOnRejection(KycStatus));
             KycStatus = KycStatus.Rejected;
+            UserKycRequest = UserKycRequest with { Status = KycRequestStatus.Stale };
             AddDomainEvent(new KycRejectedDomainEvent(this));
         }
         public void VerifyLandLine(string landLineNum)
@@ -104,7 +74,28 @@ namespace CXChange.Modules.Kyc.Domain.User
             LandLine = landLineNum;
             LandLineStatus = LandLineStatus.Verified;
             AddDomainEvent(new LandLineConfirmedDomainEvent(this));
+
         }
+        public void CreateKycRequest(string name, string surName, string nationalId, DateOnly birthday)
+        {
+            PreCheckKycInitialization(true);
+            UserKycRequest = ValueObjects.KycRequest.CreateKycRequest(name, surName, nationalId, birthday);
+            ChangeKycStateToInProgress();
+
+        }
+        public void SetKycRequestPhotoIdAndStore(string id, StorageTypeEnum storageType)
+        {
+            this.UserKycRequest = UserKycRequest with { KycPhotoId = id, StorageType = storageType };
+        }
+        public string GetKycPhotoId()
+        {
+            return UserKycRequest.KycPhotoId;
+        }
+        public string GetKycRequestNationalId()
+        {
+            return UserKycRequest.NationalId.NationalNumber;
+        }
+
 
     }
 }

@@ -2,22 +2,16 @@
 {
     public record FullName
     {
+        private FullName() { }//ef core
         public FullName(string name, string surname)
         {
 
             Name = name;
             SurName = surname;
         }
-        private string Name { get; init; }
-        private string SurName { get; init; }
-        public FullNameSnapShot GetSnapshot()
-        {
-            return new FullNameSnapShot
-            {
-                SurName = this.SurName,
-                Name = this.Name,
-            };
-        }
+        public string? Name { get; init; }
+        public string? SurName { get; init; }
+
 
     }
 }

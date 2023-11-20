@@ -1,4 +1,4 @@
-﻿using CXChange.Modules.Kyc.Domain;
+﻿using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.Kyc.Domain.Interfaces.Repositories;
 using CXChange.Modules.Kyc.Infrastructure.DataAccess;
 using CXChange.Modules.Kyc.Infrastructure.Jobs;
@@ -27,8 +27,7 @@ namespace CXChange.Modules.Kyc.Infrastructure
 
            });
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IKycRequestRepository, KycRequestRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddKeyedScoped<IUnitOfWork, UnitOfWork>("kyc");
             services.AddScoped<RemoveStaleKycRequestsJob>();
         }
         public static void RegisterKycInfrastructureJobs()
