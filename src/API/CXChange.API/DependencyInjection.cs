@@ -1,17 +1,12 @@
-﻿using CXChange.API.Modules.Payment.GateWayAdapter;
-using CXChange.API.Modules.Payment.Maps;
-using CXChange.BuildingBlocks.Application.CommandFilters;
+﻿using CXChange.BuildingBlocks.Application.CommandFilters;
 using CXChange.BuildingBlocks.Application.MessageInterfaces;
-using CXChange.BuildingBlocks.Contract.Mapper;
 using CXChange.Modules.Kyc.Application;
 using CXChange.Modules.Kyc.Application.CommandFilters;
 using CXChange.Modules.Payment.Application;
-using CXChange.Modules.Payment.Application.Commands.TomanDepositVerify;
 using CXChange.Modules.UserAccess.Application;
 using MassTransit;
 using MassTransit.Internals;
 using Microsoft.AspNetCore.Mvc;
-using static CXChange.API.Modules.Payment.Requests;
 namespace CXChange.API
 {
     public class UrlOptions
@@ -24,9 +19,8 @@ namespace CXChange.API
         public static void RegisterAPI(this IServiceCollection services, Action<UrlOptions> opt)
         {
 
-            services.AddKeyedScoped<IGateWayAdapter, ZibalAdapter>("zibal");
-            services.AddKeyedScoped<IGateWayAdapter, NextAdapter>("next");
-            services.AddSingleton<IMapper<ZibalGateWayRequest, VerifyTomanDeposit>, MapZibalCallBackToConfirmDeposit>();
+
+
             services.AddOptions<UrlOptions>();
             services.Configure<UrlOptions>(opt);
             services.Configure<ApiBehaviorOptions>(o =>
@@ -37,11 +31,8 @@ namespace CXChange.API
                 //    new UnprocessableEntityObjectResult(new ApiValidationErrorModel { message = "ValidationError", errors = actionContext.ModelState.ToDictionary(x => x.Key, x => x.Value.Errors.FirstOrDefault().ErrorMessage), success = false }); ;
             });
 
-            //services.Scan(scan => scan
-            //.FromCallingAssembly()
-            //.AddClasses(classes => classes.AssignableTo(typeof(IMapper<,>)))
-            //.AsImplementedInterfaces()
-            //.WithSingletonLifetime());
+
+
 
 
 
@@ -60,7 +51,6 @@ namespace CXChange.API
                 // x.AddConsumer<sendemailcosumer>();
                 //x.AddEntityFrameworkOutbox<UserManagementDbContext>(o =>
                 //{
-                //    configure which database lock provider to use(Postgres, SqlServer, or MySql)
                 //    o.UsePostgres();
                 //    enable the bus outbox
                 //    o.UseBusOutbox();
@@ -120,7 +110,7 @@ namespace CXChange.API
 
                 cfg.ConfigureMediator((context, mcfg) =>
                 {
-                    mcfg.UseConsumeFilter(typeof(LoggingFilter<>), context);
+                    //mcfg.UseConsumeFilter(typeof(LoggingFilter<>), context);
 
                     mcfg.UseConsumeFilter(typeof(ValidationFilter<>), context, x =>
                     {

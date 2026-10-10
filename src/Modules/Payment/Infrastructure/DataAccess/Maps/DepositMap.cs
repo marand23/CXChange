@@ -38,6 +38,7 @@ namespace CXChange.Modules.Payment.Infrastructure.DataAccess.Maps
                 b.Property(x => x.TrackId).HasColumnName("track_id").HasDefaultValue("");
             });
 
+
         }
     }
 }

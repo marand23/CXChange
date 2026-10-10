@@ -28,6 +28,7 @@ namespace CXChange.Modules.Payment.Infrastructure.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "payment", "bankcard_status", new[] { "un_verified", "waiting_admin_verification", "verified", "rejected" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "payment", "deposit_status", new[] { "in_progress", "failed", "done" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "payment", "shaba_status", new[] { "un_verified", "waiting_admin_verification", "verified", "rejected" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "payment", "withdraw_sattus", new[] { "confirmed_by_user", "needs_manual_interversion", "auditing", "cancled", "sent", "completed", "failed_needs_manual_interversion", "failed" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("CXChange.Modules.Payment.Domain.BankCard.BankCard", b =>
@@ -314,6 +315,7 @@ namespace CXChange.Modules.Payment.Infrastructure.Migrations
                         .HasColumnName("user_id");
 
                     b.Property<int>("Version")
+                        .IsConcurrencyToken()
                         .HasColumnType("integer")
                         .HasColumnName("version");
 

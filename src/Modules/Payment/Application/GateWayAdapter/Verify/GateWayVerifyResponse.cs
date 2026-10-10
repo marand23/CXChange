@@ -2,5 +2,7 @@
 {
     public class GateWayVerifyResponse
     {
+        public bool Success { get; init; }
+
     }
 }

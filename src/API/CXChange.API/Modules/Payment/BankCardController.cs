@@ -1,14 +1,14 @@
-﻿using CXChange.API.Modules.Payment.GateWayAdapter;
+﻿using CXChange.API.Modules.Payment.Maps;
+using CXChange.API.ResourceFiles;
 using CXChange.BuildingBlocks.Contract.Mapper;
 using CXChange.Modules.Payment.Application.Commands.BankCardAdd;
+using CXChange.Modules.Payment.Application.Commands.IRTDepositReject;
+using CXChange.Modules.Payment.Application.Commands.IRTDepositSubmit;
 using CXChange.Modules.Payment.Application.Commands.ShabaAdd;
 using CXChange.Modules.Payment.Application.Commands.TomanDepositConfirm;
-using CXChange.Modules.Payment.Application.Commands.TomanDepositInitiate;
 using CXChange.Modules.Payment.Application.Commands.TomanDepositVerify;
-using CXChange.Modules.Payment.Application.Commands.WalletAdd;
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using static CXChange.API.Modules.Payment.Requests;
 
 
@@ -18,10 +18,10 @@ namespace CXChange.API.Modules.Payment
     [ApiController]
     public class BankCardController : ExchangeControllerBase
     {
-        zibal _gateway;
-        public BankCardController(IScopedMediator mediator, IMapService mapService, IOptions<zibal> options) : base(mediator, mapService)
+
+        public BankCardController(IScopedMediator mediator, IMapService mapService) : base(mediator, mapService)
         {
-            _gateway = options.Value;
+
         }
         [HttpPost("add")]
         public async Task<ActionResult<BankCardSubmitted>> AddBankCard(SubmitBankCardRequest request)
@@ -33,27 +33,43 @@ namespace CXChange.API.Modules.Payment
         {
             return await ReturnResponse<SubmitShaba, ShabaSubmitted>(new SubmitShaba { BankName = request.bankName, ShabaNumber = request.shabaNumber, UserId = Guid.Parse("08dbdd30-9b5e-332d-92e8-68d2507c0000") });
         }
-        [HttpPost("add-wallet")]
-        public async Task<ActionResult<WalletAdded>> AddWallet(string userId, string symbol)
-        {
-            return await ReturnResponse<AddWallet, WalletAdded>(new AddWallet { UserId = Guid.Parse(userId), Currency = symbol });
-        }
+
         [HttpGet("deposit")]
-        public async Task<ActionResult<TomanDepositInitiated>> InitiateTomanDeposit(string userId, string cardNumber, decimal amount)
-        {
-            var a = _gateway;
-            return await ReturnResponse<InitiateTomanDeposit, TomanDepositInitiated>(new InitiateTomanDeposit { Amount = amount, CardNumber = cardNumber, UserId = Guid.Parse(userId) });
-        }
-        [HttpGet("deposit/confirm")]
-        public async Task<ActionResult<TomanDepositVerified>> ConfirmDeposit([FromQuery] ZibalGateWayRequest zibal)
+        public async Task<ActionResult<IRTDepositSubmitted>> InitiateTomanDeposit(string userId, string cardNumber, decimal amount)
         {
 
-            return await ReturnResponse<VerifyTomanDeposit, TomanDepositVerified>(_mapService.Map<ZibalGateWayRequest, VerifyTomanDeposit>(zibal));
+            return await ReturnResponse<SubmitIRTDeposit, IRTDepositSubmitted>(new SubmitIRTDeposit { Amount = amount, CardNumber = cardNumber, UserId = Guid.Parse(userId) });
         }
-        [HttpGet("deposit/next")]
-        public async Task<ActionResult<TomanDepositVerified>> ConfirmDeposit([FromQuery] NextGateWayRequest next, [FromKeyedServices("next")] IGateWayAdapter gateWayAdapter)
+        [HttpGet("gateway/zibal/callback")]
+        public async Task<ActionResult> VerifyIRTDeposit([FromQuery] ZibalGateWayCallbackInfo zibal)
         {
-            return await ReturnResponse<VerifyTomanDeposit, TomanDepositVerified>(gateWayAdapter.Adapt(next));
+            if (zibal.success == 1)
+            {
+                var successResult = await GetRawResponse<VerifyIRTDeposit, IRTDepositVerified>(zibal.MapToConfirmDeposit());
+                return Ok(successResult);
+            }
+            var failureResult = await GetRawResponse<RejectIRTDeposit, IRTDepositRejected>(zibal.MapToRejectDeposit());
+            string err = GatewayErrorMessages.ResourceManager.GetString(failureResult.Error.ToString());
+            return Redirect("https://localhost:7273/swagger/index.html");
+
+
         }
+        [HttpPost("gateway/jibit/callback")]
+        public async Task<ActionResult> ConfirmDeposit([FromQuery] JibitGateWayCallbackInfo jibit)
+        {
+            throw new NotImplementedException();
+            //if (jibit.status == "SUCCESSFUL")
+            //{
+            //    var result = await GetRawResponse<VerifyIRTDeposit, IRTDepositVerified>(jibit.MapToVerifyIRTDeposit());
+            //    return Ok(result);
+
+            //}
+            //var failureResult = await GetRawResponse<RejectIRTDeposit, IRTDepositRejected>(jibit.MapToRejectIRTDeposit());
+            //string err = GatewayErrorMessages.ResourceManager.GetString(failureResult.Error.ToString());
+            //return BadRequest(new ApiErrorResponse { code = (GatewatPurchaseError)failureResult.Error, data = jibit.purchaseId, message = err, success = false });
+
+
+        }
+
     }
 }

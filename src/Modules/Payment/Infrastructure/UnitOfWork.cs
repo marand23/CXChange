@@ -1,5 +1,6 @@
 ﻿using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.Payment.Infrastructure.DataAccess;
+using System.Data;
 
 namespace CXChange.Modules.Payment.Infrastructure
 {
@@ -29,9 +30,17 @@ namespace CXChange.Modules.Payment.Infrastructure
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
+
+        public Task Clear()
+        {
+            _context.ChangeTracker.Clear();
+            return Task.CompletedTask;
+        }
         public void Dispose()
         {
             _context.Dispose();
         }
+
+
     }
 }

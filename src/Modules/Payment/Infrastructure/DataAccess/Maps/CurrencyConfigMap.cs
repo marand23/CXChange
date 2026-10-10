@@ -22,6 +22,18 @@ namespace CXChange.Modules.Payment.Infrastructure.DataAccess.Maps
                 b.Property(x => x.DepositEnable).HasColumnName("deposit_enable");
                 b.Property(x => x.WithdrawEnable).HasColumnName("withdraw_enable");
             });
+            //builder.OwnsMany(x => x.Networks, b =>
+            //{
+            //    { b.ToJson(); }
+            //    { b.OwnsOne(b => b.NetworkDepositWithdrawStatus); }
+            //    { b.OwnsOne(b => b.NetworkMinConfirm); }
+            //    { b.OwnsOne(b => b.NetworkWithdrawLimits); }
+            //    { b.OwnsOne(x => x.NetworkName); }
+            //    { b.OwnsOne(x => x.NetworkRegex); }
+
+            //    // b.ToJson();
+
+            //});
             // context.Users.Where(u => EF.Property<int>("_phone", u).HasField("phone") == 27);
 
         }

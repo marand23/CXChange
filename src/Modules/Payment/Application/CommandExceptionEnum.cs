@@ -5,7 +5,5 @@
         BankCardNotFound,
         BankCardDoesNotBelongToUser,
         MaxBankCardNumberReached,
-
-
     }
 }

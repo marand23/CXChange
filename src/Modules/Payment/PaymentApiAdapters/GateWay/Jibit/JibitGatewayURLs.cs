@@ -1,16 +1,27 @@
-﻿namespace CXChange.Modules.Payment.PaymentApiAdapters.GateWay.Jibit
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CXChange.Modules.Payment.PaymentApiAdapters.GateWay.Jibit
 {
     internal class JibitGatewayURLs
     {
-        private string _verify;
-        public string Purchase { get; set; }
-        public string Verify
-        {
-            get { return _verify; }
-            set { _verify = value; }
-        }
+        [Required]
+        public string Purchase { get; init; }
+        [Required]
+        public string Verify { get; init; }
+        [Required]
+        public string Inquiry { get; init; }
+        [Required]
+        public string CallbackUri { get; init; }
+        [Required]
+        public string SendWithdraw { get; init; }
 
-        public string CallbackUri { get; set; }
+        public string InquriyWithdraw { get; init; }
+
+        public string RetryWithdraw { get; init; }
+
+
+        public string GetVerifyURL(string purchaseId) => string.Format(Verify, purchaseId);
+        public string GetInquiryURL(string purchaseId) => Inquiry + $"?purchaseId={purchaseId}";
 
     }
 

@@ -10,13 +10,27 @@ namespace CXChange.Modules.Payment.PaymentApiAdapters
     {
         public static void RegisterPaymentApiAdapters(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IGatewayAdapter, Zibal>();
+            services.AddScoped<IGatewayAdapter, Jibit>();
             services.AddScoped<ZibalClient>();
             services.AddScoped<JibitClient>();
             services.AddHttpClient();
-            services.Configure<ZibalGatewayURLs>(configuration.GetSection("GatewayConfiguration:ZibalURLs"));
-            services.Configure<JibitGatewayURLs>(configuration.GetSection("GatewayConfiguration:JibitURLs"));
+            services.AddOptions<ZibalGatewayURLs>().Bind(configuration.GetSection(Sections.ZibalGateway))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
+
+            services.AddOptions<JibitGatewayURLs>().Bind(configuration.GetSection(Sections.JibitGateway))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
+
 
         }
+
     }
+    internal class Sections
+    {
+        public const string ZibalGateway = "GatewayConfiguration:ZibalURLs";
+        public const string JibitGateway = "GatewayConfiguration:JibitURLs";
+
+    }
+
 }

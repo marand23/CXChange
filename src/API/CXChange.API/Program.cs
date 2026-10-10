@@ -8,6 +8,7 @@ using CXChange.Modules.Kyc.Application;
 using CXChange.Modules.Kyc.Domain.User.Enums;
 using CXChange.Modules.Kyc.ExternalApiAdapter;
 using CXChange.Modules.Kyc.Infrastructure;
+using CXChange.Modules.Payment.Application;
 using CXChange.Modules.Payment.Domain.BankCard.Enums;
 using CXChange.Modules.Payment.Domain.Deposit.Enums;
 using CXChange.Modules.Payment.Domain.Shaba.Enums;
@@ -22,10 +23,12 @@ using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.HttpOverrides;
 using Npgsql;
 using Serilog;
+using Serilog.Formatting.Json;
 
 Log.Logger = new LoggerConfiguration()
-              .WriteTo.Console().MinimumLevel.Information()
-              // .WriteTo.Telegram("1136419874:AAEx8Vxxn_9j07zz_MoaeP3k1IotWQ9S2_U", "387581401", period: TimeSpan.FromSeconds(10), includeStackTrace: true, applicationName: "oooop")
+              .WriteTo.Console().MinimumLevel.Warning()
+           //.WriteTo.Telegram("1136419874:AAEx8Vxxn_9j07zz_MoaeP3k1IotWQ9S2_U", "387581401", period: TimeSpan.FromSeconds(10), includeStackTrace: true, applicationName: "oooop")
+           .WriteTo.File(new JsonFormatter(), rollingInterval: RollingInterval.Day, path: @$"c:\test_project\ApiLogsTest\{DateTime.Now.ToShortDateString()}.json")
               .CreateLogger();
 
 try
@@ -72,6 +75,7 @@ try
     builder.Services.RegisterKycApplication();
     builder.Services.RegisterBuldingBlocksContract();
     builder.Services.RegisterPaymentInfrastructure(builder.Configuration);
+    builder.Services.RegisterPaymentApplication();
 
     ValidatorOptions.Global.LanguageManager = new CustomMessageManager();
 
@@ -120,10 +124,4 @@ catch (Exception ex)
 finally
 {
     Log.CloseAndFlush();
-}
-public class zibal
-{
-    public string Purchase { get; set; }
-    public string Verify { get; set; }
-    public string CallbackUrl { get; set; }
 }

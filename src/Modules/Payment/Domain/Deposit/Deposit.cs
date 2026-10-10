@@ -1,5 +1,6 @@
 ﻿using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.Payment.Domain.Currency.ValueObjects;
+using CXChange.Modules.Payment.Domain.Deposit.DomainEvents;
 using CXChange.Modules.Payment.Domain.Deposit.Enums;
 using CXChange.Modules.Payment.Domain.Deposit.Specifications;
 using CXChange.Modules.Payment.Domain.Deposit.ValueObjects;
@@ -34,19 +35,25 @@ namespace CXChange.Modules.Payment.Domain.Deposit
         {
             return new Deposit(id, amount, currency, walletId, userId, address);
         }
-        public void ConfirmTomanDeposit(string trackId)
+        public void ConfirmIRTDeposit()
         {
-            if (trackId == null) { throw new ArgumentNullException(nameof(trackId)); }
-            CheckRule(new DepositCurrencyShouldBeTomanOnTomanDepositConfirm(Amount.Currency));
+            CheckRule(new DepositCurrencyShouldBeIRTOnIRTDepositConfirm(Amount.Currency));
             CheckRule(new IRTDepositShouldBeInProgressOnIRTDepositConfirmation(Status));
-
             Status = DepositStatus.Done;
+            AddDomainEvent(new IRTDepositConfirmed { Amount = this.Amount.Value, UserId = UserId });
+        }
+        public void RejectIRTDeposit(string reason)
+        {
+            CheckRule(new IRTDepositShouldBEInProgressOnDepositRejection(Status));
+            Status = DepositStatus.Failed;
+            AddDomainEvent(new IRTDepositFailed { Amount = Amount.Value, Reason = reason, UserId = UserId });
         }
         public void SetTrackId(string trackId)
         {
             TrackId = new DepositTrackId(trackId);
-            Status = DepositStatus.InProgress;
+
         }
 
     }
+
 }

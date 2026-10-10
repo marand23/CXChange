@@ -21,8 +21,10 @@ namespace CXChange.Modules.Payment.Infrastructure.Repositories
 
 
 
-        public async Task<Wallet> GetWalletAsync(Guid userId, string symbol)
+        public async Task<Wallet> GetWalletByUserIdAsync(Guid userId, string symbol)
         {
+
+
             var query = from c in _context.CurrencyConfigs
                         join w in _context.Wallets
                             on c.Id equals w.CurrencyId
@@ -31,11 +33,25 @@ namespace CXChange.Modules.Payment.Infrastructure.Repositories
                         select w.MapCurrency(c.Currency.Name, c.Currency.Precision);
             var result = await query.FirstOrDefaultAsync();
             return result;
+        }
 
+        public async Task Clear()
+        {
+            _context.ChangeTracker.Clear();
 
+        }
 
+        public async Task<Wallet> GetWalletById(Guid id, string symbol)
+        {
 
-
+            var query = from c in _context.CurrencyConfigs
+                        join w in _context.Wallets
+                            on c.Id equals w.CurrencyId
+                        where w.Id == id
+                        && c.Currency.Symbol == symbol
+                        select w.MapCurrency(c.Currency.Name, c.Currency.Precision);
+            var result = await query.FirstOrDefaultAsync();
+            return result;
         }
     }
 }

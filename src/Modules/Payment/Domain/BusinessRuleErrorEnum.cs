@@ -5,6 +5,10 @@
         UserCantHaveMoreThanFourCards = -9999,
         IRTConfirmationUsedForCrypto,
         IRTDepositShouldBeInProgressState,
-        UserDoesNotHaveDepositPermissions
+        UserDoesNotHaveDepositPermissions,
+        IRTDepositNotInProgressOnRejection,
+        WithdrawShouldBeConfirmedByUserOnSend,
+        WithdrawShouldBeSentOnComplete,
+        UserDoesNotHaveWithdrawPermission
     }
 }

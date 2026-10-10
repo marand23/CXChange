@@ -11,12 +11,14 @@
 	</ItemGroup>
   <ItemGroup>
     <PackageReference Include="MassTransit" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Application\CXChange.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\..\UserAccess\Integration\CXChange.Modules.UserAccess.Integration.csproj" />
     <ProjectReference Include="..\Domain\CXChange.Modules.Payment.Domain.csproj" />
+    <ProjectReference Include="..\Integration\CXChange.Modules.Payment.Integration.csproj" />
   </ItemGroup>
 
 </Project>

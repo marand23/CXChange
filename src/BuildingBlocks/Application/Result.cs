@@ -1,41 +1,86 @@
-﻿namespace CXChange.BuildingBlocks.Application
+﻿using CXChange.BuildingBlocks.Application.Error;
+
+namespace CXChange.BuildingBlocks.Application
 {
-    public class Result<T>
+    public class Result
     {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-        public ResultStatus Status { get; set; }
+        public bool Success { get; }
+        public string Error { get; private set; }
+        public ResultStatus Status { get; private set; }
+        protected Result(bool success, string error)
+        {
+            Success = success;
+            Error = error;
+        }
+        protected Result(bool success, IError errors, ResultStatus status)
+        {
+            Success = success;
+            Errors = errors;
+            Status = status;
+
+        }
+        public IError Errors { get; }
+
+        public bool isSucceed => Success;
+        public static Result Fail(string message)
+        {
+            return new Result(false, message);
+        }
+        public static Result OK()
+        {
+            return new Result(true, "OK");
+        }
+        public static Result<T> Fail<T>(string message)
+        {
+            return new Result<T>(false, default(T), message);
+        }
+        public static Result<T> OK<T>(T data)
+        {
+            return new Result<T>(true, data, "OK");
+        }
+        public static Result ValidationFailed(ValidationError validationErrors)
+        {
+            return new Result(false, validationErrors, ResultStatus.ValidationFailed);
+        }
+        public static Result CommandError(Enum errorCode, string message = null)
+        {
+            return new Result(false, new CommandError(errorCode, message), ResultStatus.CommandError);
+
+        }
+        public static Result<T> CommandError<T>(Enum errorCode, string message = null)
+        {
+            return new Result<T>(false, new CommandError(errorCode, message), ResultStatus.CommandError, default(T));
+
+        }
+
+
+    }
+    public class Result<T> : Result
+    {
+
+
+
         public T Data { get; set; }
 
-        public string[] Errors { get; set; }
-        public string Error { get; set; }
-        public Result()
+        public Result(bool success, T data, string message) : base(success, message)
         {
-            // Initialize properties
+            Data = data;
+        }
+        public Result(bool success, IError error, ResultStatus status, T data) : base(success, error, status)
+        {
+
         }
 
 
-        public static Result<T> CreateSuccess(T data, string successMessage)
-        {
-            return new Result<T> { Data = data, Status = ResultStatus.Success, Message = successMessage };
-        }
-        public static Result<T> CreateFailure(string message, ResultStatus status, string[] errors = null)
-        {
-            return new Result<T> { Success = false, Status = status, Errors = errors, Message = message };
 
 
-
-        }
 
 
     }
     public enum ResultStatus
     {
         Success,
-        CommandNotValid,
-        DomainRuleNotValid,
+        ValidationFailed,
         CommandError,
-
-
     }
 }

@@ -24,10 +24,11 @@ namespace CXChange.API.Modules.UserManagment
 
         }
         [HttpGet("send/mobile")]
-        //[Authorize(policy: "codeTypePolicy", AuthenticationSchemes = "CustomScheme")]
 
-        public async Task<ActionResult<CodeToPhoneNumberSent>> SendCodeToPhoneNumber([FromQuery] SendPhoneNumberCodeRequest request)
+
+        public async Task<ActionResult<CodeToPhoneNumberSent>> SendCodeToPhoneNumber([FromQuery] SendPhoneNumberCodeRequest request, int id)
         {
+            return Redirect("google.com");
             return await ReturnResponse<SendCodeToPhoneNumber, CodeToPhoneNumberSent>(new SendCodeToPhoneNumber { CodeType = request.CodeType, UserId = Guid.Parse("08dbde0f-6a6d-5286-92e8-68d2948d0000"), PhoneNumber = request.PhoneNumber, Token = request.Token });
         }
 

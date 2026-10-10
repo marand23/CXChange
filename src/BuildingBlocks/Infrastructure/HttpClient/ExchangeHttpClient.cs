@@ -7,45 +7,71 @@ namespace CXChange.BuildingBlocks.Infrastructure.HttpClient
     internal class ExchangeHttpClient : IExchangeHttpClient
     {
         IHttpClientFactory _client;
-        public ExchangeHttpClient(IHttpClientFactory client)
+        Serilog.ILogger _logger;
+        public ExchangeHttpClient(IHttpClientFactory client, Serilog.ILogger logger)
         {
             _client = client;
+            _logger = logger;
         }
 
 
-        public async Task<TResponse> Execute<TRequest, TResponse>(TRequest content, Dictionary<string, string> headers, string url, HttpMethod method)
+        public async Task<HttpResult<TResponse>> Execute<TRequest, TResponse>(TRequest content, Dictionary<string, string> headers, string url, HttpMethod method)
         {
-            HttpRequestMessage request = new HttpRequestMessage(method, url);
-            if (headers != null)
+            try
             {
-                foreach (var header in headers)
+                HttpRequestMessage request = new HttpRequestMessage(method, url);
+                if (headers != null)
                 {
-                    request.Headers.Add(header.Key, header.Value);
-                }
-            }
-
-            if (content != null)
-            {
-                StringContent contents = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
-                request.Content = contents;
-            }
-
-            var response = await _client.CreateClient().SendAsync(request);
-            if (response.IsSuccessStatusCode)
-            {
-                using (var contentStream = await response.Content.ReadAsStreamAsync())
-                {
-                    var deserialized = await JsonSerializer.DeserializeAsync<TResponse>(contentStream);
-                    if (deserialized == null)
+                    //todo : add headers for jbibit in client
+                    foreach (var header in headers)
                     {
-                        ArgumentNullException.ThrowIfNull(nameof(deserialized));
+                        request.Headers.Add(header.Key, header.Value);
                     }
-                    return deserialized;
                 }
 
+                if (content != null)
+                {
+                    StringContent contents = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
+                    request.Content = contents;
+                }
+
+                var response = await _client.CreateClient().SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    using (var contentStream = await response.Content.ReadAsStreamAsync())
+                    {
+                        var deserialized = await JsonSerializer.DeserializeAsync<TResponse>(contentStream);
+                        if (deserialized == null)
+                        {
+                            ArgumentNullException.ThrowIfNull(nameof(deserialized));
+                        }
+                        return HttpResult<TResponse>.CreateSuccess(deserialized, "success");
+                    }
+
+                }
+
+                var error = await response.Content.ReadAsStringAsync();
+                return HttpResult<TResponse>.CreateFailure(error, HttpResultStatus.NotAccessable);
             }
-            var error = await response.Content.ReadAsStringAsync();
-            throw new Exception(error);
+            catch (HttpRequestException ex)
+            {
+
+                return HttpResult<TResponse>.CreateFailure("http requst failed", HttpResultStatus.NotAccessable);
+            }
+            catch (TimeoutException ex)
+            {
+
+                return HttpResult<TResponse>.CreateFailure("timeout exception", HttpResultStatus.NotAccessable);
+            }
+            catch (Exception ex)
+            {
+
+                return HttpResult<TResponse>.CreateFailure("global exception occured", HttpResultStatus.NotAccessable);
+            }
+
+
+
+
         }
     }
 }

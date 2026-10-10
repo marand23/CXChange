@@ -1,6 +1,7 @@
 ﻿using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.Payment.Domain.Currency.ValueObjects;
 using CXChange.Modules.Payment.Domain.Wallet.Specifications;
+using CXChange.Modules.Payment.Domain.Withdraw.DomainEvents;
 
 namespace CXChange.Modules.Payment.Domain.Wallet
 {
@@ -42,7 +43,7 @@ namespace CXChange.Modules.Payment.Domain.Wallet
         private void DeductBalance(decimal amount)
         {
             CheckRule(new AmountToBeDeductedShouldBeLessOrEqualThanBalance(new MonetaryValue(amount, Currency), Balance));
-            CheckRule(new AmountToDeductShouldBeLessOrEqualThanReservedBalance(new MonetaryValue(amount, Currency), ReservedBalance));
+            // CheckRule(new AmountToDeductShouldBeLessOrEqualThanReservedBalance(new MonetaryValue(amount, Currency), ReservedBalance));
             Balance = Balance - new MonetaryValue(amount, Currency);
             ReservedBalance = ReservedBalance - new MonetaryValue(amount, Currency);
         }
@@ -57,19 +58,36 @@ namespace CXChange.Modules.Payment.Domain.Wallet
 
         public Deposit.Deposit CreateDeposit(Guid depositId, Guid userId, decimal amount, Currency.ValueObjects.Currency currency, string cardNumber)
         {
+
+            Version += 1;
             return Deposit.Deposit.Create(depositId, amount, currency, Id, userId, new ValueObjects.DepositAddress(cardNumber));
         }
         public void ConfirmDeposit(Deposit.Deposit deposit)
         {
-            deposit.ConfirmTomanDeposit("TrackId");
+            deposit.ConfirmIRTDeposit();
             AddBalance(deposit.Amount.Value);
         }
-        public void AddDepositAccount()
+        public Withdraw.Withdraw CreateIRTWithdraw(Guid withdrawId, Guid userId, decimal amount, Currency.ValueObjects.Currency currency, string shaba)
         {
-
-
+            ReserveBalance(amount);
+            return Withdraw.Withdraw.CreateIRTWithdraw(userId, Id, currency, "", shaba, amount);
 
         }
+        public void SendWithdraw(Withdraw.Withdraw withdraw)
+        {
+
+            withdraw.SendWithdraw();
+        }
+        public void SetWithdawAsRetryable(string retryReason, Withdraw.Withdraw withdraw)
+        {
+            withdraw.SetRetryByAdministration(retryReason);
+        }
+        public void CompleteWithdraw(Withdraw.Withdraw withdraw)
+        {
+            DeductBalance(withdraw.Amount.Value);
+            AddDomainEvent(new WithdrawCompletedDomainEvent());
+        }
+
         public Wallet MapCurrency(string currency, decimal precision)
         {
             this.Currency = new Currency.ValueObjects.Currency(currency, precision);
@@ -78,4 +96,5 @@ namespace CXChange.Modules.Payment.Domain.Wallet
             return this;
         }
     }
+
 }

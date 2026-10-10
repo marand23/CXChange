@@ -1,4 +1,5 @@
-﻿using CXChange.BuildingBlocks.Domain;
+﻿using CXChange.BuildingBlocks.Application;
+using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.UserAccess.Application.Enums;
 using CXChange.Modules.UserAccess.Application.Exceptions;
 using CXChange.Modules.UserAccess.Application.Utils;
@@ -34,7 +35,7 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Login.UserLogin
                 user.UpdateSecurityStamp();
                 string token = await _userRepository.GenerateUserToken(user, KeyWords.CustomTokenProvider, CodeType.GeneratePurposeForDefaultTwoFactor(user.GetSnapShot(), KeyWords.LoginUser));
                 await _userRepository.Update(user);
-                await context.RespondAsync(new UserLoginChecked { Token = token, PhoneNumber = context.Message.PhoneNumber });
+                await context.RespondAsync(Result.OK(new UserLoginChecked { Token = token, PhoneNumber = context.Message.PhoneNumber }));
             }
             catch (UserAccessCommandException ex)
             {

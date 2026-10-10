@@ -31,18 +31,22 @@ namespace CXChange.BuildingBlocks.Application.CommandFilters
             }
             catch (BusinessRuleException ex)
             {
-                var a = context.GetType();
-                _logger.Error(ex.Message);
 
                 throw;
             }
             catch (ExchangeCommandException ex)
             {
-                _logger.Error(ex.Message);
+                _logger.Error("command failed {message}  {code} CommandBody : {body}", ex.Message, ex.ErrorCode, context.Message);
+                throw ex;
+            }
+            catch (ValidationException ex)
+            {
+                _logger.Error("validation failed CommandBody : {body}", context.Message);
                 throw;
             }
             catch (Exception ex)
             {
+
                 throw;
             }
         }

@@ -10,9 +10,20 @@ namespace CXChange.Modules.UserAccess.Infrastructure
         {
             _context = context;
         }
+
+        public Task Clear()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<int> CommitChangesAsync(CancellationToken cancellationToken = default)
         {
             return await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public Task<int> CommitChangesAsyncWithConcurrencyCheck(CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
 
         public void Dispose()

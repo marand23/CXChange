@@ -11,6 +11,7 @@ namespace CXChange.Modules.Payment.Infrastructure.DataAccess.Maps
         public void Configure(EntityTypeBuilder<Wallet> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Version).IsConcurrencyToken();
             builder.Property(x => x.Id).ValueGeneratedNever();
             builder.Property(x => x.CreatedAt).HasDefaultValueSql("now()");
             builder.HasIndex(w => new { w.CurrencyId, w.UserId }).IsUnique();
@@ -20,13 +21,15 @@ namespace CXChange.Modules.Payment.Infrastructure.DataAccess.Maps
             builder.ComplexProperty(x => x.Balance, b =>
             {
                 b.Property(b => b.Value).HasColumnName("balance");
-                b.Ignore(b => b.Currency);
+                b.Ignore(x => x.Currency);
             });
             builder.ComplexProperty(x => x.ReservedBalance, b =>
             {
                 b.Property(b => b.Value).HasColumnName("reserved_balance");
-                b.Ignore(b => b.Currency);
+                b.Ignore(x => x.Currency);
+
             });
+
 
 
 

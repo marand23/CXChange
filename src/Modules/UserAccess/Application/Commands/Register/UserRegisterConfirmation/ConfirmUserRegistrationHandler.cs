@@ -1,6 +1,6 @@
-﻿using CXChange.BuildingBlocks.Domain;
+﻿using CXChange.BuildingBlocks.Application;
+using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.UserAccess.Application.Enums;
-using CXChange.Modules.UserAccess.Application.Exceptions;
 using CXChange.Modules.UserAccess.Application.Services.Interfaces;
 using CXChange.Modules.UserAccess.Application.Utils;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
@@ -30,14 +30,16 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Register.UserRegister
             User user = await _userRepository.GetUserByPhoneNumber(context.Message.PhoneNumber);
             if (user == null)
             {
-                throw new UserAccessCommandException(CommandExceptionEnum.UserNotFound);
+                await context.RespondAsync(Result.CommandError(CommandExceptionEnum.UserNotFound, "798789"));
+                return;
             }
             var snapshot = user.GetSnapShot();
             var result = _verifier.Verify(user, int.Parse(context.Message.VerificationCode), CodeType.GeneratePurposeForSpecificTwoFactor(snapshot.Id, KeyWords.ConfirmRegister, snapshot.PhoneNumber));
 
             if (!result)
             {
-                throw new UserAccessCommandException(CommandExceptionEnum.VerificationCodeInvalid);
+                await context.RespondAsync(Result.CommandError(CommandExceptionEnum.VerificationCodeInvalid, "798789"));
+                return;
             }
             user.ConfirmUserRegister();
             user.UpdateSecurityStamp();

@@ -29,7 +29,7 @@ namespace CXChange.Modules.Payment.Domain.User
         }
         public void CheckUserWithdrawRequirements()
         {
-
+            CheckRule(new UserShouldHaveWithdrawPermissionOnWithdraw(CanWithdraw));
         }
 
 

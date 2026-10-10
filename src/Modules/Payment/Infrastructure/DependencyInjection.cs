@@ -31,6 +31,7 @@ namespace CXChange.Modules.Payment.Infrastructure
             services.AddScoped<IBankCardRepository, BankCardRepository>();
             services.AddScoped<IShabaRepository, ShabaRepository>();
             services.AddScoped<IDepositRepository, DepositRepository>();
+            services.AddScoped<IWithdrawRepository, WithdrawRepository>();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using CXChange.BuildingBlocks.Domain;
-using CXChange.Modules.Kyc.Domain;
 using CXChange.Modules.Kyc.Infrastructure.DataAccess;
 
 namespace CXChange.Modules.Kyc.Infrastructure
@@ -33,6 +32,16 @@ namespace CXChange.Modules.Kyc.Infrastructure
         public void Dispose()
         {
             _dbContext.Dispose();
+        }
+
+        public Task<int> CommitChangesAsyncWithConcurrencyCheck(CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Clear()
+        {
+            throw new NotImplementedException();
         }
     }
 }

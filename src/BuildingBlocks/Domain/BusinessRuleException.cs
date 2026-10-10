@@ -5,26 +5,24 @@ namespace CXChange.BuildingBlocks.Domain
     public class BusinessRuleException : Exception
     {
 
+        public IBussinessRuleSpecification _specification { get; }
 
-        public string Message { get; }
 
         public Enum Code { get; }
-        public BusinessRuleException(IBussinessRuleSpecification specification)
+        public BusinessRuleException(IBussinessRuleSpecification specification) : base(specification.Message)
 
         {
-            this.Message = specification.Message;
+
             this.Code = specification.Code;
+            _specification = specification;
 
         }
-        protected BusinessRuleException(Enum code, string message)
+        protected BusinessRuleException(Enum code, string message) : base(message)
         {
             Code = code;
-            Message = message;
+
         }
 
-        //public override string ToString()
-        //{
-        //    return $"{BrokenRule.GetType().FullName}: {BrokenRule.Message}";
-        //}
+
     }
 }

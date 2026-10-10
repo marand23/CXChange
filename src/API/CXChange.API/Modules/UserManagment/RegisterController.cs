@@ -22,6 +22,7 @@ namespace CXChange.API.Modules.UserManagment
         public async Task<ActionResult<UserRegistered>> RegisterUser(RegisterRequest request)
         {
             return await ReturnResponse<RegisterUser, UserRegistered>(new RegisterUser { PhoneNumber = request.PhoneNumber, Password = request.Password });
+            //  return await ReturnResponse<RegisterUser, string>(new RegisterUser { PhoneNumber = request.PhoneNumber, Password = request.Password });
         }
         [HttpPost("confirm")]
         public async Task<ActionResult<UserConfirmed>> ConfirmRegistration(UserConfirmationRequest request)

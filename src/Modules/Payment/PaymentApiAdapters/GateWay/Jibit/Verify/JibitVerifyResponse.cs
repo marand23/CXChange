@@ -2,5 +2,6 @@
 {
     internal record JibitVerifyResponse
     {
+        public string status { get; init; }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IExchangeHttpClient
     {
-        Task<TResponse> Execute<TRequest, TResponse>(TRequest content, Dictionary<string, string> headers, string url, HttpMethod method);
+        Task<HttpResult<TResponse>> Execute<TRequest, TResponse>(TRequest content, Dictionary<string, string> headers, string url, HttpMethod method);
     }
 }

@@ -1,5 +1,8 @@
 ﻿
 using CXChange.API.Modules.UserManagment.SuccessMessages.Register;
+using CXChange.API.ResourceFiles;
+using CXChange.BuildingBlocks.Application;
+using CXChange.BuildingBlocks.Application.Error;
 using CXChange.BuildingBlocks.Contract.Mapper;
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Mvc;
@@ -42,17 +45,41 @@ namespace CXChange.API
         }
         public async Task<ActionResult<TResponse>> ReturnResponse<TRequest, TResponse>(TRequest result, string responseType = null) where TRequest : class where TResponse : class
         {
-            var mediatorResponse = await GetMediatorResponse<TRequest, TResponse>(result);
-
-            return TranslateToHttp(mediatorResponse, responseType);
+            var mediatorResponse = await GetMediatorResponseWithResult<TRequest, TResponse>(result);
+            return TranslateToHttp<TResponse>(mediatorResponse);
         }
-        private ActionResult<T> TranslateToHttp<T>(T result, string responseType = null) where T : class
+        private ActionResult TranslateToHttp<T>(Result result, string responseType = null)
         {
 
-            return Ok(new ApiSuccessResponse<T> { data = result, success = true, message = RegisterMessages.GetMessage(result) });
+            ActionResult res = result.Status switch
+            {
+                ResultStatus.ValidationFailed => UnprocessableEntity((ApiValidationResponse)(ValidationError)result.Errors),
+
+                ResultStatus.Success => Ok(new ApiSuccessResponse<T> { data = ((Result<T>)result).Data, success = true, message = RegisterMessages.GetMessage(result) }),
+
+                ResultStatus.CommandError => BadRequest(new ApiErrorResponse { code = Convert.ToInt32(((CommandError)(result).Errors).ErrorCode), message = CommandErrorMessages.ResourceManager.GetString(((CommandError)(result).Errors).ErrorCode.ToString()), success = false }),
+
+                _ => throw new NotImplementedException(),
+            };
+            return res;
+
+        }
+        public async Task<TResponse> GetRawResponse<TRequest, TResponse>(TRequest request) where TRequest : class where TResponse : class
+        {
+            return await GetMediatorResponse<TRequest, TResponse>(request);
+        }
+        private async Task<Result> GetMediatorResponseWithResult<TRequest, TResponse>(TRequest request) where TRequest : class where TResponse : class
+        {
+
+            var client = _mediator.CreateRequestClient<TRequest>();
+            var response = await client.GetResponse<Result>(request);
+            return response.Message;
+
+
+
+
         }
 
 
     }
-
 }

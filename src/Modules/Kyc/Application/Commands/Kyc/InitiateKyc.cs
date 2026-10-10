@@ -6,6 +6,7 @@ namespace CXChange.Modules.Kyc.Application.Commands.Kyc
 {
     public record InitiateKyc : ICommandBase, IPersistable, IValidatable
     {
+
         public Guid UserId { get; init; }
         public string NationalId { get; init; }
         public string Name { get; init; }

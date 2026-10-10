@@ -7,6 +7,8 @@ using CXChange.Modules.Payment.Domain.Shaba;
 using CXChange.Modules.Payment.Domain.Shaba.Enums;
 using CXChange.Modules.Payment.Domain.User;
 using CXChange.Modules.Payment.Domain.Wallet;
+using CXChange.Modules.Payment.Domain.Withdraw;
+using CXChange.Modules.Payment.Domain.Withdraw.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -24,6 +26,8 @@ namespace CXChange.Modules.Payment.Infrastructure.DataAccess
         public DbSet<BankCard> BankCards { get; set; }
         public DbSet<Shaba> Shabas { get; set; }
         public DbSet<Deposit> Deposits { get; set; }
+        public DbSet<Withdraw> Withdraws { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
@@ -31,6 +35,8 @@ namespace CXChange.Modules.Payment.Infrastructure.DataAccess
             modelBuilder.HasPostgresEnum<BankCardStatus>(schema: "payment", name: "bankcard_status");
             modelBuilder.HasPostgresEnum<ShabaStatus>(schema: "payment", name: "shaba_status");
             modelBuilder.HasPostgresEnum<DepositStatus>(schema: "payment", name: "deposit_status");
+            modelBuilder.HasPostgresEnum<WithdrawStatus>(schema: "payment", name: "withdraw_sattus");
+
 
         }
     }

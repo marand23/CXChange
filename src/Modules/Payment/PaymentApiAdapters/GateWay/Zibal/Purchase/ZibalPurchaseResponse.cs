@@ -8,7 +8,7 @@
         public string message { get; init; }
         public override string ToString()
         {
-            return $"zibal gateway request failed, info: {message}";
+            return $"trackId:{trackId} message: {message}, result:{result}";
         }
 
     }

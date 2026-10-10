@@ -76,26 +76,19 @@ namespace CXChange.Modules.UserAccess.Application.Utils
         //generate purpose for user token and user code
         internal static string GeneratePurposeForDefaultTwoFactor(SnapShot snapShot, string codeType)
         {
-
-            switch (snapShot.ActiveTwoFactor)
+            var purpose = snapShot.ActiveTwoFactor switch
             {
-                case (TwoFactorEnum.SMS):
-                    return string.Concat(codeType, snapShot.Id, snapShot.PhoneNumber);
-                case (TwoFactorEnum.EMAIL):
-                    return string.Concat(codeType, snapShot.Id, snapShot.Email);
-                case (TwoFactorEnum.AUTHENTICATOR):
-                    return string.Concat(codeType, snapShot.Id, TwoFactorEnum.AUTHENTICATOR);
+                TwoFactorEnum.SMS => $"{codeType}{snapShot.Id}{snapShot.PhoneNumber}",
+                TwoFactorEnum.EMAIL => $"{codeType}{snapShot.Id}{snapShot.Email}",
+                TwoFactorEnum.AUTHENTICATOR => $"{codeType}{snapShot.Id}{TwoFactorEnum.AUTHENTICATOR}",
+                _ => throw new NotImplementedException()
 
-
-            }
-            throw new NotImplementedException();
-
-
+            };
+            return purpose;
         }
         internal static string GeneratePurposeForSpecificTwoFactor(Guid UserId, string codeType, string destination)
         {
-            return string.Concat(codeType, UserId, destination);
-
+            return $"{codeType}{UserId}{destination}";
         }
 
 

@@ -1,4 +1,5 @@
-﻿using CXChange.BuildingBlocks.Domain;
+﻿using CXChange.BuildingBlocks.Application;
+using CXChange.BuildingBlocks.Domain;
 using CXChange.Modules.UserAccess.Application.Commands.UserDeletion;
 using CXChange.Modules.UserAccess.Domain.Interfaces.Repositories;
 using CXChange.Modules.UserAccess.Domain.User;
@@ -45,7 +46,8 @@ namespace CXChange.Modules.UserAccess.Application.Commands.Register.UserRegistra
             user = User.RegisterNewUser(context.Message.PhoneNumber, context.Message.Password, true, context.Message.PhoneNumber, NewId.NextSequentialGuid());
             await _userRepository.CreateUser(user);
             await _dispatcher.Dispatch(user.DomainEvents);
-            await context.RespondAsync(new UserRegistered { PhoneNumber = context.Message.PhoneNumber, TwoFactorType = TwoFactorType.SMS });
+            await context.RespondAsync(Result.OK<UserRegistered>(new UserRegistered { PhoneNumber = context.Message.PhoneNumber, TwoFactorType = TwoFactorType.SMS }));
+            //  await context.RespondAsync(Result.OK<string>("validation failed"));
             {
             };
         }

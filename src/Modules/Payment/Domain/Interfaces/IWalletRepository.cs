@@ -4,6 +4,9 @@
     {
         Task AddAsync(Wallet.Wallet wallet);
 
-        Task<Wallet.Wallet> GetWalletAsync(Guid userId, string symbol);
+        Task<Wallet.Wallet> GetWalletByUserIdAsync(Guid userId, string symbol);
+        Task<Wallet.Wallet> GetWalletById(Guid id, string symbol);
+
+
     }
 }

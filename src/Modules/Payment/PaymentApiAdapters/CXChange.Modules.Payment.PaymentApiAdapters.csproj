@@ -5,7 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+	<ItemGroup>
+		<PackageReference Include="Serilog" />
+	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure\CXChange.BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="..\Application\CXChange.Modules.Payment.Application.csproj" />

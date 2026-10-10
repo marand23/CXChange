@@ -60,6 +60,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DomainErrorMessages.resx</DependentUpon>
     </Compile>
+    <Compile Update="ResourceFiles\GatewayErrorMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GatewayErrorMessages.resx</DependentUpon>
+    </Compile>
     <Compile Update="ResourceFiles\ValidationErrorMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -75,6 +80,10 @@
     <EmbeddedResource Update="ResourceFiles\DomainErrorMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DomainErrorMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourceFiles\GatewayErrorMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GatewayErrorMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="ResourceFiles\ValidationErrorMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>

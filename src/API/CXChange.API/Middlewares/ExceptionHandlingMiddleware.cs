@@ -1,9 +1,9 @@
 ﻿using CXChange.BuildingBlocks.Application.Exceptions;
 using CXChange.BuildingBlocks.Domain;
-using CXChange.BuildingBlocks.Infrastructure;
+using CXChange.BuildingBlocks.Infrastructure.Exceptions;
+using CXChange.Modules.Payment.PaymentApiAdapters.GateWay;
 using MassTransit;
 using Newtonsoft.Json;
-using System.Net;
 
 namespace CXChange.API.Middlewares
 {
@@ -22,8 +22,7 @@ namespace CXChange.API.Middlewares
         {
             try
             {
-                //   var body = await System.Text.Json.JsonSerializer.DeserializeAsync<JsonElement>(context.Request.Body);
-                // Console.WriteLine(body);
+
                 await _next(context);
             }
 
@@ -47,53 +46,45 @@ namespace CXChange.API.Middlewares
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
+
             context.Response.ContentType = "application/json";
             var response = context.Response;
             IApiError errorResponse = GetError(exception);
-
-            switch (exception)
+            response.StatusCode = exception switch
             {
-                case BuildingBlocks.Application.Exceptions.ValidationException ex:
-                    {
-                        response.StatusCode = 422;
 
-                    };
-                    break;
-                case BusinessRuleException ex:
-                    response.StatusCode = 400;
-                    break;
-                case ExchangeCommandException ex:
-                    response.StatusCode = 400;
-                    break;
-                case ApiException ex:
-                    response.StatusCode = 500;
-                    break;
-                default:
-                    _logger.Error(exception.Message);
-                    _logger.Error(exception.StackTrace);
-                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    break;
+                BusinessRuleException => 400,
+                ExchangeCommandException => 400,
+                ApiException => 400,
+                GatewayException => 400,
+                _ => 500
+            };
+
+            if (response.StatusCode == 500)
+            {
+                _logger.Error("An error occurred while processing the request: {Exception}", exception);
+
             }
-            ;
+            //else
+            //{
+            //    _logger.Error("{Message} {UserId}", exception.Message, NewId.NextSequentialGuid());
 
-
-
+            //}
             var result = JsonConvert.SerializeObject(errorResponse);
             await response.WriteAsync(result);
         }
         private IApiError GetError(Exception ex)
         {
 
-            if (ex is ValidationException e)
-            {
-                ApiValidationResponse errors = e;
-                return errors;
-            }
-            else
-            {
-                ApiErrorResponse err = ex;
-                return err;
-            }
+            //if (ex is ValidationException e)
+            //{
+            //    ApiValidationResponse errors = e;
+            //    return errors;
+            //}
+
+            ApiErrorResponse err = ex;
+            return err;
+
 
 
         }
