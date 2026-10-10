@@ -1,0 +1,136 @@
+﻿using CXChange.BuildingBlocks.Application.CommandFilters;
+using CXChange.BuildingBlocks.Application.MessageInterfaces;
+using CXChange.Modules.Kyc.Application;
+using CXChange.Modules.Kyc.Application.CommandFilters;
+using CXChange.Modules.Payment.Application;
+using CXChange.Modules.UserAccess.Application;
+using MassTransit;
+using MassTransit.Internals;
+using Microsoft.AspNetCore.Mvc;
+namespace CXChange.API
+{
+    public class UrlOptions
+    {
+        public string Url { get; set; }
+    }
+    public static class DependencyInjection
+    {
+
+        public static void RegisterAPI(this IServiceCollection services, Action<UrlOptions> opt)
+        {
+
+
+
+            services.AddOptions<UrlOptions>();
+            services.Configure<UrlOptions>(opt);
+            services.Configure<ApiBehaviorOptions>(o =>
+            {
+
+
+                //o.InvalidModelStateResponseFactory = actionContext =>
+                //    new UnprocessableEntityObjectResult(new ApiValidationErrorModel { message = "ValidationError", errors = actionContext.ModelState.ToDictionary(x => x.Key, x => x.Value.Errors.FirstOrDefault().ErrorMessage), success = false }); ;
+            });
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+        public static void RegisterMAssTransit(this IServiceCollection services, IWebHostEnvironment environment)
+        {
+
+            services.AddMassTransit(x =>
+            {
+                // x.AddConsumer<sendemailcosumer>();
+                //x.AddEntityFrameworkOutbox<UserManagementDbContext>(o =>
+                //{
+                //    o.UsePostgres();
+                //    enable the bus outbox
+                //    o.UseBusOutbox();
+                //});
+
+
+                x.AddKycApplicationBus();
+                x.AddUserManagmentApplicationBus();
+                x.AddPaymentApplicationBus();
+                x.UsingInMemory((context, cfg) =>
+                {
+
+                    cfg.ConfigureEndpoints(context);
+
+                    //cfg.UseDelayedRedelivery(r => r.Intervals(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(15), TimeSpan.FromMinutes(30)));
+                    //cfg.UseMessageRetry(r => r.Interval(5, TimeSpan.FromSeconds(20)));
+                });
+                //x.UsingRabbitMq((context, cfg) =>
+                //{
+                //    cfg.Host("localhost", "/", h =>
+                //    {
+                //        h.Username("guest");
+                //        h.Password("guest");
+                //    });
+                //    //cfg.ReceiveEndpoint("user-registered",c =>
+                //    //{
+
+                //    //    c.UseMessageRetry(r =>
+                //    //    {
+                //    //        r.Immediate(2);
+
+                //    //        r.Handle<DbUpdateException>();
+                //    //        r.Ignore<NotImplementedException>();
+                //    //    });
+
+
+
+                //    //});
+                //    cfg.ConfigureEndpoints(context);
+
+
+
+
+                //});
+            });
+
+
+
+        }
+        public static void RegisterMediator(this IServiceCollection services, IWebHostEnvironment environment)
+        {
+            services.AddMediator(cfg =>
+            {
+                cfg.AddUserAccessApplicationMediator();
+                cfg.AddKycApplicationMediator();
+                cfg.RegisterPaymentApplicationMediator();
+
+                cfg.ConfigureMediator((context, mcfg) =>
+                {
+                    //mcfg.UseConsumeFilter(typeof(LoggingFilter<>), context);
+
+                    mcfg.UseConsumeFilter(typeof(ValidationFilter<>), context, x =>
+                    {
+                        x.Include(type => type.HasInterface<IValidatable>());
+
+                    });
+
+                    mcfg.UseConsumeFilter(typeof(UnitOfWorkFilter<>), context, x =>
+                    {
+                        x.Include(type => type.HasInterface<IPersistable>());
+                    });
+                    mcfg.UseConsumeFilter(typeof(CXChange.Modules.UserAccess.Application.CommandFilters.UnitOfWorkFilter<>), context, x =>
+                    {
+                        x.Include(type => type.HasInterface<IPersistable>());
+                    });
+
+                });
+
+
+            });
+        }
+    }
+}

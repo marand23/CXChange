@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Application\CXChange.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\Domain\CXChange.Modules.Kyc.Domain.csproj" />
+    <ProjectReference Include="..\Integration\CXChange.Modules.Kyc.Integration.csproj" />
+  </ItemGroup>
+
+</Project>

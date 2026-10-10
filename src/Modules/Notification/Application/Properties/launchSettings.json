@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "CXChange.Modules.Notification.Application": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:32197;http://localhost:32198"
+    }
+  }
+}

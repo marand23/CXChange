@@ -1,0 +1,21 @@
+﻿using CXChange.Modules.UserAccess.Application.Commands.Register.UserRegisterConfirmation;
+using CXChange.Modules.UserAccess.Application.Commands.Register.UserRegistration;
+
+namespace CXChange.API.Modules.UserManagment.SuccessMessages.Register
+{
+    internal static class RegisterMessages
+    {
+        public static string GetMessage(object obj)
+        {
+            if (obj.GetType() == typeof(UserRegistered))
+            {
+                return "با موفقیت ثبت نام شد ";
+            }
+            if (obj.GetType() == typeof(UserConfirmed))
+            {
+                return "ثبت نام موفق";
+            }
+            return "successfull operation";
+        }
+    }
+}

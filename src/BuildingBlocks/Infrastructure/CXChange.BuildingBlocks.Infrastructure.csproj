@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" />
+	 
+	  <PackageReference Include="Newtonsoft.Json" />
+	  <PackageReference Include="Npgsql" />
+	  <PackageReference Include="Dapper" />
+	
+	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\UserAccess\Domain\CXChange.Modules.UserAccess.Domain.csproj" />
+    <ProjectReference Include="..\Application\CXChange.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\Contract\CXChange.BuildingBlocks.Contract.csproj" />
+  </ItemGroup>
+
+</Project>
